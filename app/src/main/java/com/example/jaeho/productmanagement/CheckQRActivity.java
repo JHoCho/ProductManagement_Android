@@ -97,7 +97,6 @@ public class CheckQRActivity extends AppCompatActivity {
     }
 
     private void usingCamera(){
-        checkCameraPermission();
         checkCameraPermission();//체크안에 퍼미션이있다면 카메라 소스가 돌아가고 아니라면 허가하는 다이얼로그를 띄우거나 세팅의 권한쪽으로 넘겨버리도록 코딩되어있음 읽기 편하도록 유징 카메라라는 메서드로 감싼것.
     }
     //사용자가 무얼 선택하던 무조건 타는 메서드.
