@@ -9,19 +9,22 @@ import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.TextView;
 
 
 import com.google.android.gms.vision.CameraSource;
+import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
 
-public class CheckQRActivity extends AppCompatActivity {
+public class CheckQRActivity extends AppCompatActivity
+{
     SurfaceView cameraView;//화면 업데이트를 백그라운드로 처리해주는 서페이스뷰를 사용 할 예정
     CameraSource cameraSource;
     TextView barcodeInfo;
@@ -29,17 +32,42 @@ public class CheckQRActivity extends AppCompatActivity {
     //스테틱 인트 변수로 스스로 선언해 줘야하는 부분입니다 리퀘스트 코드이며 onRequestPermissionResult에서 사용됩니다 이것은 사용자가 어떤 선택을 했는지 넘겨줍니다 숫자는 무엇을 쓰던 상관이 없습니다
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1122;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_qr);
         cameraView = (SurfaceView)findViewById(R.id.camera_view);
         barcodeInfo = (TextView)findViewById(R.id.code_info);
 
-
+///////////////////////////////////////바코드부분/////////////////////////////////////////////////
         barcodeDetector = new BarcodeDetector.Builder(this)
                             .setBarcodeFormats(Barcode.QR_CODE)
-                            .build();//바코드 디텍터에 빌더패턴으로 QR코드 등을 삽입
+                            .build();//바코드 디텍터에 빌더패턴으로 포멧 설정을 QR코드로 함. https://developers.google.com/vision/android/multi-tracker-tutorial 튜토리얼, AOS도 가지고있음.
+        barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {// 셋 프로세서는 여러 쓰레드를 만들고 여러장을 한번에 비교합니다.
+            @Override
+            public void release() {
 
+            }
+
+            @Override//receiveDetections매서드 안에서 Detector.Detections클래스의 getDetectedItems매서드를 이용해 바코드의 스파스어레이 오브젝트를 불러오는데
+            public void receiveDetections(Detector.Detections<Barcode> detections) {
+                final SparseArray<Barcode> barcodes = detections.getDetectedItems();
+                // 스파스 어레이는 인티져를 객체로 매핑해준다. 이경우는  barcode오브젝트로 Create해주고 Return해준다
+                if(barcodes.size()!=0){
+                    //바코드사이즈가 있다면
+
+                    barcodeInfo.post(new Runnable() {//텍스트뷰의 포스트 메서드를 이용하여
+                        @Override
+                        public void run() {
+                            barcodeInfo.setText(//receiveDetections가 UI thread에서 돌고 있지 않으므로 셋텍스트가 post안에서 돌아가야한다//https://code.tutsplus.com/tutorials/reading-qr-codes-using-the-mobile-vision-api--cms-24680https://code.tutsplus.com/tutorials/reading-qr-codes-using-the-mobile-vision-api--cms-24680 참조
+                                    barcodes.valueAt(0).displayValue
+                            );
+                        }
+                    });
+                }
+            }
+        });
+//////////////////////////////////////카메라 부분////////////////////////////////////////////////
         cameraSource = new CameraSource.Builder(this,barcodeDetector)
                                     .setRequestedPreviewSize(640,480)
                                     .build();
