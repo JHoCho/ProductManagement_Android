@@ -30,3 +30,5 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }
+//파이어베이스 사용을 위한 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'
