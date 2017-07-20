@@ -1,17 +1,24 @@
 package com.example.jaeho.productmanagement;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.LayoutRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -38,7 +45,36 @@ public class CheckQRActivity extends AppCompatActivity
         setContentView(R.layout.activity_check_qr);
         cameraView = (SurfaceView)findViewById(R.id.camera_view);
         barcodeInfo = (TextView)findViewById(R.id.code_info);
+/////////////////////////////////////텍스트박스 체인지 리스너///////////////////////////////////
+        barcodeInfo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                    View dlgView = View.inflate(CheckQRActivity.this, R.layout.dlg_check_qr, null);
+                    AlertDialog.Builder dlg = new AlertDialog.Builder(CheckQRActivity.this);
+                    dlg.setTitle("진행하시겠습니까?");
+                    dlg.setView(dlgView);
+                    dlg.setMessage(barcodeInfo.getText().toString());
+                    dlg.setNegativeButton("취소", null);
+                    dlg.setPositiveButton("선택", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    dlg.show();
+
+            }
+        });
 ///////////////////////////////////////바코드부분/////////////////////////////////////////////////
         barcodeDetector = new BarcodeDetector.Builder(this)
                             .setBarcodeFormats(Barcode.QR_CODE)
@@ -53,16 +89,17 @@ public class CheckQRActivity extends AppCompatActivity
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 // 스파스 어레이는 인티져를 객체로 매핑해준다. 이경우는  barcode오브젝트로 Create해주고 Return해준다
-                if(barcodes.size()!=0){
-                    //바코드사이즈가 있다면
 
+                if(barcodes.size()!=0 ){
+                    //바코드사이즈가 있고 이전에 있던것과 다를경우 이전에 복사하고 현재걸 바꿔준다.
                     barcodeInfo.post(new Runnable() {//텍스트뷰의 포스트 메서드를 이용하여
                         @Override
                         public void run() {
-                            barcodeInfo.setText(//receiveDetections가 UI thread에서 돌고 있지 않으므로 셋텍스트가 post안에서 돌아가야한다//https://code.tutsplus.com/tutorials/reading-qr-codes-using-the-mobile-vision-api--cms-24680https://code.tutsplus.com/tutorials/reading-qr-codes-using-the-mobile-vision-api--cms-24680 참조
-                                    barcodes.valueAt(0).displayValue
-                            );
-                        }
+                                barcodeInfo.setText(//receiveDetections가 UI thread에서 돌고 있지 않으므로 셋텍스트가 post안에서 돌아가야한다//https://code.tutsplus.com/tutorials/reading-qr-codes-using-the-mobile-vision-api--cms-24680https://code.tutsplus.com/tutorials/reading-qr-codes-using-the-mobile-vision-api--cms-24680 참조
+                                        barcodes.valueAt(0).displayValue
+                                );
+                            }
+
                     });
                 }
             }
