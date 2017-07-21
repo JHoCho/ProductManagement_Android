@@ -36,6 +36,7 @@ public class CheckQRActivity extends AppCompatActivity
     CameraSource cameraSource;
     TextView barcodeInfo;
     BarcodeDetector barcodeDetector;
+    String prev="";
     //스테틱 인트 변수로 스스로 선언해 줘야하는 부분입니다 리퀘스트 코드이며 onRequestPermissionResult에서 사용됩니다 이것은 사용자가 어떤 선택을 했는지 넘겨줍니다 숫자는 무엇을 쓰던 상관이 없습니다
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1122;
     @Override
@@ -54,24 +55,25 @@ public class CheckQRActivity extends AppCompatActivity
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+                View dlgView = View.inflate(CheckQRActivity.this, R.layout.dlg_check_qr, null);
+                AlertDialog.Builder dlg = new AlertDialog.Builder(CheckQRActivity.this);
+                dlg.setTitle("진행하시겠습니까?");
+                dlg.setView(dlgView);
+                dlg.setMessage(barcodeInfo.getText().toString());
+                dlg.setNegativeButton("취소", null);
+                dlg.setPositiveButton("선택", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                dlg.show();
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
-                    View dlgView = View.inflate(CheckQRActivity.this, R.layout.dlg_check_qr, null);
-                    AlertDialog.Builder dlg = new AlertDialog.Builder(CheckQRActivity.this);
-                    dlg.setTitle("진행하시겠습니까?");
-                    dlg.setView(dlgView);
-                    dlg.setMessage(barcodeInfo.getText().toString());
-                    dlg.setNegativeButton("취소", null);
-                    dlg.setPositiveButton("선택", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    });
-                    dlg.show();
 
             }
         });
@@ -91,13 +93,19 @@ public class CheckQRActivity extends AppCompatActivity
                 // 스파스 어레이는 인티져를 객체로 매핑해준다. 이경우는  barcode오브젝트로 Create해주고 Return해준다
 
                 if(barcodes.size()!=0 ){
-                    //바코드사이즈가 있고 이전에 있던것과 다를경우 이전에 복사하고 현재걸 바꿔준다.
+                    //바코드사이즈가 있을경우 TextView.post형식으
                     barcodeInfo.post(new Runnable() {//텍스트뷰의 포스트 메서드를 이용하여
                         @Override
                         public void run() {
-                                barcodeInfo.setText(//receiveDetections가 UI thread에서 돌고 있지 않으므로 셋텍스트가 post안에서 돌아가야한다//https://code.tutsplus.com/tutorials/reading-qr-codes-using-the-mobile-vision-api--cms-24680https://code.tutsplus.com/tutorials/reading-qr-codes-using-the-mobile-vision-api--cms-24680 참조
-                                        barcodes.valueAt(0).displayValue
-                                );
+                                if(prev.equals(barcodes.valueAt(0).displayValue.toString()))
+                                {
+                                   //이전것과 같으면 아무런 동작을 하지 않고
+                                } else {
+                                    //다르면 receiveDetections가 UI thread에서 돌고 있지 않으므로 셋텍스트가 post안에서 돌아가야한다. post메서드 설명 : https://stackoverflow.com/questions/13840007/what-exactly-does-the-post-method-do
+                                    //receiveDetections가 UI thread에서 돌고 있지 않으므로 셋텍스트가 post안에서 돌아가야한다//https://code.tutsplus.com/tutorials/reading-qr-codes-using-the-mobile-vision-api--cms-24680https://code.tutsplus.com/tutorials/reading-qr-codes-using-the-mobile-vision-api--cms-24680 참조
+                                    barcodeInfo.setText(barcodes.valueAt(0).displayValue);
+                                    prev = barcodeInfo.getText().toString();
+                                }
                             }
 
                     });

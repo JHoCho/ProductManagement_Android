@@ -23,6 +23,7 @@
         android:layout_marginLeft="16dp"
         android:layout_toRightOf="@+id/camera_view"
         android:text="Nothing to read."
+        android:visibility="gone"
         android:textSize="20sp" />
 
 </LinearLayout>
