@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by jaeho on 2017. 7. 20..
  */
 
-public class FireBaseDAO implements InformationDAO {
+public abstract class FireBaseDAO implements InformationDAO {
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference mQrRef = mRootRef.child("MasterID");//이곳에 해당 참조의 변화를 감지하는 addValueEventListener 등을 만들어 변화가 있는지 감시할 수 있다
                                                     //이때 데이터 스냅샷은 바뀐값을 가지고 있고 이를 띄우거나 가지고 놀 수 있다
@@ -48,10 +48,13 @@ public class FireBaseDAO implements InformationDAO {
     }
 
     @Override
-    public boolean getInformationById(String id, String pw) {
+    public boolean checkSignIn(String id, String pw) {
         return false;
     }
-
+    @Override
+    public boolean checkSignUp(String id, String pw) {
+        return false;
+    }
     @Override
     public void updateInformation(InformationQR qr) {
 

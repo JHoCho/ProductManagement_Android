@@ -6,15 +6,6 @@ package com.example.jaeho.productmanagement.DAOS;
 
 public class InformationQR {
     private int id;
-
-    public String getQr() {
-        return qr;
-    }
-
-    public void setQr(String qr) {
-        this.qr = qr;
-    }
-
     private String qr;
     private String password;
     private String name;
@@ -34,6 +25,14 @@ public class InformationQR {
     public InformationQR(){}
     public InformationQR(int id,String password,String name,String company,String department,String email,String data_name,String data_Serial_no,String data_Buy_Date,String data_Price,String Data_Count,String Data_Locateion,String Data_CarryOut,String Data_CarryInto,String Data_Check_Data)
     {}
+
+    public String getQr() {
+        return qr;
+    }
+
+    public void setQr(String qr) {
+        this.qr = qr;
+    }
 
 
     public int getId() {
