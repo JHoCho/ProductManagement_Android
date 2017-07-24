@@ -7,9 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.jaeho.productmanagement.DAOS.FireBaseDAO;
+import com.example.jaeho.productmanagement.DAOS.InformationDAO;
+import com.example.jaeho.productmanagement.DAOS.NowUsingDAO;
+
 public class MainActivity extends AppCompatActivity {
     Button btnLogin, btnSignin;
     EditText edtID, edtPW;
+    InformationDAO myDao = new NowUsingDAO();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
