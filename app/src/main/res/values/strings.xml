@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ProductManagement</string>
+    <string name="id_hint">Email@auth.plz</string>
 </resources>

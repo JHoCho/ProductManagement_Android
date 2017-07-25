@@ -1,6 +1,7 @@
 package com.example.jaeho.productmanagement.DAOS;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  * Created by jaeho on 2017. 7. 20..
@@ -41,6 +43,8 @@ public abstract class FireBaseDAO implements InformationDAO {
     public Context context;
     FirebaseUser user;
     private static final String TAG = "FireBaseDAO";
+    ProgressDialog prdlg;
+
     public FireBaseDAO(){}
 
     public FireBaseDAO(Context context){
@@ -59,7 +63,14 @@ public abstract class FireBaseDAO implements InformationDAO {
         };
         onStart();
     }
-
+    public void onStart(){
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+    public void onStop(){
+        if(mAuthListener !=null){
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
 
     @Override
     public boolean makeAccount(final String email,final String pw) {
@@ -67,6 +78,7 @@ public abstract class FireBaseDAO implements InformationDAO {
         if(!validateForm(email,pw)){
             return false;
         }
+        showProgressDialog();
         mAuth.createUserWithEmailAndPassword(email, pw)
                 .addOnCompleteListener((AppCompatActivity)context, new OnCompleteListener<AuthResult>() {
                     //쓰레드 동작하며 리스너를 만들어줍니다.
@@ -74,10 +86,10 @@ public abstract class FireBaseDAO implements InformationDAO {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         //뭔가 값이 들어오면 성공인지 실패인지 isMade에 저장해줍니다.
                         if (task.isSuccessful()) {
-                            Toast.makeText(context,"회원가입 성공",Toast.LENGTH_SHORT).show();
+                            hidProgressDialog();
                             AlertDialog.Builder dlg = new AlertDialog.Builder(context);
                             dlg.setMessage("회원가입을 완료하려면 이메일 인증을 해야합니다.");
-                            dlg.setNegativeButton("취소", null);
+                            dlg.setNegativeButton("취소", null);//취소일때 삭제 요청 보내야함.
                             dlg.setPositiveButton("보내기", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -85,9 +97,11 @@ public abstract class FireBaseDAO implements InformationDAO {
                                 }
                             });
                             dlg.show();
+
                         }else {
                             Toast.makeText(context,"회원가입 실패",Toast.LENGTH_SHORT).show();
                         }
+                        hidProgressDialog();
                     }
                 });
         return false;
@@ -100,6 +114,7 @@ public abstract class FireBaseDAO implements InformationDAO {
         if(!validateForm(email,pw)){
             return;
         }
+        showProgressDialog();
         mAuth.signInWithEmailAndPassword(email, pw)
                 .addOnCompleteListener((AppCompatActivity)context, new OnCompleteListener<AuthResult>() {
                     //여기선 쓰레드가 동작하며 리스너를 만듭니다
@@ -110,23 +125,17 @@ public abstract class FireBaseDAO implements InformationDAO {
                         if (!task.isSuccessful()) {
                             //실패시 로그 띄우는 양Log.w(TAG, "signInWithEmail:failed", task.getException());
                             //실패시 isSignIn을 변경하지않음.
-                            Toast.makeText(context,"Authentication failed",Toast.LENGTH_SHORT).show();
+                            hidProgressDialog();
+                            Toast.makeText(context,"인증에 실패하였습니다.",Toast.LENGTH_SHORT).show();
                         }
                         else{
+                            hidProgressDialog();
+                            Intent intent = new Intent(context, HomeActivity.class);
+                            context.startActivity(intent);
+                            ((AppCompatActivity) context).finish();
                            //성공시 FirebaseUser user에 mAuth.getCurrentUser()을 이용해 유저정보를 가져옴
-                            Toast.makeText(context,"Authentication success",Toast.LENGTH_SHORT).show();
-                            AlertDialog.Builder dlg = new AlertDialog.Builder(context);
-                            dlg.setMessage(user.getEmail()+"로 로그인 하시겠습니까?");
-                            dlg.setNegativeButton("아니오",null);
-                            dlg.setPositiveButton("예",new DialogInterface.OnClickListener(){
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent intent = new Intent(context, HomeActivity.class);
-                                    context.startActivity(intent);
-                                    ((AppCompatActivity) context).finish();
-                                }
-                            });
-                            dlg.show();
+                            Toast.makeText(context,"인증에 성공하였습니다.",Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 });
@@ -162,32 +171,32 @@ public abstract class FireBaseDAO implements InformationDAO {
                             Toast.makeText(context,"Verification email sent to " + user.getEmail(),Toast.LENGTH_SHORT).show();
                         } else {
                             Log.e(TAG, "sendEmailVerification", task.getException());
-                            Toast.makeText((AppCompatActivity)context,"Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
+                            toastoast("이메일 인증에 실패하였습니다.");
                         }
                         // [END_EXCLUDE]
                     }
                 });
         // [END send_email_verification]
     }
-
+    private void toastoast(String a){
+        Toast.makeText(context,a,Toast.LENGTH_SHORT).show();
+    }
     private boolean validateForm(final String email_,final String pw) {
         boolean valid = true;
-
         String email = email_;
         if (TextUtils.isEmpty(email)) {
             //edit에 setError false
+            toastoast("아이디 칸이 비어있습니다.");
             valid = false;
-        } else {
-            //edit 에 setError null
         }
+        else if(Pattern.matches("^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$",email_)!=true)
+        {toastoast("아이디가 이메일 형식과 맞지 않습니다.");valid = false;}
 
         String password = pw;
         if (TextUtils.isEmpty(password)) {
             //edit에 setError false
+            toastoast("비밀 번호 란이 비어있으면 안됩니다.");
             valid = false;
-        } else {
-            //edit에 setError null
         }
 
         return valid;
@@ -216,13 +225,11 @@ public abstract class FireBaseDAO implements InformationDAO {
     @Override
     public void updateInformation(InformationQR qr) {}
 
-    public void onStart(){
-        mAuth.addAuthStateListener(mAuthListener);
+    public void showProgressDialog(){
+        prdlg = ProgressDialog.show(context,"잠시만 기다려주세요","서버와 통신중 입니다.",true);
     }
-    public void onStop(){
-        if(mAuthListener !=null){
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
+    public void hidProgressDialog(){
+        prdlg.dismiss();
     }
 
 }
