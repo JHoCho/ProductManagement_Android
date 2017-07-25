@@ -82,16 +82,16 @@ public abstract class NodeJSDAO implements InformationDAO {
     }
 
     @Override
-    public boolean checkSignIn(String id, String pw) {
-        return false;
+    public void checkSignIn(final String id,final  String pw) {
+        return;
     }
 
     @Override
-    public boolean checkSignUp(String id, String pw) {
-        return false;
+    public void checkSignUp(final String id,final  String pw) {
+        return;
     }
 
-    public boolean getInformationById(String id, String pw) {
+    public boolean getInformationById(final String id,final  String pw) {
 
         final ServerInform sv = new ServerInform();
         sv.setServerInsertDiractory("/logIn");
@@ -113,4 +113,6 @@ public abstract class NodeJSDAO implements InformationDAO {
     public void updateInformation(InformationQR qr) {
 
     }
+    public void makeAccount(InformationQR qr){}
+    public void accessUserInform(final String id,final String pw){};
 }

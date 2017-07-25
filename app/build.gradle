@@ -28,6 +28,8 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.2.0'//원래는 26버전이었으나 구글 플레이 서비스와 맞지않아 25버전으로 다운그레이드 25.3도 맞지않아 25.2.0으로 다시다운그레이드
     compile 'com.google.android.gms:play-services:11.0.2'//mobile vision API 이용을 위한 부분 api 소개창에서는 7.8이용을 원했음
+    compile 'com.google.firebase:firebase-core:10.2.1'
+    compile 'com.google.firebase:firebase-auth:10.2.1'
     // compile 'com.android.support:appcompat-v7:22.0.0'//mobile vision API 이용을 위한 부분
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'

@@ -14,11 +14,13 @@ import com.example.jaeho.productmanagement.DAOS.NowUsingDAO;
 public class MainActivity extends AppCompatActivity {
     Button btnLogin, btnSignin;
     EditText edtID, edtPW;
-    InformationDAO myDao = new NowUsingDAO();
+    InformationDAO myDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        myDao = new NowUsingDAO(this);
+
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnSignin = (Button) findViewById(R.id.btnSignin);
         edtID = (EditText) findViewById(R.id.edtID);
@@ -27,8 +29,13 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,HomeActivity.class);
-                startActivity(intent);
+                myDao.checkSignIn(edtID.getText().toString(),edtPW.getText().toString());
+            }
+        });
+        btnSignin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myDao.makeAccount(edtID.getText().toString(),edtPW.getText().toString());
             }
         });
     }
