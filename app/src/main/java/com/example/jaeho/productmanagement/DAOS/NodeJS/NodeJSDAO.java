@@ -7,7 +7,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.example.jaeho.productmanagement.DAOS.InformationDAO;
-import com.example.jaeho.productmanagement.DAOS.InformationQR;
+import com.example.jaeho.productmanagement.jheaders.InformationQR;
 import com.example.jaeho.productmanagement.jheaders.ServerInform;
 
 import java.util.ArrayList;

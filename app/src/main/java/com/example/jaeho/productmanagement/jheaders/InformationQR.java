@@ -1,4 +1,4 @@
-package com.example.jaeho.productmanagement.DAOS;
+package com.example.jaeho.productmanagement.jheaders;
 
 /**
  * Created by jaeho on 2017. 7. 20..
