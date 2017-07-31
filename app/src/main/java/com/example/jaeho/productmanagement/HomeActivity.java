@@ -25,5 +25,13 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        btnQnA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this,QNAActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

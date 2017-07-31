@@ -35,23 +35,22 @@ public abstract class FireBaseDAO implements InformationDAO {
     DatabaseReference mQrRef = mRootRef.child("MasterID");//이곳에 해당 참조의 변화를 감지하는 addValueEventListener 등을 만들어 변화가 있는지 감시할 수 있다
                                                     //이때 데이터 스냅샷은 바뀐값을 가지고 있고 이를 띄우거나 가지고 놀 수 있다
 
-    private static final String TAG = "FireBaseDAO";
-    AuthForFirebase a;
+    AuthForFirebase auth;
 
-    public FireBaseDAO(){a = new AuthForFirebase(); }
+    public FireBaseDAO(){auth = new AuthForFirebase(); }
 
-    public FireBaseDAO(Context context){ a = new AuthForFirebase(context);}
+    public FireBaseDAO(Context context){ auth = new AuthForFirebase(context);}
 
-    public void onStop(){a.onStop();}
-
-    @Override
-    public void makeAccount(final String email,final String pw) { a.makeAccount(email,pw);}
+    public void onStop(){auth.onStop();}
 
     @Override
-    public void checkSignIn(final String email, final String pw) {a.checkSignIn(email,pw);}
+    public void makeAccount(final String email,final String pw) { auth.makeAccount(email,pw);}
 
     @Override
-    public void accessUserInform(final String id,final String pw){a.accessUserInform(id,pw);};
+    public void checkSignIn(final String email, final String pw) {auth.checkSignIn(email,pw);}
+
+    @Override
+    public void accessUserInform(final String id,final String pw){auth.accessUserInform(id,pw);};
 
     @Override
     public void insert(InformationQR qr) {}

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.jaeho.productmanagement">
+
     <meta-data
         android:name="com.google.android.gms.vision.DEPENDENCIES"
         android:value="barcode" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -23,7 +25,8 @@
         </activity>
         <activity android:name=".CheckItemActivity" />
         <activity android:name=".CheckQRActivity" />
-        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".QNAActivity"></activity>
     </application>
 
 </manifest>

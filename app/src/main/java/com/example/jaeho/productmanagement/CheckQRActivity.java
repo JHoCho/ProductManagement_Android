@@ -57,8 +57,6 @@ public class CheckQRActivity extends AppCompatActivity
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
                 View dlgView = View.inflate(CheckQRActivity.this, R.layout.dlg_check_qr, null);
                 AlertDialog.Builder dlg = new AlertDialog.Builder(CheckQRActivity.this);
                 dlg.setTitle("진행하시겠습니까?");
