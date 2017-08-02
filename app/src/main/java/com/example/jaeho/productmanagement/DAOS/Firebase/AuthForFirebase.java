@@ -12,14 +12,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.jaeho.productmanagement.HomeActivity;
-import com.example.jaeho.productmanagement.jheaders.InformationQR;
+import com.example.jaeho.productmanagement.Activities.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 

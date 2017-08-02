@@ -15,7 +15,7 @@ public class InformationQR {
     private String data_name;
     private String data_Serial_no;
     private String data_Buy_Date;
-    private String data_Price;
+      private String data_Price;
     private String Data_Count;
     private String Data_Locateion;
     private String Data_CarryOut;
