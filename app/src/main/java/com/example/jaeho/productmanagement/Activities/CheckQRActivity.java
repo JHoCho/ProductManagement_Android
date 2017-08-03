@@ -42,7 +42,7 @@ public class CheckQRActivity extends PermissionActivity
         myDao = new NowUsingDAO(this);
         cameraView = (SurfaceView)findViewById(R.id.camera_view);
         barcodeInfo = (TextView)findViewById(R.id.code_info);
-/////////////////////////////////////텍스트박스 체인지 리스너///////////////////////////////////
+/////////////////////////////////////텍스트박스 체인지 리스너/////////////////////////////////// -> 이부분을 나중에 루프를 돌며  결과값을 받아오는 쓰레드로 재 구현 예정.
         barcodeInfo.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -71,7 +71,7 @@ public class CheckQRActivity extends PermissionActivity
 
             }
         });
-///////////////////////////////////////바코드부분/////////////////////////////////////////////////
+///////////////////////////////////////바코드 인식 부분/////////////////////////////////////////////////
         barcodeDetector = new BarcodeDetector.Builder(this)
                             .setBarcodeFormats(Barcode.QR_CODE)
                             .build();//바코드 디텍터에 빌더패턴으로 포멧 설정을 QR코드로 함. https://developers.google.com/vision/android/multi-tracker-tutorial 튜토리얼, AOS도 가지고있음.

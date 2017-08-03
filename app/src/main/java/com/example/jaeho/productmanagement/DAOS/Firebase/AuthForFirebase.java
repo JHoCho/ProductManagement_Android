@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.regex.Pattern;
 
 
-    public class AuthForFirebase {
+public class AuthForFirebase {
         private com.google.firebase.auth.FirebaseAuth mAuth;
         private com.google.firebase.auth.FirebaseAuth.AuthStateListener mAuthListener;
         public Context context;
