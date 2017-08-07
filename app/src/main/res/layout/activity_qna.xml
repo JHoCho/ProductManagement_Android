@@ -9,8 +9,15 @@
     tools:context="com.example.jaeho.productmanagement.Activities.QNAActivity">
     <ListView
         android:id="@+id/qnaListView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     </ListView>
+    <Button
+        android:id="@+id/toQNAActivitybtn"
+        android:layout_weight="4"
+        android:text="문의하기"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

@@ -34,6 +34,7 @@ public class CustomQNAAdapter extends BaseAdapter {
         return qnaList.size();
     }
 
+
     @Override
     public QNADO getItem(int i) {
         return qnaList.get(i);
@@ -53,6 +54,6 @@ public class CustomQNAAdapter extends BaseAdapter {
             tempView = (CustomQNAView) convertView;
         }
         tempView.setData(getItem(position));
-        return null;
+        return tempView;
     }
 }

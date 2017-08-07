@@ -124,7 +124,6 @@ public class AuthForFirebase {
                                 ((AppCompatActivity) context).finish();
                                 //성공시 FirebaseUser user에 mAuth.getCurrentUser()을 이용해 유저정보를 가져옴
                                 Toast.makeText(context, "인증에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-
                             }
                         }
                     });
@@ -158,7 +157,7 @@ public class AuthForFirebase {
                             // Re-enable button
 
                             if (task.isSuccessful()) {
-                                Toast.makeText(context, "Verification email sent to " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "E-mail이 " + user.getEmail()+"로 전송 되었습니다.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Log.e(TAG, "sendEmailVerification", task.getException());
                                 toastoast("이메일 인증에 실패하였습니다.");

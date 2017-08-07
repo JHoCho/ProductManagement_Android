@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.jaeho.productmanagement.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.QNAActivitys.QNADO;
 import com.example.jaeho.productmanagement.jheaders.InformationQR;
+import com.google.android.gms.wearable.DataApi;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 public abstract class FireBaseDAO implements InformationDAO {
     AuthForFirebase auth;
     DatabaseFromFirebase ref;
-    public FireBaseDAO(){auth = new AuthForFirebase(); }
+    public FireBaseDAO(){auth = new AuthForFirebase();}
 
     public FireBaseDAO(Context context){ auth = new AuthForFirebase(context);}
 
@@ -35,6 +36,10 @@ public abstract class FireBaseDAO implements InformationDAO {
     }
 
     public void onStop(){auth.onStop();}
+
+    public ArrayList getLast10QNAs(){
+        ref = new DatabaseFromFirebase("QNA");
+        return ref.getLast10QNAs();}
 
     @Override
     public void makeAccount(final String email,final String pw) { auth.makeAccount(email,pw);}
