@@ -3,6 +3,7 @@ package com.example.jaeho.productmanagement.DAOS.Firebase;
 import android.content.Context;
 
 import com.example.jaeho.productmanagement.DAOS.InformationDAO;
+import com.example.jaeho.productmanagement.QNAActivitys.CustomQNAAdapter;
 import com.example.jaeho.productmanagement.QNAActivitys.QNADO;
 import com.example.jaeho.productmanagement.jheaders.InformationQR;
 import com.google.android.gms.wearable.DataApi;
@@ -21,25 +22,27 @@ import java.util.ArrayList;
 public abstract class FireBaseDAO implements InformationDAO {
     AuthForFirebase auth;
     DatabaseFromFirebase ref;
+    Context context;
     public FireBaseDAO(){auth = new AuthForFirebase();}
 
-    public FireBaseDAO(Context context){ auth = new AuthForFirebase(context);}
+    public FireBaseDAO(Context context){ auth = new AuthForFirebase(context);this.context = context;}
 
-    public ArrayList<QNADO> getInformation(String type){
-        ref = new DatabaseFromFirebase(type);
+    public FireBaseDAO(Context context, String type){
+        auth = new AuthForFirebase(context);
+        this.context = context;
+    }
 
-        return null;
-    };
     public void addQna(String subject,String contents){
-        ref = new DatabaseFromFirebase("QNA");
+        ref = new DatabaseFromFirebase(context,"QNA");
         ref.addQna(subject,contents,auth.user.getEmail());
     }
 
     public void onStop(){auth.onStop();}
 
-    public ArrayList getLast10QNAs(){
-        ref = new DatabaseFromFirebase("QNA");
-        return ref.getLast10QNAs();}
+    public CustomQNAAdapter getAdapter(){
+        ref = new DatabaseFromFirebase(context,"QNA");
+        return ref.getAdapter();
+    };
 
     @Override
     public void makeAccount(final String email,final String pw) { auth.makeAccount(email,pw);}

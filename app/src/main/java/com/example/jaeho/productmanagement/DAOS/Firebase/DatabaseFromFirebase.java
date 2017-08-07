@@ -1,23 +1,16 @@
 package com.example.jaeho.productmanagement.DAOS.Firebase;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.widget.Toast;
 
-import com.example.jaeho.productmanagement.QNAActivitys.CustomListener;
+import com.example.jaeho.productmanagement.QNAActivitys.CustomQNAAdapter;
 import com.example.jaeho.productmanagement.QNAActivitys.QNADO;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,17 +24,24 @@ public class DatabaseFromFirebase {
     DatabaseReference mRef;//이곳에 해당 참조의 변화를 감지하는 addValueEventListener 등을 만들어 변화가 있는지 감시할 수 있다
     ArrayList<QNADO> qnaList;
     Context context;
-
+    CustomQNAAdapter mAdapter;
     ProgressDialog prdlg;
     //이때 데이터 스냅샷은 바뀐값을 가지고 있고 이를 띄우거나 가지고 놀 수 있다
-    DatabaseFromFirebase(Context context){
+    DatabaseFromFirebase(Context context,String type){
         this.context = context;
-        qnaList = new ArrayList<QNADO>();
-        mRootRef = FirebaseDatabase.getInstance().getReference();
-    }
-    DatabaseFromFirebase(String type) {
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mRef = mRootRef.child(type);
+        qnaList = new ArrayList<QNADO>();
+    }
+    DatabaseFromFirebase(Context context){
+        this.context = context;
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+
+        qnaList = new ArrayList<QNADO>();
+
+    }
+    DatabaseFromFirebase() {
+        mRootRef = FirebaseDatabase.getInstance().getReference();
         qnaList = new ArrayList<QNADO>();
     }
 
@@ -63,7 +63,7 @@ public class DatabaseFromFirebase {
                 qnado.setContents(json.get("contents"));
                 qnado.setSubject(json.get("subject"));
                 qnaList.add(qnado);
-                addListener();
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -87,14 +87,20 @@ public class DatabaseFromFirebase {
             }
         });
     }
-    public void addListener(CustomListener cl,QNADO qnado){
-        cl.add(qnado);
-    }
+
 
     public ArrayList getLast10QNAs(){
         listen10QNAs();
         return this.qnaList;
     }
+
+    public CustomQNAAdapter getAdapter(){
+        qnaList= this.getLast10QNAs( );
+        mAdapter = new CustomQNAAdapter(context,qnaList);
+        return mAdapter;
+    }
+
+
     public void addQna(String subject, String contents,String email){
         QNADO a = new QNADO();
         a.setSubject(subject);

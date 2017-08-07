@@ -17,8 +17,8 @@ import java.util.ArrayList;
 
 public class QNAActivity extends AppCompatActivity {
     ListView qnaListView;
+
     CustomQNAAdapter mAdapter;
-    ArrayList<QNADO> qnaFromDatabase;
     InformationDAO myDao;
     Button toQNAActivitybtn;
     @Override
@@ -29,11 +29,8 @@ public class QNAActivity extends AppCompatActivity {
         toQNAActivitybtn = (Button)findViewById(R.id.toQNAActivitybtn);
         myDao = new NowUsingDAO(this);
         //qnaFromFirebase부분 코딩해야함 어레이 리스트에 파이어베이스의 데이터들을 가져오고 QNADO모양으로 넣도록함.
-        qnaFromDatabase = myDao.getLast10QNAs( );
-        mAdapter = new CustomQNAAdapter(this,qnaFromDatabase);
+        initAdapter();
         qnaListView.setAdapter(mAdapter);
-        init();
-
         toQNAActivitybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,6 +39,7 @@ public class QNAActivity extends AppCompatActivity {
             }
         });
     }
-    public void init(){
+    public void initAdapter(){
+        mAdapter = myDao.getAdapter();
     }
 }

@@ -34,7 +34,6 @@ public class CustomQNAAdapter extends BaseAdapter {
         return qnaList.size();
     }
 
-
     @Override
     public QNADO getItem(int i) {
         return qnaList.get(i);
