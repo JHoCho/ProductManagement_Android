@@ -26,13 +26,14 @@ public class CustomQNAView extends FrameLayout {
         super(context, attrs);
         initData();
     }
-    TextView idxTv,subjectTv;
+    TextView nameTv,subjectTv;
     private void initData(){
         LayoutInflater.from(getContext()).inflate(R.layout.dlg_custom_qna,this);
-        idxTv = (TextView)findViewById(R.id.idxTv);
+        nameTv = (TextView)findViewById(R.id.nameTv);
         subjectTv = (TextView)findViewById(R.id.subjectTv);
     }
-    public void setData(QNADO data){
-        subjectTv.setText(data.getSubject());
+    public void setData(QNADO qnado){
+        nameTv.setText(qnado.getName());
+        subjectTv.setText(qnado.getSubject());
     }
 }

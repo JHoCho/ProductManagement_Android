@@ -31,10 +31,12 @@ public abstract class FireBaseDAO implements InformationDAO {
         auth = new AuthForFirebase(context);
         this.context = context;
     }
-
-    public void addQna(String subject,String contents){
+    public String getUserEmail(){
+        return auth.getUserEmail();
+    }
+    public void addQna(QNADO qnado){
         ref = new DatabaseFromFirebase(context,"QNA");
-        ref.addQna(subject,contents,auth.user.getEmail());
+        ref.addQna(qnado);
     }
 
     public void onStop(){auth.onStop();}
@@ -43,7 +45,7 @@ public abstract class FireBaseDAO implements InformationDAO {
         ref = new DatabaseFromFirebase(context,"QNA");
         return ref.getAdapter();
     };
-
+    public String getUserName(){return auth.getUserName();}
     @Override
     public void makeAccount(final String email,final String pw) { auth.makeAccount(email,pw);}
 

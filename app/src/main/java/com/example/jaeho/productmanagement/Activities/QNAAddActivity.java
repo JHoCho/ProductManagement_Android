@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.jaeho.productmanagement.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.DAOS.NowUsingDAO;
+import com.example.jaeho.productmanagement.QNAActivitys.QNADO;
 import com.example.jaeho.productmanagement.R;
 
 public class QNAAddActivity extends AppCompatActivity {
@@ -28,9 +29,14 @@ public class QNAAddActivity extends AppCompatActivity {
                 if(qnaSubjectEdt.getText().toString().equals(null)||qnaContentsEdt.getText().toString().equals(null)){
                     Toast.makeText(getApplicationContext(),"하나라도 비어있으면 작성이 불가능합니다",Toast.LENGTH_SHORT).show();
                 }else {
-                    String subject = qnaSubjectEdt.getText().toString();
-                    String contents = qnaContentsEdt.getText().toString();
-                    myDao.addQna(subject,contents);
+                    QNADO qnado = new QNADO();
+                    qnado.setSubject(qnaSubjectEdt.getText().toString());
+                    qnado.setContents(qnaContentsEdt.getText().toString());
+                    qnado.setName(myDao.getUserName());
+                    qnado.setEmail(myDao.getUserEmail());
+                    String inDate = new java.text.SimpleDateFormat("yyyyMMdd").format(new java.util.Date());
+                    qnado.setDate(inDate);
+                    myDao.addQna(qnado);
                 }
             }
         });

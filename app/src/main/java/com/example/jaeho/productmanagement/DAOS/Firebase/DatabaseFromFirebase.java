@@ -62,6 +62,8 @@ public class DatabaseFromFirebase {
                 qnado.setEmail(json.get("email"));
                 qnado.setContents(json.get("contents"));
                 qnado.setSubject(json.get("subject"));
+                qnado.setName(json.get("name"));
+                qnado.setDate(json.get("date"));
                 qnaList.add(qnado);
                 mAdapter.notifyDataSetChanged();
             }
@@ -88,7 +90,6 @@ public class DatabaseFromFirebase {
         });
     }
 
-
     public ArrayList getLast10QNAs(){
         listen10QNAs();
         return this.qnaList;
@@ -101,11 +102,13 @@ public class DatabaseFromFirebase {
     }
 
 
-    public void addQna(String subject, String contents,String email){
+    public void addQna(QNADO qnado){
         QNADO a = new QNADO();
-        a.setSubject(subject);
-        a.setContents(contents);
-        a.setEmail(email);
+        a.setSubject(qnado.getSubject());
+        a.setContents(qnado.getContents());
+        a.setEmail(qnado.getEmail());
+        a.setDate(qnado.getDate());
+        a.setName(qnado.getName());
         mRootRef.child("QNA").push().setValue(a);
     }
     public void showProgressDialog() {

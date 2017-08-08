@@ -61,7 +61,9 @@ public class AuthForFirebase {
                 mAuth.removeAuthStateListener(mAuthListener);
             }
         }
-
+        public String getUserName(){
+            return user.getDisplayName();
+        }
         public void makeAccount(final String email, final String pw) {
             Log.d(TAG, "SignIn" + email);
             if (!validateForm(email, pw)) {
@@ -260,7 +262,9 @@ public class AuthForFirebase {
 
         return valid;
     }
-
+        public String getUserEmail(){
+            return user.getEmail();
+        }
         public void showProgressDialog() {
             prdlg = ProgressDialog.show(context, "잠시만 기다려주세요", "서버와 통신중 입니다.", true);
         }
