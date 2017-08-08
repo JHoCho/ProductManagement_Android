@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.jaeho.productmanagement.Activities.HomeActivity;
@@ -17,11 +18,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.regex.Pattern;
 
 
-    public class AuthForFirebase {
+public class AuthForFirebase {
         private com.google.firebase.auth.FirebaseAuth mAuth;
         private com.google.firebase.auth.FirebaseAuth.AuthStateListener mAuthListener;
         public Context context;
@@ -59,7 +61,9 @@ import java.util.regex.Pattern;
                 mAuth.removeAuthStateListener(mAuthListener);
             }
         }
-
+        public String getUserName(){
+            return user.getDisplayName();
+        }
         public void makeAccount(final String email, final String pw) {
             Log.d(TAG, "SignIn" + email);
             if (!validateForm(email, pw)) {
@@ -75,7 +79,7 @@ import java.util.regex.Pattern;
                             if (task.isSuccessful()) {
                                 hidProgressDialog();
                                 AlertDialog.Builder dlg = new AlertDialog.Builder(context);
-                                dlg.setMessage("회원가입을 완료하려면 이메일 인증을 해야합니다.");
+                                dlg.setMessage("회원가입을 완료하려면 이메일 인증을 완료해야합니다.");
                                 dlg.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -112,10 +116,15 @@ import java.util.regex.Pattern;
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             //성공시 로그 띄우는 양식Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
                             //리스너부분에서 온컴플리트로 들어온순간 뭔가 성공이던 실패던 값을 받은 것이고
-                            if (!task.isSuccessful()) {
+                            if (!task.isSuccessful()||!user.isEmailVerified()||!isNameSet()) {
                                 //실패시 로그 띄우는 양Log.w(TAG, "signInWithEmail:failed", task.getException());
                                 //실패시 isSignIn을 변경하지않음.
                                 hidProgressDialog();
+                                if(!user.isEmailVerified()){
+                                    toastoast("이메일 인증이 완료되지 않았습니다. 확인해주세요");
+                                }else if(!isNameSet()){
+                                    setProfileName();
+                                }
                                 Toast.makeText(context, "인증에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                             } else {
                                 hidProgressDialog();
@@ -124,7 +133,6 @@ import java.util.regex.Pattern;
                                 ((AppCompatActivity) context).finish();
                                 //성공시 FirebaseUser user에 mAuth.getCurrentUser()을 이용해 유저정보를 가져옴
                                 Toast.makeText(context, "인증에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-
                             }
                         }
                     });
@@ -145,8 +153,51 @@ import java.util.regex.Pattern;
                 String uid = user.getUid();
             }
         }
+        private boolean isNameSet(){
+            if(user.getDisplayName()==null){
+               // 이름이 없을경우 null 리턴
+                return false;
+            }else {
+               // 이름이 있을경우 true리턴
+                return true;
+            }
+        }
+        private void setProfileName(){
+            hidProgressDialog();
+            final AlertDialog.Builder dlg = new AlertDialog.Builder(context);
+            dlg.setMessage("이름을 설정해주세요.");
+            final EditText edtText = new EditText(context);
+            dlg.setView(edtText);
+            dlg.setNegativeButton("취소", null);
+            dlg.setPositiveButton("보내기", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    AlertDialog.Builder dlg2 = new AlertDialog.Builder(context);
+                    final String str =edtText.getText().toString();
+                    if(!validateFormName(str)){
+                        return;
+                    }
+                    dlg2.setMessage(str+"으로 이름을 설정하시겠습니까?");
+                    dlg2.setPositiveButton("설정",new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(str).build();
+                            user.updateProfile(profileUpdates);
+                        }
+                    });
+                    dlg2.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            toastoast("취소하셨습니다.");
+                        }
+                    });
+                    dlg2.show();
+                }
+            });
+            dlg.show();
+        }
 
-        ;
 
         private void sendEmailVerification() {
             user = mAuth.getCurrentUser();
@@ -158,7 +209,7 @@ import java.util.regex.Pattern;
                             // Re-enable button
 
                             if (task.isSuccessful()) {
-                                Toast.makeText(context, "Verification email sent to " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "E-mail이 " + user.getEmail()+"로 전송 되었습니다.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Log.e(TAG, "sendEmailVerification", task.getException());
                                 toastoast("이메일 인증에 실패하였습니다.");
@@ -195,7 +246,25 @@ import java.util.regex.Pattern;
 
             return valid;
         }
+    private boolean validateFormName(final String name) {
+        boolean valid = true;
+        if (TextUtils.isEmpty(name))
+        {
+            //edit에 setError false
+            toastoast("빈값은 허용되지 않습니다.");
+            valid = false;
+        }
+        else if (Pattern.matches("^[a-zA-Z0-30|가-힣0-30]*$", name) != true)
+        {
+            toastoast("30자 이내로 써주세요(한/영)");
+            valid = false;
+        }
 
+        return valid;
+    }
+        public String getUserEmail(){
+            return user.getEmail();
+        }
         public void showProgressDialog() {
             prdlg = ProgressDialog.show(context, "잠시만 기다려주세요", "서버와 통신중 입니다.", true);
         }

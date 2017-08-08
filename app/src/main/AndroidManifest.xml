@@ -27,7 +27,8 @@
         <activity android:name=".Activities.CheckItemActivity" />
         <activity android:name=".Activities.CheckQRActivity" />
         <activity android:name=".Activities.HomeActivity" />
-        <activity android:name=".Activities.QNAActivity"></activity>
+        <activity android:name=".Activities.QNAActivity" />
+        <activity android:name=".Activities.QNAAddActivity"></activity>
     </application>
 
 </manifest>

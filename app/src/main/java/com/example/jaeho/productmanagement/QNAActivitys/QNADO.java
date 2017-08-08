@@ -4,22 +4,22 @@ package com.example.jaeho.productmanagement.QNAActivitys;
  * Created by jaeho on 2017. 7. 31..
  */
 
-public class QNAList {
-    private int idx;
+public class QNADO {
+    //어레이 리스트에 동적으로 할당하기위한 첫번째 과제인 DO클래스를 만들어 주는 것 입니다
     private String name;
     private String subject;
     private String contents;
-
-    public int getIdx() {
-        return idx;
+    private String date;
+    private String email;
+    public String getDate() {
+        return date;
     }
 
-    public void setIdx(int idx) {
-        this.idx = idx;
+    public void setDate(String date) {
+        this.date = date;
     }
-    public String getName() {
-        return name;
-    }
+
+    public String getName() {return name;}
 
     public void setName(String name) {
         this.name = name;
@@ -41,6 +41,11 @@ public class QNAList {
         this.contents = contents;
     }
 
+    public String getEmail() {
+        return email;
+    }
 
-
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
