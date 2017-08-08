@@ -52,7 +52,7 @@ public class CheckQRActivity extends PermissionActivity
             public void handleMessage(Message m){
                 switch (m.what){
                     case MESSAGE_DONE:
-                        setNowv(m.obj.toString());
+                        setNowv(m.obj.toString());//메세지 던일때는 카메라에서 뭔가를 감지했을때 보내는 것이므로 obj안에 스트링 객체가 있을것을 인지하고 메서드를 이용해 처리해준다.
                         prev =nowv;
                         break;
                 }
@@ -73,7 +73,6 @@ public class CheckQRActivity extends PermissionActivity
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 // 스파스 어레이는 인티져를 객체로 매핑해준다. 이경우는  barcode오브젝트로 Create해주고 Return해준다
-
                 if(barcodes.size()!=0 ){
                     if(prev.equals(barcodes.valueAt(0).displayValue.toString()))
                     {
@@ -83,9 +82,11 @@ public class CheckQRActivity extends PermissionActivity
                         Message message = mHandler.obtainMessage(MESSAGE_DONE);
                         message.obj = barcodes.valueAt(0).displayValue;
                         mHandler.sendMessage(message);
+
+
+                        //위 부분이 아래부분과 같은 뜻이나 쓰레드이기에 핸들러에서 큐로 처리해준다 (루퍼)
                         //setNowv(barcodes.valueAt(0).displayValue);
                         //prev =nowv;
-                        //위 부분이 이 안에서 실행되는것과 같다
                     }
                 }
             }
@@ -123,7 +124,7 @@ public class CheckQRActivity extends PermissionActivity
             }
         });
     }
-/////////////쓰레드안에서 동작할 텍스트 변화////////
+//////////////////////////////////////텍스트 뷰 안에서 사용될 부분////////////////////////////////////////////////
     private void setNowv(String nowv){
         this.nowv = nowv;
         stringValueChanged();
@@ -140,6 +141,5 @@ public class CheckQRActivity extends PermissionActivity
             }
         });
         dlg.show();
-
     }
 }
