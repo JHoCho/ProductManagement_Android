@@ -34,5 +34,12 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        btnCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this,CountItemActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

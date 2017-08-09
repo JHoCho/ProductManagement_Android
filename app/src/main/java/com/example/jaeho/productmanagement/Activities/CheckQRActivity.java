@@ -39,7 +39,6 @@ public class CheckQRActivity extends PermissionActivity
     String prev="";
     String nowv;
     InformationDAO myDao;
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -56,7 +55,6 @@ public class CheckQRActivity extends PermissionActivity
                         prev =nowv;
                         break;
                 }
-
             }
         };
 ///////////////////////////////////////바코드 인식 부분/////////////////////////////////////////////////
@@ -68,7 +66,6 @@ public class CheckQRActivity extends PermissionActivity
             public void release() {
 
             }
-
             @Override//receiveDetections매서드 안에서 Detector.Detections클래스의 getDetectedItems매서드를 이용해 바코드의 스파스어레이 오브젝트를 불러오는데
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
@@ -82,8 +79,6 @@ public class CheckQRActivity extends PermissionActivity
                         Message message = mHandler.obtainMessage(MESSAGE_DONE);
                         message.obj = barcodes.valueAt(0).displayValue;
                         mHandler.sendMessage(message);
-
-
                         //위 부분이 아래부분과 같은 뜻이나 쓰레드이기에 핸들러에서 큐로 처리해준다 (루퍼)
                         //setNowv(barcodes.valueAt(0).displayValue);
                         //prev =nowv;
