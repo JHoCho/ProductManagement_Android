@@ -38,7 +38,10 @@ public abstract class FireBaseDAO implements InformationDAO {
         ref = new DatabaseFromFirebase(context,"QNA");
         ref.addQna(qnado);
     }
-
+    public void readQna(QNADO qnado){
+        ref = new DatabaseFromFirebase(context,"QNA");
+        ref.readQna(qnado);
+    }
     public void onStop(){auth.onStop();}
 
     public CustomQNAAdapter getAdapter(){

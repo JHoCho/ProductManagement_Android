@@ -11,6 +11,16 @@ public class QNADO {
     private String contents;
     private String date;
     private String email;
+    private String key;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public String getDate() {
         return date;
     }

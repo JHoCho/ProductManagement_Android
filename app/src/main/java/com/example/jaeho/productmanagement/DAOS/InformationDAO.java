@@ -23,6 +23,7 @@ public interface InformationDAO {//앱스트렉으로 바꾼다음 인스턴스�
     void accessUserInform(final String id,final String pw);
     void onStop();
     void addQna(QNADO qnado);
+    void readQna(QNADO qnado);
     String getUserName();
     String getUserEmail();
 }

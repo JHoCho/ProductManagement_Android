@@ -2,15 +2,24 @@ package com.example.jaeho.productmanagement.DAOS.Firebase;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.example.jaeho.productmanagement.Activities.QNAReadActivity;
 import com.example.jaeho.productmanagement.QNAActivitys.CustomQNAAdapter;
 import com.example.jaeho.productmanagement.QNAActivitys.QNADO;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,6 +73,7 @@ public class DatabaseFromFirebase {
                 qnado.setSubject(json.get("subject"));
                 qnado.setName(json.get("name"));
                 qnado.setDate(json.get("date"));
+                qnado.setKey(dataSnapshot.getKey());
                 qnaList.add(qnado);
                 mAdapter.notifyDataSetChanged();
             }
@@ -103,13 +113,41 @@ public class DatabaseFromFirebase {
 
 
     public void addQna(QNADO qnado){
-        QNADO a = new QNADO();
-        a.setSubject(qnado.getSubject());
-        a.setContents(qnado.getContents());
-        a.setEmail(qnado.getEmail());
-        a.setDate(qnado.getDate());
-        a.setName(qnado.getName());
-        mRootRef.child("QNA").push().setValue(a);
+        showProgressDialog();
+        mRootRef.child("QNA").push().setValue(qnado).addOnCompleteListener((AppCompatActivity) context, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    hidProgressDialog();
+                    tostost("QNA를 등록하였습니다.");
+                    ((AppCompatActivity) context).finish();
+                } else {
+                    tostost("QNA등록에 실패하였습니다.");
+                    ((AppCompatActivity) context).finish();
+                }
+                hidProgressDialog();
+            }
+        });
+    }
+    public void readQna(QNADO qnado){
+        //qnado(로컬정보)에서 받은 qnado인스턴스의 정보를 이용하여 파이어베이스 서버에서 내용을 읽어 QNAReadActivity로 이동시켜줌
+        showProgressDialog();
+        mRootRef.child("QNA").child(qnado.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                HashMap<String,String> json = (HashMap)dataSnapshot.getValue();
+                Intent intent = new Intent(context, QNAReadActivity.class);
+                intent.putExtra("subject",json.get("subject").toString());
+                intent.putExtra("contents",json.get("contents").toString());
+                context.startActivity(intent);
+                hidProgressDialog();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                hidProgressDialog();
+            }
+        });
     }
     public void showProgressDialog() {
         prdlg = ProgressDialog.show(this.context, "잠시만 기다려주세요", "서버와 통신중 입니다.", true);

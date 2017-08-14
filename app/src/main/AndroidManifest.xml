@@ -29,7 +29,8 @@
         <activity android:name=".Activities.HomeActivity" />
         <activity android:name=".Activities.QNAActivity" />
         <activity android:name=".Activities.QNAAddActivity" />
-        <activity android:name=".Activities.CountItemActivity"></activity>
+        <activity android:name=".Activities.CountItemActivity" />
+        <activity android:name=".Activities.QNAReadActivity"></activity>
     </application>
 
 </manifest>

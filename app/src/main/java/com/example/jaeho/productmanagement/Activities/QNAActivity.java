@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -28,9 +29,16 @@ public class QNAActivity extends AppCompatActivity {
         qnaListView = (ListView)findViewById(R.id.qnaListView);
         toQNAActivitybtn = (Button)findViewById(R.id.toQNAActivitybtn);
         myDao = new NowUsingDAO(this);
-        //qnaFromFirebase부분 코딩해야함 어레이 리스트에 파이어베이스의 데이터들을 가져오고 QNADO모양으로 넣도록함.
-        initAdapter();
+        initAdapter();//어레이 리스트에 파이어베이스의 데이터들을 가져오고 QNADO모양으로 넣도록함.
         qnaListView.setAdapter(mAdapter);
+        qnaListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                QNADO selectedItem =(QNADO)qnaListView.getItemAtPosition(position);
+                myDao.readQna(selectedItem);
+            }
+        });
+
         toQNAActivitybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,6 +46,7 @@ public class QNAActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
     public void initAdapter(){
         mAdapter = myDao.getAdapter();
