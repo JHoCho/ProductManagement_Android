@@ -17,6 +17,7 @@ public class QNAAddActivity extends AppCompatActivity {
     EditText qnaSubjectEdt, qnaContentsEdt;
     Button qnaAddbtn;
     InformationDAO myDao = new NowUsingDAO(this);
+    QNADO qnado;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,16 +31,19 @@ public class QNAAddActivity extends AppCompatActivity {
                 if(qnaSubjectEdt.getText().toString().equals(null)||qnaContentsEdt.getText().toString().equals(null)){
                     Toast.makeText(getApplicationContext(),"하나라도 비어있으면 작성이 불가능합니다",Toast.LENGTH_SHORT).show();
                 }else {
-                    QNADO qnado = new QNADO();
-                    qnado.setSubject(qnaSubjectEdt.getText().toString());
-                    qnado.setContents(qnaContentsEdt.getText().toString());
-                    qnado.setName(myDao.getUserName());
-                    qnado.setEmail(myDao.getUserEmail());
-                    String inDate = new java.text.SimpleDateFormat("yyyyMMdd").format(new java.util.Date());
-                    qnado.setDate(inDate);
+                    init();
                     myDao.addQna(qnado);
                 }
             }
         });
+    }
+    private void init(){
+        qnado = new QNADO();
+        qnado.setSubject(qnaSubjectEdt.getText().toString());
+        qnado.setContents(qnaContentsEdt.getText().toString());
+        qnado.setName(myDao.getUserName());
+        qnado.setEmail(myDao.getUserEmail());
+        String inDate = new java.text.SimpleDateFormat("yyyyMMdd").format(new java.util.Date());
+        qnado.setDate(inDate);
     }
 }

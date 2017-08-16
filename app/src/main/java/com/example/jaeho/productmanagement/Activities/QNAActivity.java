@@ -1,6 +1,7 @@
 package com.example.jaeho.productmanagement.Activities;
 
 import android.content.Intent;
+import android.support.v4.widget.SearchViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 
 public class QNAActivity extends AppCompatActivity {
     ListView qnaListView;
-
     CustomQNAAdapter mAdapter;
     InformationDAO myDao;
     Button toQNAActivitybtn;
@@ -35,7 +35,7 @@ public class QNAActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 QNADO selectedItem =(QNADO)qnaListView.getItemAtPosition(position);
-                myDao.readQna(selectedItem);
+                myDao.readQna(selectedItem);//이부분에서 넘기고 읽은후 지웠을때 리프레시 되지않음.
             }
         });
 

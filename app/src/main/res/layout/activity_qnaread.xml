@@ -16,4 +16,11 @@
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <Button
+        android:id="@+id/qnaDeleteBtn"
+        android:visibility="gone"
+        android:text="삭제하기"
+        android:layout_weight="4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

@@ -29,6 +29,14 @@ public class CustomQNAAdapter extends BaseAdapter {
         qnaList.add(board);
         notifyDataSetChanged();//이부분에서 알려주지않으면 뷰가 리프레시 되지 않습니다.
     }
+    public void remove(QNADO board){
+        for(int i =0; i<qnaList.size();i++){
+            if(board.getKey().equals(qnaList.get(i).getKey())){
+                qnaList.remove(i);
+                notifyDataSetChanged();
+            };
+        }
+    }
     @Override
     public int getCount() {
         return qnaList.size();

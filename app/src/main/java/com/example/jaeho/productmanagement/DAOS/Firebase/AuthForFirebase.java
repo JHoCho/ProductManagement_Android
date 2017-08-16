@@ -22,6 +22,9 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.regex.Pattern;
 
+import static com.example.jaeho.productmanagement.utils.Constants.hidProgressDialog;
+import static com.example.jaeho.productmanagement.utils.Constants.showProgressDialog;
+
 
 public class AuthForFirebase {
         private com.google.firebase.auth.FirebaseAuth mAuth;
@@ -29,7 +32,6 @@ public class AuthForFirebase {
         public Context context;
         FirebaseUser user;
         private static final String TAG = "FireBaseDAO";
-        ProgressDialog prdlg;
 
         public AuthForFirebase() {
         }
@@ -69,7 +71,7 @@ public class AuthForFirebase {
             if (!validateForm(email, pw)) {
                 return;
             }
-            showProgressDialog();
+            showProgressDialog(context);
             mAuth.createUserWithEmailAndPassword(email, pw)
                     .addOnCompleteListener((AppCompatActivity) context, new OnCompleteListener<AuthResult>() {
                         //쓰레드 동작하며 리스너를 만들어줍니다.
@@ -108,7 +110,7 @@ public class AuthForFirebase {
             if (!validateForm(email, pw)) {
                 return;
             }
-            showProgressDialog();
+            showProgressDialog(context);
             mAuth.signInWithEmailAndPassword(email, pw)
                     .addOnCompleteListener((AppCompatActivity) context, new OnCompleteListener<AuthResult>() {
                         //여기선 쓰레드가 동작하며 리스너를 만듭니다
@@ -265,13 +267,7 @@ public class AuthForFirebase {
         public String getUserEmail(){
             return user.getEmail();
         }
-        public void showProgressDialog() {
-            prdlg = ProgressDialog.show(context, "잠시만 기다려주세요", "서버와 통신중 입니다.", true);
-        }
 
-        public void hidProgressDialog() {
-            prdlg.dismiss();
-        }
         private void signOut() {
             mAuth.signOut();
         }

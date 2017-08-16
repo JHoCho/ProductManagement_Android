@@ -1,5 +1,7 @@
 package com.example.jaeho.productmanagement.DAOS;
 
+import android.support.v4.widget.SearchViewCompat;
+
 import com.example.jaeho.productmanagement.QNAActivitys.CustomQNAAdapter;
 import com.example.jaeho.productmanagement.QNAActivitys.QNADO;
 import com.example.jaeho.productmanagement.jheaders.InformationQR;
@@ -24,6 +26,7 @@ public interface InformationDAO {//앱스트렉으로 바꾼다음 인스턴스�
     void onStop();
     void addQna(QNADO qnado);
     void readQna(QNADO qnado);
+    void deleteQna(QNADO qnado);
     String getUserName();
     String getUserEmail();
 }

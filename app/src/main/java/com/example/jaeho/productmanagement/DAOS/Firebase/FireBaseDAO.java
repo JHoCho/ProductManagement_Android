@@ -1,17 +1,12 @@
 package com.example.jaeho.productmanagement.DAOS.Firebase;
 
 import android.content.Context;
+import android.support.v4.widget.SearchViewCompat;
 
 import com.example.jaeho.productmanagement.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.QNAActivitys.CustomQNAAdapter;
 import com.example.jaeho.productmanagement.QNAActivitys.QNADO;
 import com.example.jaeho.productmanagement.jheaders.InformationQR;
-import com.google.android.gms.wearable.DataApi;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -40,8 +35,13 @@ public abstract class FireBaseDAO implements InformationDAO {
     }
     public void readQna(QNADO qnado){
         ref = new DatabaseFromFirebase(context,"QNA");
-        ref.readQna(qnado);
+        ref.readQna(qnado,getUserEmail());
     }
+    public void deleteQna(QNADO qnado){
+        ref = new DatabaseFromFirebase(context,"QNA");
+        ref.deleteQna(qnado,getUserEmail());
+    }
+
     public void onStop(){auth.onStop();}
 
     public CustomQNAAdapter getAdapter(){

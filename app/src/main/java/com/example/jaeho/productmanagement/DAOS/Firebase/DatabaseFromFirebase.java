@@ -9,11 +9,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.example.jaeho.productmanagement.Activities.QNAActivity;
 import com.example.jaeho.productmanagement.Activities.QNAReadActivity;
 import com.example.jaeho.productmanagement.QNAActivitys.CustomQNAAdapter;
 import com.example.jaeho.productmanagement.QNAActivitys.QNADO;
+import com.example.jaeho.productmanagement.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +26,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.example.jaeho.productmanagement.utils.Constants.hidProgressDialog;
+import static com.example.jaeho.productmanagement.utils.Constants.showProgressDialog;
+import static com.example.jaeho.productmanagement.utils.Constants.tostost;
 
 /**
  * Created by jaeho on 2017. 8. 3..
@@ -34,7 +41,6 @@ public class DatabaseFromFirebase {
     ArrayList<QNADO> qnaList;
     Context context;
     CustomQNAAdapter mAdapter;
-    ProgressDialog prdlg;
     //이때 데이터 스냅샷은 바뀐값을 가지고 있고 이를 띄우거나 가지고 놀 수 있다
     DatabaseFromFirebase(Context context,String type){
         this.context = context;
@@ -74,8 +80,7 @@ public class DatabaseFromFirebase {
                 qnado.setName(json.get("name"));
                 qnado.setDate(json.get("date"));
                 qnado.setKey(dataSnapshot.getKey());
-                qnaList.add(qnado);
-                mAdapter.notifyDataSetChanged();
+                mAdapter.add(qnado);
             }
 
             @Override
@@ -85,7 +90,15 @@ public class DatabaseFromFirebase {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                HashMap<String,String> json = (HashMap)dataSnapshot.getValue();
+                QNADO qnado = new QNADO();
+                qnado.setEmail(json.get("email"));
+                qnado.setContents(json.get("contents"));
+                qnado.setSubject(json.get("subject"));
+                qnado.setName(json.get("name"));
+                qnado.setDate(json.get("date"));
+                qnado.setKey(dataSnapshot.getKey());
+                mAdapter.remove(qnado);
             }
 
             @Override
@@ -113,49 +126,72 @@ public class DatabaseFromFirebase {
 
 
     public void addQna(QNADO qnado){
-        showProgressDialog();
+        showProgressDialog(context);
         mRootRef.child("QNA").push().setValue(qnado).addOnCompleteListener((AppCompatActivity) context, new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     hidProgressDialog();
-                    tostost("QNA를 등록하였습니다.");
+                    tostost("QNA를 등록하였습니다.",context);
                     ((AppCompatActivity) context).finish();
                 } else {
-                    tostost("QNA등록에 실패하였습니다.");
+                    tostost("QNA등록에 실패하였습니다.",context);
                     ((AppCompatActivity) context).finish();
                 }
                 hidProgressDialog();
             }
         });
     }
-    public void readQna(QNADO qnado){
+    public void deleteQna(final QNADO qnado, String email){
+        showProgressDialog(context);
+        if (qnado.getEmail().equals(email)){
+            mRootRef.child("QNA").child(qnado.getKey()).removeValue().addOnCompleteListener((AppCompatActivity) context,new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        hidProgressDialog();
+                        tostost("QNA를 삭제하였습니다.",context);
+
+                        ((AppCompatActivity) context).finish();
+                    } else {
+                        tostost("QNA삭제에 실패하였습니다.",context);
+                        ((AppCompatActivity) context).finish();
+                    }
+                    hidProgressDialog();
+                }
+            });
+        }else {
+            tostost("권한없음",context);
+            hidProgressDialog();
+        }
+    }
+    public boolean isMine(String email,String jemail){
+        if(email.equals(jemail)){
+            return true;
+        }else return false;
+    }
+    public void readQna(QNADO qnado,final String email){
         //qnado(로컬정보)에서 받은 qnado인스턴스의 정보를 이용하여 파이어베이스 서버에서 내용을 읽어 QNAReadActivity로 이동시켜줌
-        showProgressDialog();
+        showProgressDialog(context);
         mRootRef.child("QNA").child(qnado.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 HashMap<String,String> json = (HashMap)dataSnapshot.getValue();
                 Intent intent = new Intent(context, QNAReadActivity.class);
-                intent.putExtra("subject",json.get("subject").toString());
                 intent.putExtra("contents",json.get("contents").toString());
+                intent.putExtra("subject",json.get("subject").toString());
+                intent.putExtra("email",json.get("email").toString());
+                intent.putExtra("name",json.get("name").toString());
+                intent.putExtra("date",json.get("date").toString());
+                intent.putExtra("key",dataSnapshot.getKey());
+                intent.putExtra("isMine",isMine(email,json.get("email").toString()));
                 context.startActivity(intent);
-                hidProgressDialog();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                hidProgressDialog();
             }
         });
-    }
-    public void showProgressDialog() {
-        prdlg = ProgressDialog.show(this.context, "잠시만 기다려주세요", "서버와 통신중 입니다.", true);
-    }
-    public void tostost(String s){
-        Toast.makeText(context,s,Toast.LENGTH_SHORT).show();
-    }
-    public void hidProgressDialog() {
-        prdlg.dismiss();
+        hidProgressDialog();
     }
 }
