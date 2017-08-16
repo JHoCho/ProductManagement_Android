@@ -2,6 +2,8 @@ package com.example.jaeho.productmanagement.utils;
 
 import android.*;
 import android.app.Application;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -9,6 +11,7 @@ import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -18,6 +21,7 @@ import java.io.IOException;
 
 public class Constants extends Application {
 
+    public static ProgressDialog prdlg;
     //스테틱 인트 변수로 스스로 선언해 줘야하는 부분입니다 리퀘스트 코드이며 onRequestPermissionResult에서 사용됩니다 이것은 사용자가 어떤 선택을 했는지 넘겨줍니다 숫자는 무엇을 쓰던 상관이 없습니다
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 1122;
     public static final int MESSAGE_DONE = 15885588;
@@ -50,6 +54,16 @@ public class Constants extends Application {
 
         }
 
+    }
+
+    public static void showProgressDialog(Context context) {
+        prdlg = ProgressDialog.show(context, "잠시만 기다려주세요", "서버와 통신중 입니다.", true);
+    }
+    public static void tostost(String s,Context context){
+        Toast.makeText(context,s,Toast.LENGTH_SHORT).show();
+    }
+    public static void hidProgressDialog() {
+        prdlg.dismiss();
     }
 
 }
