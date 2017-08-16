@@ -30,7 +30,15 @@
         <activity android:name=".Activities.QNAActivity" />
         <activity android:name=".Activities.QNAAddActivity" />
         <activity android:name=".Activities.CountItemActivity" />
-        <activity android:name=".Activities.QNAReadActivity"></activity>
+        <activity android:name=".Activities.QNAReadActivity" />
+
+        <service android:name=".utils.FCMReceiver">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".Activities.ActivateFromNotification"></activity>
     </application>
 
 </manifest>
