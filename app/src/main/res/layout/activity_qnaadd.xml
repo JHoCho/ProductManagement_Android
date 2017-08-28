@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.jaeho.productmanagement.Activities.QNAAddActivity">
+    tools:context=".View.Activities.QNAAddActivity">
     <EditText
         android:id="@+id/qnaSubjectEdt"
         android:hint="제목입력"

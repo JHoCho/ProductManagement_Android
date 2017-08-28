@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.jaeho.productmanagement.Activities.QNAActivity">
+    tools:context=".View.Activities.QNAActivity">
     <ListView
         android:id="@+id/qnaListView"
         android:layout_weight="1"

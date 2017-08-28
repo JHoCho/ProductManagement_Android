@@ -5,10 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-<Button
-    android:text="QR_code확인"
-    android:id="@+id/btnGoCheckQR"
-    android:layout_weight="1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/btnGoCheckQR"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="QR_code 조회" />
+
+    <Button
+        android:id="@+id/btnSelectedCheck"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="선택조회" />
 </LinearLayout>

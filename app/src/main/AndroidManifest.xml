@@ -17,28 +17,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.MainActivity">
+        <activity android:name=".View.Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.CheckItemActivity" />
-        <activity android:name=".Activities.CheckQRActivity" />
-        <activity android:name=".Activities.HomeActivity" />
-        <activity android:name=".Activities.QNAActivity" />
-        <activity android:name=".Activities.QNAAddActivity" />
-        <activity android:name=".Activities.CountItemActivity" />
-        <activity android:name=".Activities.QNAReadActivity" />
+        <activity android:name=".View.Activities.CheckItemActivity" />
+        <activity android:name=".View.Activities.CheckQRActivity" />
+        <activity android:name=".View.Activities.HomeActivity" />
+        <activity android:name=".View.Activities.QNAActivity" />
+        <activity android:name=".View.Activities.QNAAddActivity" />
+        <activity android:name=".View.Activities.CountItemActivity" />
+        <activity android:name=".View.Activities.QNAReadActivity" />
 
-        <service android:name=".utils.FCMReceiver">
+        <service android:name=".Controller.FCMReceiver">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <activity android:name=".Activities.ActivateFromNotification"></activity>
+        <activity android:name=".View.Activities.ActivateFromNotification" />
+        <activity android:name=".View.Activities.SelectedItemCheckActivity"></activity>
     </application>
 
 </manifest>
