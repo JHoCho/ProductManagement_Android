@@ -30,8 +30,10 @@ dependencies {
     //mobile vision API 이용을 위한 부분 api 소개창에서는 7.8이용을 원했음
     // compile 'com.android.support:appcompat-v7:22.0.0'//mobile vision API 이용을 위한 부분
 
+    //쓰레드 종류 설정
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.google.android.gms:play-services:11.0.2'
+    compile 'com.android.support:support-annotations:22.2.0'
     compile 'com.google.firebase:firebase-core:10.2.1'
     compile 'com.google.firebase:firebase-auth:10.2.1'
     compile 'com.google.firebase:firebase-messaging:10.2.6'
