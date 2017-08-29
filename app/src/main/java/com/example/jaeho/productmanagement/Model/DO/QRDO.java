@@ -14,15 +14,29 @@ public class QRDO {
     private String roomName;
     private String date;
     private String adminID;
-    private String location=companyName+building+floor+roomName;
+    private String price;
+    private String location;
     public QRDO(){
 
     }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public QRDO(String s){
         setLocation();
     }
     public String getProductName() {
         return productName;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public void setProductName(String productName) {
@@ -47,7 +61,7 @@ public class QRDO {
 
     public String getLocation() {
         if (location.equals(null)){
-            return "null값입니다.";
+            return companyName+building+floor+roomName;
         }else {
             return location;
         }

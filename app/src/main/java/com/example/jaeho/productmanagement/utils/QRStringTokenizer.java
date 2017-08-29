@@ -27,6 +27,8 @@ public class QRStringTokenizer {
         qrdo.setRoomName(result[6]);
         qrdo.setDate(result[7]);
         qrdo.setAdminID(result[8]);
+        qrdo.setPrice(result[9]);
+        qrdo.setLocation(qrdo.getBuilding()+qrdo.getFloor()+qrdo.getRoomName());
     }
     public QRDO getSplitedQRDO(){
         return qrdo;
