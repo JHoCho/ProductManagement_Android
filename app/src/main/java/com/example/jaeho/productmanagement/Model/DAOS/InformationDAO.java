@@ -4,6 +4,7 @@ import com.example.jaeho.productmanagement.Controller.QNAActivitys.CustomQNAAdap
 import com.example.jaeho.productmanagement.Model.DO.QNADO;
 import com.example.jaeho.productmanagement.Model.DO.QRDO;
 import com.example.jaeho.productmanagement.Model.DO.InformationQRDO;
+import com.example.jaeho.productmanagement.Model.DO.UserDO;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,7 @@ public interface InformationDAO {//앱스트렉으로 바꾼다음 인스턴스�
     void readQna(QNADO qnado);
     void deleteQna(QNADO qnado);
     void addQR(QRDO qrdo);
+    UserDO getCurrentUser();
     String getUserName();
     String getUserEmail();
 }

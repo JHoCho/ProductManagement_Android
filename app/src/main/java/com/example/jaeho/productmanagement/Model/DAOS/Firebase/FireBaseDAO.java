@@ -7,6 +7,8 @@ import com.example.jaeho.productmanagement.Controller.QNAActivitys.CustomQNAAdap
 import com.example.jaeho.productmanagement.Model.DO.QNADO;
 import com.example.jaeho.productmanagement.Model.DO.InformationQRDO;
 import com.example.jaeho.productmanagement.Model.DO.QRDO;
+import com.example.jaeho.productmanagement.Model.DO.UserDO;
+import com.example.jaeho.productmanagement.utils.CurentUser;
 
 import java.util.ArrayList;
 
@@ -82,6 +84,7 @@ public abstract class FireBaseDAO implements InformationDAO {
     @Override
     public void updateInformation(InformationQRDO qr) {}
 
-    public void addQR(QRDO qrdo){};
+    public void addQR(QRDO qrdo){}
 
+    public UserDO getCurrentUser(){return  CurentUser.getInstance();}
 }

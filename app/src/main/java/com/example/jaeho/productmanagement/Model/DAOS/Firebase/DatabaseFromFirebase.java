@@ -161,6 +161,7 @@ public class DatabaseFromFirebase {
             hidProgressDialog();
         }
     }
+
     public boolean isMine(String email,String jemail){
         if(email.equals(jemail)){
             return true;

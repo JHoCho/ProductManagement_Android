@@ -11,6 +11,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
@@ -18,6 +19,7 @@ import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
 import com.example.jaeho.productmanagement.R;
 import com.example.jaeho.productmanagement.utils.Constants;
 
+import com.example.jaeho.productmanagement.utils.CurentUser;
 import com.example.jaeho.productmanagement.utils.QRStringTokenizer;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -45,6 +47,7 @@ public class CheckQRActivity extends PermissionActivity
         myDao = new NowUsingDAO(this);
         cameraView = (SurfaceView)findViewById(R.id.camera_view);
         qst = new QRStringTokenizer();
+
 ///////////////////////////////////////쓰레드로 보낸 QR 받아 처리하는 부분/////////////////////////////////////////////////
 
         final Handler mHandler = new Handler(Looper.getMainLooper()){//메인쓰레드로 처리할 것임. 워커쓰레드로 하면 좋으나 아직 사용법을 모름
@@ -133,17 +136,22 @@ public class CheckQRActivity extends PermissionActivity
     }
     private void stringValueChanged(){
         qst.splitQR(nowv);
-        //여기서 데이터베이스랑 비교한후 회사가같으면 빌더로 켜줌.  회원가입먼저 만들어야겠군.
-        AlertDialog.Builder dlg = new AlertDialog.Builder(CheckQRActivity.this);
-        dlg.setTitle("진행하시겠습니까?");
-        dlg.setMessage(qst.getSplitedQRDO().getProductName());
-        dlg.setNegativeButton("취소", null);
-        dlg.setPositiveButton("진행", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        System.out.println(""+myDao.getCurrentUser().getCompanyName());
+       if(myDao.getCurrentUser().getCompanyName().equals(qst.getSplitedQRDO().getCompanyName())) {
+           //이부분에서 QR회사와 내 회사 비교하여 읽을지 말지 결정.if()
+           AlertDialog.Builder dlg = new AlertDialog.Builder(CheckQRActivity.this);
+           dlg.setTitle("진행하시겠습니까?");
+           dlg.setMessage(qst.getSplitedQRDO().getProductName());
+           dlg.setNegativeButton("취소", null);
+           dlg.setPositiveButton("진행", new DialogInterface.OnClickListener() {
+               @Override
+               public void onClick(DialogInterface dialog, int which) {
 
-            }
-        });
-        dlg.show();
+               }
+           });
+           dlg.show();
+       }else {
+           Toast.makeText(getApplicationContext(),"본인회사가 아님"+qst.getSplitedQRDO().getCompanyName().toString()+"회사꺼임",Toast.LENGTH_SHORT).show();
+       }
     }
 }

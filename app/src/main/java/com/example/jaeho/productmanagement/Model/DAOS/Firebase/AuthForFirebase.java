@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.jaeho.productmanagement.Model.DO.UserDO;
 import com.example.jaeho.productmanagement.R;
 import com.example.jaeho.productmanagement.View.Activities.HomeActivity;
+import com.example.jaeho.productmanagement.utils.CurentUser;
 import com.google.android.gms.fitness.data.Goal;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -73,7 +74,11 @@ public class AuthForFirebase {
             };
             onStart();
         }
+        public void initUser(){
+            database = new DatabaseFromFirebase(context);
 
+
+        }
         public void onStart() {
             mAuth.addAuthStateListener(mAuthListener);
         }
@@ -160,6 +165,7 @@ public class AuthForFirebase {
         private void sysout(String s){
             System.out.println(s);
         }
+
         private void varifypermit(){
             database = new DatabaseFromFirebase(context);
             database.mRootRef.child("User").child(emailToId(user.getEmail())).addValueEventListener(new ValueEventListener() {
@@ -212,6 +218,7 @@ public class AuthForFirebase {
             ((AppCompatActivity) context).finish();
             //성공시 FirebaseUser user에 mAuth.getCurrentUser()을 이용해 유저정보를 가져옴
             Toast.makeText(context, "인증에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+            initCurrentUSer();
         }
         public void accessUserInform(final String id, final String pw) {
             user = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
@@ -305,7 +312,6 @@ public class AuthForFirebase {
                         public void onClick(DialogInterface dialogInterface, int i) {
 
                             database = new DatabaseFromFirebase(context);
-
                             UserDO userDO = new UserDO();
                             userDO.setName(strName);
                             String temp = emailToId(user.getEmail());
@@ -373,7 +379,43 @@ public class AuthForFirebase {
                 }
             });
         }
+        private void ggggg(DataSnapshot dataSnapshot){
+            HashMap<String,Object> json = (HashMap)dataSnapshot.getValue();
+            UserDO userDO = new UserDO();
+            userDO.setName(json.get("name").toString());
+            userDO.setAdminID(json.get("email").toString());
+            userDO.setCompanyName(json.get("companyName").toString());
+            userDO.setPosition(json.get("position").toString());
+            userDO.setIdNo(json.get("idNo").toString());
+            userDO.setEmail(json.get("email").toString());
+            CurentUser.getInstance(userDO);
+        }
+        private void initCurrentUSer(){
+            database = new DatabaseFromFirebase(context);
+            database.mRootRef.child("User").child(emailToId(user.getEmail())).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    System.out.println("되냐"+dataSnapshot.getValue());
+                    HashMap<String,Object> json = (HashMap)dataSnapshot.getValue();
+                    UserDO userDO = new UserDO();
+                    userDO.setName(json.get("name").toString());
+                    userDO.setAdminID(json.get("email").toString());
+                    userDO.setCompanyName(json.get("companyName").toString());
+                    userDO.setPosition(json.get("position").toString());
+                    userDO.setIdNo(json.get("idNo").toString());
+                    userDO.setEmail(json.get("email").toString());
+                    CurentUser.getInstance(userDO);
+                }
 
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+
+        }
         private void sendEmailVerification() {
             user = mAuth.getCurrentUser();
             user.sendEmailVerification()
