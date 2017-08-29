@@ -14,7 +14,7 @@ public class QRDO {
     private String roomName;
     private String date;
     private String adminID;
-    private String location;
+    private String location=companyName+building+floor+roomName;
     public QRDO(){
 
     }

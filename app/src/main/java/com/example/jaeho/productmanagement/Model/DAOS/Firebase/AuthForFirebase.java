@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.jaeho.productmanagement.Model.DO.UserDO;
 import com.example.jaeho.productmanagement.R;
 import com.example.jaeho.productmanagement.View.Activities.HomeActivity;
+import com.google.android.gms.fitness.data.Goal;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -31,8 +32,10 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
@@ -55,7 +58,6 @@ public class AuthForFirebase {
         }
 
         public AuthForFirebase(Context context) {
-
             mAuth = com.google.firebase.auth.FirebaseAuth.getInstance();
             this.context = context;
             mAuthListener = new com.google.firebase.auth.FirebaseAuth.AuthStateListener() {
@@ -70,7 +72,6 @@ public class AuthForFirebase {
                 }
             };
             onStart();
-
         }
 
         public void onStart() {
@@ -143,24 +144,75 @@ public class AuthForFirebase {
                                 if(!user.isEmailVerified()){
                                     toastoast("이메일 인증이 완료되지 않았습니다. 확인해주세요");
                                 }else if(!isNameSet()){
-                                    setProfileName();
+                                    setProfileName(pw);
                                 }
                                 hidProgressDialog();
                                 Toast.makeText(context, "인증에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                             } else {
-                                hidProgressDialog();
-                                Intent intent = new Intent(context, HomeActivity.class);
-                                context.startActivity(intent);
-                                ((AppCompatActivity) context).finish();
-                                //성공시 FirebaseUser user에 mAuth.getCurrentUser()을 이용해 유저정보를 가져옴
-                                Toast.makeText(context, "인증에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                            }
+
+                                varifypermit();
+                            }//패스됐을경우.
                         }
                     });
 
             return;
         }
+        private void sysout(String s){
+            System.out.println(s);
+        }
+        private void varifypermit(){
+            database = new DatabaseFromFirebase(context);
+            database.mRootRef.child("User").child(emailToId(user.getEmail())).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
+                    final HashMap <String,Object> json = (HashMap<String, Object>) dataSnapshot.getValue();
+                    database.mRootRef.child("Company").child(json.get("companyName").toString()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            HashMap <String,Object>json2 =(HashMap<String,Object>)dataSnapshot.getValue();
+                            if(json2.get(emailToId(user.getEmail())).toString().equals("false"))
+                            {
+                                falsetoPermit();
+                            }
+                            else if(json2.get(emailToId(user.getEmail())).toString().equals("true")) {
+                                successPermit();
+                            }else {
+                                toastoast("이상한값이 들어가있습니다.");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+        private void falsetoPermit(){
+            hidProgressDialog();
+            AlertDialog.Builder dlg = new AlertDialog.Builder(context)
+                    .setTitle("담담자에게 문의바랍니다.")
+                    .setMessage("회원가입은 완료된 상태이나. 회사담당자의 허가가 떨어지지 않은 상태 입니다. 담당자에게 문의하십시오")
+                    .setPositiveButton("확인",null)
+                    .setNegativeButton("취소",null);
+            dlg.show();
+        }
+
+        private void successPermit(){
+            hidProgressDialog();
+            Intent intent = new Intent(context, HomeActivity.class);
+            context.startActivity(intent);
+            ((AppCompatActivity) context).finish();
+            //성공시 FirebaseUser user에 mAuth.getCurrentUser()을 이용해 유저정보를 가져옴
+            Toast.makeText(context, "인증에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+        }
         public void accessUserInform(final String id, final String pw) {
             user = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
@@ -185,7 +237,7 @@ public class AuthForFirebase {
             }
         }
 
-        private void setProfileName(){
+        private void setProfileName(final String pw){
             hidProgressDialog();
             final AlertDialog.Builder dlg = new AlertDialog.Builder(context);
             dlg.setMessage("프로필을 설정해주세요.");
@@ -256,11 +308,7 @@ public class AuthForFirebase {
 
                             UserDO userDO = new UserDO();
                             userDO.setName(strName);
-                            StringTokenizer stringTokenizer = new StringTokenizer(user.getEmail(),"@.");
-                            String temp="";
-                            while (stringTokenizer.hasMoreTokens()){
-                                    temp += stringTokenizer.nextToken();
-                                }
+                            String temp = emailToId(user.getEmail());
                             userDO.setAdminID(temp);
                             userDO.setCompanyName(strCompany);
                             userDO.setPosition(strPosition);
@@ -271,6 +319,7 @@ public class AuthForFirebase {
                             user.updateProfile(profileUpdates);
                             database.addUser(userDO);
                             database.addPeopleInCompany(strCompany,temp);
+                            checkSignIn(userDO.getEmail(),pw);
                         }
                     });
 
@@ -284,6 +333,14 @@ public class AuthForFirebase {
                 }
             });
             dlg.show();
+        }
+        private String emailToId(String email){
+            StringTokenizer stringTokenizer = new StringTokenizer(email,"@.");
+            String temp="";
+            while (stringTokenizer.hasMoreTokens()){
+                temp += stringTokenizer.nextToken();
+            }
+            return temp;
         }
 
         private void getCompanies(){
