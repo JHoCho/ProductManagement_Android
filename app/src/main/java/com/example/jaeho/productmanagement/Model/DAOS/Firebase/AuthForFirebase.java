@@ -12,8 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,10 +28,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
+import static android.R.layout.simple_spinner_item;
 import static com.example.jaeho.productmanagement.utils.Constants.hidProgressDialog;
 import static com.example.jaeho.productmanagement.utils.Constants.showProgressDialog;
 
@@ -40,6 +48,9 @@ public class AuthForFirebase {
         FirebaseUser user;
         private DatabaseFromFirebase database;
         private static final String TAG = "AUTHFireBaseDAO";
+        private ArrayList<String> companies;
+        private ArrayAdapter<String> adapter;
+        private String strCompany;
         public AuthForFirebase() {
         }
 
@@ -121,12 +132,12 @@ public class AuthForFirebase {
             showProgressDialog(context);
             mAuth.signInWithEmailAndPassword(email, pw)
                     .addOnCompleteListener((AppCompatActivity) context, new OnCompleteListener<AuthResult>() {
-                        //여기선 쓰레드가 동작하며 리스너를 만듭니다
+                        //여기선 백그라운드에서 쓰레드가 동작하며 리스너를 만듭니다
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             //성공시 로그 띄우는 양식Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
                             //리스너부분에서 온컴플리트로 들어온순간 뭔가 성공이던 실패던 값을 받은 것이고
-                            if (!task.isSuccessful()||!user.isEmailVerified()||!isNameSet()) {
+                            if (!task.isSuccessful()||!user.isEmailVerified()||!isNameSet()) {//겟이메일한것을 뜯어 아이디로 써서 접속하여 내부의 컨펌이 있는지 확인하고 컨펌되었으면 접속가능
                                 //실패시 로그 띄우는 양Log.w(TAG, "signInWithEmail:failed", task.getException());
                                 //실패시 isSignIn을 변경하지않음.
                                 if(!user.isEmailVerified()){
@@ -146,6 +157,7 @@ public class AuthForFirebase {
                             }
                         }
                     });
+
             return;
         }
 
@@ -165,13 +177,14 @@ public class AuthForFirebase {
         }
         private boolean isNameSet(){
             if(user.getDisplayName()==null){
-               // 이름이 없을경우 null 리턴
+               // 이름이 없을경우 false 리턴
                 return false;
             }else {
-               // 이름이 있을경우 true리턴
+                // 이름이 있을경우 true리턴
                 return true;
             }
         }
+
         private void setProfileName(){
             hidProgressDialog();
             final AlertDialog.Builder dlg = new AlertDialog.Builder(context);
@@ -179,12 +192,28 @@ public class AuthForFirebase {
             View view;
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.dlg_set_user_profile,null);
-            final EditText nameEdt,companyEdt,positionEdt,idNoEdt;
+            final EditText nameEdt,positionEdt,idNoEdt;
+            final Spinner companySpinner;
             nameEdt= (EditText) view.findViewById(R.id.dlg_name_edt);
-            companyEdt = (EditText)view.findViewById(R.id.dlg_company_name_edt);
+            companySpinner = (Spinner) view.findViewById(R.id.dlg_company_name_Spinner);
             positionEdt = (EditText)view.findViewById(R.id.dlg_position_edt);
             idNoEdt = (EditText)view.findViewById(R.id.dlg_idNo_edt);
+            companies = new ArrayList<String>();//초기화 먼저.
+            adapter = new ArrayAdapter<String>(view.getContext(),simple_spinner_item,companies);//초기화 먼저.
+            getCompanies();
+            companySpinner.setAdapter(adapter);
+            companySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    strCompany=companySpinner.getItemAtPosition(i).toString();
+                }
 
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+            companySpinner.setSelection(0);
             //final EditText edtText = new EditText(context);
             dlg.setView(view);
             dlg.setNegativeButton("취소", null);
@@ -192,13 +221,12 @@ public class AuthForFirebase {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     AlertDialog.Builder dlg2 = new AlertDialog.Builder(context);
-                    final String strName,strCompany,strPosition,strIdNo;
+                    final String strName,strPosition,strIdNo;
                     strName = nameEdt.getText().toString();
-                    strCompany = companyEdt.getText().toString();
                     strPosition = positionEdt.getText().toString();
                     strIdNo = idNoEdt.getText().toString();
 
-                    if(!validateFormName(strName)||!validateFormName(strCompany)||!validateFormName(strPosition)||!validateFormNumber(strIdNo)){
+                    if(!validateFormName(strName)||!validateFormName(strPosition)||!validateFormNumber(strIdNo)){
                         //하나라도 형식에 맞지않으면 리턴. vali에서 형식에맞으면 true반환하기에 정상일경우 받은값을 거꾸로 false로 해서 이부분을 무시
                         return;
                     }else{
@@ -225,6 +253,7 @@ public class AuthForFirebase {
                         public void onClick(DialogInterface dialogInterface, int i) {
 
                             database = new DatabaseFromFirebase(context);
+
                             UserDO userDO = new UserDO();
                             userDO.setName(strName);
                             StringTokenizer stringTokenizer = new StringTokenizer(user.getEmail(),"@.");
@@ -241,6 +270,7 @@ public class AuthForFirebase {
                                     .setDisplayName(userDO.getName()).build();
                             user.updateProfile(profileUpdates);
                             database.addUser(userDO);
+                            database.addPeopleInCompany(strCompany,temp);
                         }
                     });
 
@@ -256,7 +286,36 @@ public class AuthForFirebase {
             dlg.show();
         }
 
+        private void getCompanies(){
+            database = new DatabaseFromFirebase(context);
+            database.mRootRef.child("Company").addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    companies.add(dataSnapshot.getKey());
+                    adapter.notifyDataSetChanged();
+                }
 
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
 
         private void sendEmailVerification() {
             user = mAuth.getCurrentUser();

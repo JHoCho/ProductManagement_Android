@@ -8,8 +8,8 @@
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <EditText
-        android:id="@+id/dlg_company_name_edt"
+    <Spinner
+        android:id="@+id/dlg_company_name_Spinner"
         android:hint="회사명"
         android:layout_weight="1"
         android:layout_width="match_parent"

@@ -60,6 +60,9 @@ public class DatabaseFromFirebase {
     public void setFirstChild(String type){
         mRef = mRootRef.child(type);
     }
+    public void addPeopleInCompany(String company,String id){
+        mRootRef.child("Company").child(company).child(id).setValue(false);
+    }
 
     public void listen10QNAs(){
         mRootRef.child("QNA").orderByValue().limitToLast(10).addChildEventListener(new ChildEventListener() {
