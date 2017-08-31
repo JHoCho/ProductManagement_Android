@@ -18,6 +18,7 @@ public interface InformationDAO {//앱스트렉으로 바꾼다음 인스턴스�
     ArrayList<InformationQRDO> getInformation();
     ArrayList<InformationQRDO> getInformationByQR(InformationQRDO qr);
     CustomQNAAdapter getAdapter();
+    CustomQNAAdapter getMyAdapter();
     void checkSignIn(final String id, final String pw);//아이디 비번으로 로그인 여부
     void checkSignUp(final String id, final String pw);//아이디 비번으로 회원가입여부
     void updateInformation(InformationQRDO qr);

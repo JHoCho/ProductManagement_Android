@@ -50,6 +50,10 @@ public abstract class FireBaseDAO implements InformationDAO {
         ref = new DatabaseFromFirebase(context,"QNA");
         return ref.getAdapter();
     };
+    public CustomQNAAdapter getMyAdapter(){
+        ref = new DatabaseFromFirebase(context,"QNA");
+        return ref.getAdapter(getUserEmail());
+    }
     public String getUserName(){return auth.getUserName();}
     @Override
     public void makeAccount(final String email,final String pw) { auth.makeAccount(email,pw);}

@@ -110,14 +110,67 @@ public class DatabaseFromFirebase {
         });
     }
 
+    public void listenMy10QNAs(String myEmail){
+        mRootRef.child("QNA").orderByChild("email").equalTo(myEmail).limitToLast(10).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //이부분 매핑을 제대로 해줘야 할듯.
+                HashMap<String,String> json = (HashMap)dataSnapshot.getValue();
+                QNADO qnado = new QNADO();
+                qnado.setEmail(json.get("email"));
+                qnado.setContents(json.get("contents"));
+                qnado.setSubject(json.get("subject"));
+                qnado.setName(json.get("name"));
+                qnado.setDate(json.get("date"));
+                qnado.setKey(dataSnapshot.getKey());
+                mAdapter.add(qnado);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                HashMap<String,String> json = (HashMap)dataSnapshot.getValue();
+                QNADO qnado = new QNADO();
+                qnado.setEmail(json.get("email"));
+                qnado.setContents(json.get("contents"));
+                qnado.setSubject(json.get("subject"));
+                qnado.setName(json.get("name"));
+                qnado.setDate(json.get("date"));
+                qnado.setKey(dataSnapshot.getKey());
+                mAdapter.remove(qnado);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     public ArrayList getLast10QNAs(){
         listen10QNAs();
         return this.qnaList;
     }
-
+    public ArrayList getMyLast10QNAs(String myEmail){
+        listenMy10QNAs(myEmail);
+        return this.qnaList;
+    }
     public CustomQNAAdapter getAdapter(){
         qnaList= this.getLast10QNAs( );
         mAdapter = new CustomQNAAdapter(context,qnaList);
+        return mAdapter;
+    }
+    public CustomQNAAdapter getAdapter(String myEmail){
+        qnaList = this.getMyLast10QNAs(myEmail);
+        mAdapter =new CustomQNAAdapter(context,qnaList);
         return mAdapter;
     }
 

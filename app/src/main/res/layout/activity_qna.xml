@@ -7,6 +7,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".View.Activities.QNAActivity">
+    <RadioGroup
+        android:id="@+id/QNARadioGroup"
+        android:layout_weight="4"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RadioButton
+            android:id="@+id/seeAllQNA"
+            android:text="전체 문의 보기"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <RadioButton
+            android:id="@+id/seeMyQNA"
+            android:text="내 문의 보기"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RadioGroup>
     <ListView
         android:id="@+id/qnaListView"
         android:layout_weight="1"
