@@ -26,7 +26,7 @@ public class CheckItemActivity extends AppCompatActivity {
         btnSelectedCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CheckItemActivity.this,SelectedItemCheckActivity.class);
+                Intent intent = new Intent(CheckItemActivity.this,SelectLocationActivity.class);
                 startActivity(intent);
             }
         });
