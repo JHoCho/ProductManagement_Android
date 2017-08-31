@@ -20,6 +20,7 @@ public class CalendarActivity extends AppCompatActivity {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
+                month = month+1;
                 AlertDialog.Builder dlg = new AlertDialog.Builder(CalendarActivity.this)
                         .setNegativeButton("취소",null)
                         .setTitle(Integer.toString(year)+"년"+Integer.toString(month)+"월"+Integer.toString(dayOfMonth)+"일 의 할일");
