@@ -1,6 +1,7 @@
 package com.example.jaeho.productmanagement.View.Activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
@@ -142,8 +143,12 @@ public class CheckQRActivity extends PermissionActivity {
 
     private void stringValueChanged() {
         qst.splitQR(nowv);
-        System.out.println("" + myDao.getCurrentUser().getCompanyName());
-        if (myDao.getCurrentUser().getCompanyName().equals(qst.getSplitedQRDO().getCompanyName())) {
+        if(myDao.getCurrentUser().getCompanyName().equals(null)){
+            Toast.makeText(getApplicationContext(), "세션이 종료되었습니다. 재접속 부탁 드립니다.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(CheckQRActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }else if (myDao.getCurrentUser().getCompanyName().equals(qst.getSplitedQRDO().getCompanyName())) {
             //이부분에서 QR회사와 내 회사 비교하여 읽을지 말지 결정.if()
             AlertDialog.Builder dlg = new AlertDialog.Builder(CheckQRActivity.this);
             dlg.setTitle("QR내용을 확인 하시겠습니까?");
@@ -173,7 +178,7 @@ public class CheckQRActivity extends PermissionActivity {
                     dlg_qr_price_edt.setText(qst.getSplitedQRDO().getPrice());
                     dlg_qr_product_model_name_edt.setText(qst.getSplitedQRDO().getDetailedProductName());
                     dlg_qr_product_admin_edt.setText(qst.getSplitedQRDO().getAdminID());
-                    //dlg_qr_date_tv.setText(qst.getSplitedQRDO().getAdminID());
+                    dlg_qr_date_tv.setText(qst.getSplitedQRDO().getAdminID());
                     dlg2.setView(view);
                     dlg2.setPositiveButton("수정 요청하기", new DialogInterface.OnClickListener() {
                         @Override
