@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 
 import com.example.jaeho.productmanagement.R;
-import com.example.jaeho.productmanagement.utils.ThreeLevelExpandableListAdapter;
+import com.example.jaeho.productmanagement.utils.MyExpandableList.ThreeLevelExpandableListAdapter;
 
 public class SelectLocationActivity extends AppCompatActivity {
     Button btnStartCheck;

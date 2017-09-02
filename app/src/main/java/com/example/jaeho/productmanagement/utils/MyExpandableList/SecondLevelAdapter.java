@@ -1,4 +1,4 @@
-package com.example.jaeho.productmanagement.utils;
+package com.example.jaeho.productmanagement.utils.MyExpandableList;
 
 import android.content.Context;
 import android.view.LayoutInflater;
