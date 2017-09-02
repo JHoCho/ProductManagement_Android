@@ -7,15 +7,29 @@
     android:orientation="vertical"
     tools:context="com.example.jaeho.productmanagement.View.Activities.SelectLocationActivity">
     <LinearLayout
-        android:layout_weight="0.8"
+        android:layout_weight="0.2"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <ExpandableListView
+            android:id="@+id/expandableLv1"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+        </ExpandableListView>
+        <ExpandableListView
+            android:id="@+id/expandableLv2"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ExpandableListView>
     </LinearLayout>
     <Button
         android:id="@+id/btnStartCheck"
         android:text="갯수세기시작하기"
-        android:layout_weight="0.2"
+        android:layout_weight="0.8"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

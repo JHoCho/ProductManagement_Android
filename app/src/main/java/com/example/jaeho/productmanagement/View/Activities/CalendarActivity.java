@@ -8,8 +8,6 @@ import android.widget.CalendarView;
 
 import com.example.jaeho.productmanagement.R;
 
-import static com.example.jaeho.productmanagement.utils.Constants.tostost;
-
 public class CalendarActivity extends AppCompatActivity {
     CalendarView calendarView;
     @Override
