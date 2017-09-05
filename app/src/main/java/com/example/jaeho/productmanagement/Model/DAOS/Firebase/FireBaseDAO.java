@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Controller.QNAActivitys.CustomQNAAdapter;
+import com.example.jaeho.productmanagement.Model.DAOS.Mysql.SQLiteDB;
 import com.example.jaeho.productmanagement.Model.DO.QNADO;
 import com.example.jaeho.productmanagement.Model.DO.InformationQRDO;
 import com.example.jaeho.productmanagement.Model.DO.QRDO;
@@ -22,7 +23,7 @@ public abstract class FireBaseDAO implements InformationDAO {
     Context context;
     public FireBaseDAO(){auth = new AuthForFirebase();}
 
-    public FireBaseDAO(Context context){ auth = new AuthForFirebase(context);this.context = context;}
+    public FireBaseDAO(Context context){ auth = new AuthForFirebase(context);this.context = context; }
 
     public FireBaseDAO(Context context, String type){
         auth = new AuthForFirebase(context);

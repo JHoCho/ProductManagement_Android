@@ -24,6 +24,7 @@ public class SelectLocationActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
 }

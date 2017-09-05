@@ -169,7 +169,7 @@ public class CheckQRActivity extends PermissionActivity {
                     EditText dlg_qr_price_edt = (EditText) view.findViewById(R.id.dlg_qr_price_edt);
                     EditText dlg_qr_product_model_name_edt = (EditText) view.findViewById(R.id.dlg_qr_product_model_name_edt);
                     EditText dlg_qr_product_admin_edt = (EditText) view.findViewById(R.id.dlg_qr_product_admin_edt);
-                    TextView dlg_qr_date_tv = (TextView) findViewById(R.id.dlg_qr_date_tv);
+                    TextView dlg_qr_date_tv = (TextView) view.findViewById(R.id.dlg_qr_date_tv);
 
                     dlg_qr_product_name_edt.setText(qst.getSplitedQRDO().getProductName());
                     dlg_qr_location_edt.setText(qst.getSplitedQRDO().getLocation());
