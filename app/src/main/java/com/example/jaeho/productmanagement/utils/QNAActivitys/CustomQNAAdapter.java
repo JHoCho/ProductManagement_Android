@@ -1,4 +1,4 @@
-package com.example.jaeho.productmanagement.Controller.QNAActivitys;
+package com.example.jaeho.productmanagement.utils.QNAActivitys;
 
 import android.content.Context;
 import android.view.View;

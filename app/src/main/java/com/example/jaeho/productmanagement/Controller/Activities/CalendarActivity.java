@@ -1,4 +1,4 @@
-package com.example.jaeho.productmanagement.View.Activities;
+package com.example.jaeho.productmanagement.Controller.Activities;
 
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.widget.CalendarView;
 
 import com.example.jaeho.productmanagement.R;
-
-import static com.example.jaeho.productmanagement.utils.Constants.tostost;
 
 public class CalendarActivity extends AppCompatActivity {
     CalendarView calendarView;

@@ -1,4 +1,4 @@
-package com.example.jaeho.productmanagement.Controller;
+package com.example.jaeho.productmanagement.utils;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.example.jaeho.productmanagement.View.Activities.ActivateFromNotification;
+import com.example.jaeho.productmanagement.Controller.Activities.ActivateFromNotification;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 

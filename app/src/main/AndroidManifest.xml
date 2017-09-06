@@ -17,31 +17,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".View.Activities.MainActivity">
+        <activity android:name=".Controller.Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".View.Activities.CheckItemActivity" />
-        <activity android:name=".View.Activities.CheckQRActivity" />
-        <activity android:name=".View.Activities.HomeActivity" />
-        <activity android:name=".View.Activities.QNAActivity" />
-        <activity android:name=".View.Activities.QNAAddActivity" />
-        <activity android:name=".View.Activities.CountItemActivity" />
-        <activity android:name=".View.Activities.QNAReadActivity" />
+        <activity android:name=".Controller.Activities.CheckItemActivity" />
+        <activity android:name=".Controller.Activities.CheckQRActivity" />
+        <activity android:name=".Controller.Activities.HomeActivity" />
+        <activity android:name=".Controller.Activities.QNAActivity" />
+        <activity android:name=".Controller.Activities.QNAAddActivity" />
+        <activity android:name=".Controller.Activities.CountItemActivity" />
+        <activity android:name=".Controller.Activities.QNAReadActivity" />
 
-        <service android:name=".Controller.FCMReceiver">
+        <service android:name=".utils.FCMReceiver">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <activity android:name=".View.Activities.ActivateFromNotification" />
-        <activity android:name=".View.Activities.SelectedItemCheckActivity" />
-        <activity android:name=".View.Activities.SelectLocationActivity" />
-        <activity android:name=".View.Activities.CalendarActivity"></activity>
+        <activity android:name=".Controller.Activities.ActivateFromNotification" />
+        <activity android:name=".Controller.Activities.SelectedItemCheckActivity" />
+        <activity android:name=".Controller.Activities.SelectLocationActivity" />
+        <activity android:name=".Controller.Activities.CalendarActivity"></activity>
     </application>
 
 </manifest>

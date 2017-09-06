@@ -6,8 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.jaeho.productmanagement.Model.DO.UserDO;
-import com.example.jaeho.productmanagement.View.Activities.QNAReadActivity;
-import com.example.jaeho.productmanagement.Controller.QNAActivitys.CustomQNAAdapter;
+import com.example.jaeho.productmanagement.Controller.Activities.QNAReadActivity;
+import com.example.jaeho.productmanagement.utils.QNAActivitys.CustomQNAAdapter;
 import com.example.jaeho.productmanagement.Model.DO.QNADO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

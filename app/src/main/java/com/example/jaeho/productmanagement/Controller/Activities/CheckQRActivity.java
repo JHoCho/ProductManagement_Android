@@ -1,8 +1,7 @@
-package com.example.jaeho.productmanagement.View.Activities;
+package com.example.jaeho.productmanagement.Controller.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +23,6 @@ import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
 import com.example.jaeho.productmanagement.R;
 import com.example.jaeho.productmanagement.utils.Constants;
 
-import com.example.jaeho.productmanagement.utils.CurentUser;
 import com.example.jaeho.productmanagement.utils.QRStringTokenizer;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;

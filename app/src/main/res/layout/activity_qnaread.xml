@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".View.Activities.QNAReadActivity">
+    tools:context=".Controller.Activities.QNAReadActivity">
     <TextView
         android:id="@+id/qnaSubjectTv"
         android:layout_weight="4"

@@ -1,4 +1,4 @@
-package com.example.jaeho.productmanagement.View.Activities;
+package com.example.jaeho.productmanagement.Controller.Activities;
 
 import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;

@@ -1,4 +1,4 @@
-package com.example.jaeho.productmanagement.View.Activities;
+package com.example.jaeho.productmanagement.Controller.Activities;
 
 import android.content.Intent;
 import android.support.annotation.IdRes;
@@ -13,7 +13,7 @@ import android.widget.RadioGroup;
 
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
-import com.example.jaeho.productmanagement.Controller.QNAActivitys.CustomQNAAdapter;
+import com.example.jaeho.productmanagement.utils.QNAActivitys.CustomQNAAdapter;
 import com.example.jaeho.productmanagement.Model.DO.QNADO;
 import com.example.jaeho.productmanagement.R;
 

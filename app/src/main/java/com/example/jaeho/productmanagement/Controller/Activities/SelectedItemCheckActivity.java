@@ -1,4 +1,4 @@
-package com.example.jaeho.productmanagement.View.Activities;
+package com.example.jaeho.productmanagement.Controller.Activities;
 
 import android.content.DialogInterface;
 import android.os.Handler;
@@ -11,7 +11,6 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.TextView;
 
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
@@ -26,25 +25,21 @@ import java.io.IOException;
 
 import static com.example.jaeho.productmanagement.utils.Constants.MESSAGE_DONE;
 
-public class CountItemActivity extends AppCompatActivity {
-
-    SurfaceView cameraView;//화면 업데이트를 백그라운드로 처리해주는 서페이스뷰를 사용 할 예정
+public class SelectedItemCheckActivity extends AppCompatActivity {
+    SurfaceView selectedcameraView;//화면 업데이트를 백그라운드로 처리해주는 서페이스뷰를 사용 할 예정
     CameraSource cameraSource;
-    TextView countedItemsTv;
     BarcodeDetector barcodeDetector;
     String prev="";
     String nowv;
     InformationDAO myDao;
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_count_item);
+        setContentView(R.layout.activity_selected_item_check);
         myDao = new NowUsingDAO(this);
-        cameraView = (SurfaceView)findViewById(R.id.countCameraView);
-        countedItemsTv = (TextView)findViewById(R.id.countedItemsTv);
-        countedItemsTv.setText("0");
+        selectedcameraView = (SurfaceView)findViewById(R.id.selected_camera_view);
 ///////////////////////////////////////쓰레드로 보낸 QR 받아 처리하는 부분/////////////////////////////////////////////////
+
         final Handler mHandler = new Handler(Looper.getMainLooper()){//메인쓰레드로 처리할 것임. 워커쓰레드로 하면 좋으나 아직 사용법을 모름
             public void handleMessage(Message m){
                 switch (m.what){
@@ -84,19 +79,23 @@ public class CountItemActivity extends AppCompatActivity {
                 }
             }
         });
-
 //////////////////////////////////////카메라 부분////////////////////////////////////////////////
+
         cameraSource = new CameraSource.Builder(this,barcodeDetector)
-                .setRequestedPreviewSize(640,480)
+                .setRequestedPreviewSize(1024,768)//640-480->1024-768
+                .setAutoFocusEnabled(true)
                 .build();
 
-        cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
+        selectedcameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
-                if(Constants.checkCameraPermission(CountItemActivity.this)){
+                if(Constants.checkCameraPermission(SelectedItemCheckActivity.this)){
                     //카메라 퍼미션 확인
                     try {
-                        cameraSource.start(cameraView.getHolder());
+
+                        cameraSource.start(selectedcameraView.getHolder());
+
+
                     } catch (IOException ie) {
                         Log.e("CAMERA SOURCE", ie.getMessage());
                     }
@@ -105,6 +104,7 @@ public class CountItemActivity extends AppCompatActivity {
 
                 }
             }
+
 
             @Override
             public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
@@ -116,30 +116,25 @@ public class CountItemActivity extends AppCompatActivity {
                 cameraSource.stop();
             }
         });
+
     }
 
-    //////////////////////////////////////핸들러 안에서 사용될 부분////////////////////////////////////////////////
+    //////////////////////////////////////텍스트 뷰 안에서 사용될 부분////////////////////////////////////////////////
     private void setNowv(String nowv){
         this.nowv = nowv;
         stringValueChanged();
     }
     private void stringValueChanged(){
-        AlertDialog.Builder dlg = new AlertDialog.Builder(CountItemActivity.this);
+        AlertDialog.Builder dlg = new AlertDialog.Builder(SelectedItemCheckActivity.this);
         dlg.setTitle("진행하시겠습니까?");
         dlg.setMessage(nowv);
         dlg.setNegativeButton("취소", null);
         dlg.setPositiveButton("진행", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                getAndPlusOne();
+
             }
         });
         dlg.show();
     }
-    public void getAndPlusOne(){
-        Integer tmp = Integer.parseInt(countedItemsTv.getText().toString());
-        tmp = tmp+1;
-        countedItemsTv.setText(tmp.toString());
-    }
-
 }

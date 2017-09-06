@@ -1,6 +1,6 @@
 package com.example.jaeho.productmanagement.Model.DAOS;
 
-import com.example.jaeho.productmanagement.Controller.QNAActivitys.CustomQNAAdapter;
+import com.example.jaeho.productmanagement.utils.QNAActivitys.CustomQNAAdapter;
 import com.example.jaeho.productmanagement.Model.DO.QNADO;
 import com.example.jaeho.productmanagement.Model.DO.QRDO;
 import com.example.jaeho.productmanagement.Model.DO.InformationQRDO;
