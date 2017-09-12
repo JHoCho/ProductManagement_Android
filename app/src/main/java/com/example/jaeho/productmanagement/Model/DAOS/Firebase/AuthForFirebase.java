@@ -422,7 +422,7 @@ public class AuthForFirebase {
                 try{
 
                     if (!sqLiteDB.getDataCompanyName().equals(CurentUser.getInstance().getCompanyName())) {
-                        //회사명이다르면.
+                        //local db의 회사명과 서버와의 회사명이다르면.
                         //다른사람이 접근 한 것이므로 테이블을 지우고 새로 이닛을 시작한다.
                         //테이블을 지우는 부분을 정의해야함.
                         toastoast("초기화를 시작합니다.");

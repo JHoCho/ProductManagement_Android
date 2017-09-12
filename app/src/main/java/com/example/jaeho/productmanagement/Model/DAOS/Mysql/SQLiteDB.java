@@ -6,8 +6,10 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.jaeho.productmanagement.Model.DO.QRDO;
+import com.example.jaeho.productmanagement.utils.CurentUser;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.jaeho.productmanagement.Model.DAOS.Mysql.QRReaderDbHelper.DATABASE_NAME;
@@ -72,6 +74,85 @@ public class SQLiteDB {
             e.printStackTrace();
             return null;
         }
+    }
 
+    public ArrayList<String> getTopLevelLocation(){
+        try {//빌딩명 같은 룸네임 모두 가져오기.
+            String query = "SELECT "+"building"+" FROM " + TABLE_NAME + " WHERE companyName='"+ CurentUser.getInstance().getCompanyName()+"';";
+            return getResertAboutQuery(query);
+        } catch (CursorIndexOutOfBoundsException e) {
+            System.out.println("SQLiteDB.java");
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public ArrayList<String> getMiddleLevelLocation(String building){
+        try {//빌딩명 같은 층 모두 가져오기.
+            String query = "SELECT "+"floor"+" FROM " + TABLE_NAME + " WHERE building='"+building+"';";
+            return getResertAboutQuery(query);
+        } catch (CursorIndexOutOfBoundsException e) {
+            System.out.println("SQLiteDB.java");
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public ArrayList<String> getLowLevelLocation(String building,String floor){
+        try {//빌딩명 이랑 층 같은 방 모두 가져오기.
+            String query = "SELECT "+"roomName"+" FROM " + TABLE_NAME + " WHERE building='"+building+"' and floor='"+floor+"';";
+            return getResertAboutQuery(query);
+        } catch (CursorIndexOutOfBoundsException e) {
+            System.out.println("SQLiteDB.java");
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public ArrayList<String> getTopLevelPname(){
+        try {//빌딩명 같은 룸네임 모두 가져오기.
+            String query = "SELECT "+"productName"+" FROM " + TABLE_NAME + " WHERE companyName='"+ CurentUser.getInstance().getCompanyName()+"';";
+            return getResertAboutQuery(query);
+        } catch (CursorIndexOutOfBoundsException e) {
+            System.out.println("SQLiteDB.java");
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public ArrayList<String> getMiddleLevelPname(String productName){
+        try {//빌딩명 같은 층 모두 가져오기.
+            String query = "SELECT "+"detailedProductName"+" FROM " + TABLE_NAME + " WHERE productName='"+productName+"';";
+            return getResertAboutQuery(query);
+        } catch (CursorIndexOutOfBoundsException e) {
+            System.out.println("SQLiteDB.java");
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public ArrayList<String> getLowLevelPname(String productName,String detailedProductName){
+        try {//빌딩명 이랑 층 같은 방 모두 가져오기.
+            String query = "SELECT "+"serialNumber"+" FROM " + TABLE_NAME + " WHERE productName='"+productName+"' and detailedProductName='"+detailedProductName+"';";
+            return getResertAboutQuery(query);
+        } catch (CursorIndexOutOfBoundsException e) {
+            System.out.println("SQLiteDB.java");
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public ArrayList<String> getResertAboutQuery(String query){
+        Cursor cursor = db.rawQuery(query, null);
+        ArrayList<String> arl = new ArrayList<>();
+        HashSet<String> set = new HashSet<>();
+        if(cursor!=null){
+            while (cursor.moveToNext()==true)
+            {
+                if(set.add(cursor.getString(0).trim()))
+                {
+                    arl.add(cursor.getString(0).trim());
+                }else{
+                    System.out.println("SQLiteDB.java"+"값이 중복되어 무시됨");
+                }
+            }
+            return arl;
+        }
+        System.out.println("SQLiteDB.java null");
+        return null;
     }
 }
