@@ -19,7 +19,7 @@ public class SelectLocationActivity extends AppCompatActivity {
         btnStartCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SelectLocationActivity.this,SelectedItemCheckActivity.class);
+                Intent intent = new Intent(SelectLocationActivity.this,CountItemActivity.class);
                 //이부분에서 얻어온부분을 인텐트로 새 엑티비티로 넘겨주어야함.
                 startActivity(intent);
             }

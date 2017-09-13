@@ -37,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
         btnCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this,CountItemActivity.class);
+                Intent intent = new Intent(HomeActivity.this,SelectLocationActivity.class);
                 startActivity(intent);
             }
         });

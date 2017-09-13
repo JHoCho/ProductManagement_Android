@@ -39,7 +39,6 @@
         </service>
 
         <activity android:name=".Controller.Activities.ActivateFromNotification" />
-        <activity android:name=".Controller.Activities.SelectedItemCheckActivity" />
         <activity android:name=".Controller.Activities.SelectLocationActivity" />
         <activity android:name=".Controller.Activities.CalendarActivity"></activity>
     </application>
