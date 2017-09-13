@@ -43,6 +43,7 @@ public class SQLiteDB {
             System.out.println(TAG);
             e.printStackTrace();
         }
+        
     }
 
     public void initData(ArrayList<QRDO> arrayList) {
