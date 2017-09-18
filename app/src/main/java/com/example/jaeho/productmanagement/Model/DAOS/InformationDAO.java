@@ -32,6 +32,12 @@ public interface InformationDAO {//앱스트렉으로 바꾼다음 인스턴스�
     void readQna(QNADO qnado);
     void deleteQna(QNADO qnado);
     void addQR(QRDO qrdo);
+    ArrayList getTopLevelLocation();
+    ArrayList getMiddleLevelLocation(String building);
+    ArrayList getLowLevelLocation(String building,String floor);
+    ArrayList<String> getTopLevelPname();
+    ArrayList<String> getMiddleLevelPname(String productName);
+    ArrayList<String> getLowLevelPname(String productName,String detailedProductName);
     UserDO getCurrentUser();
     String getUserName();
     String getUserEmail();

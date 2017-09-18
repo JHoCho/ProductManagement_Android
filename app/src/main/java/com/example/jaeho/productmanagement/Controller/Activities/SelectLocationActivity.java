@@ -10,21 +10,25 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 
+import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
+import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
 import com.example.jaeho.productmanagement.R;
-import com.example.jaeho.productmanagement.utils.multiLevelExpandableListView.TopLevel;
+import com.example.jaeho.productmanagement.utils.multiLevelExpandablelist.ParentLevelAdapter;
 
 public class SelectLocationActivity extends AppCompatActivity {
     Button btnStartCheck;
     ExpandableListView linearListView1,linearListView2;
+    InformationDAO myDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_location);
+        myDao = new NowUsingDAO(this);
         btnStartCheck = (Button)findViewById(R.id.btnStartCheck);
         linearListView1 = (ExpandableListView)findViewById(R.id.linearListView1);
         linearListView2 = (ExpandableListView)findViewById(R.id.linearListView2);
-        linearListView1.setAdapter(new TopLevel(this,1));
-        linearListView2.setAdapter(new TopLevel(this,2));
+        linearListView1.setAdapter(new ParentLevelAdapter(SelectLocationActivity.this,myDao.getTopLevelLocation(),1));
+        linearListView2.setAdapter(new ParentLevelAdapter(SelectLocationActivity.this,myDao.getTopLevelPname(),2));
         btnStartCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -32,6 +36,6 @@ public class SelectLocationActivity extends AppCompatActivity {
                 //이부분에서 얻어온부분을 인텐트로 새 엑티비티로 넘겨주어야함.
                 startActivity(intent);
             }
-        });ㄴ
+        });
     }
 }

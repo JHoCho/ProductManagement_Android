@@ -93,5 +93,12 @@ public abstract class FireBaseDAO implements InformationDAO {
 
     public UserDO getCurrentUser(){return  CurentUser.getInstance();}
 
-
+    public ArrayList getTopLevelLocation(){
+        return auth.getTopLevelLocation();
+    };
+    public ArrayList getMiddleLevelLocation(String building){return auth.getMiddleLevelLocation(building);}
+    public ArrayList getLowLevelLocation(String building,String floor){return auth.getLowLevelLocation(building, floor);}
+    public ArrayList<String> getTopLevelPname(){return auth.getTopLevelPname();}
+    public ArrayList<String> getMiddleLevelPname(String productName){return auth.getMiddleLevelPname(productName);}
+    public ArrayList<String> getLowLevelPname(String productName,String detailedProductName){return auth.getLowLevelPname(productName, detailedProductName);}
 }
