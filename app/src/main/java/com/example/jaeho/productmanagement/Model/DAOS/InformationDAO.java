@@ -41,4 +41,5 @@ public interface InformationDAO {//앱스트렉으로 바꾼다음 인스턴스�
     UserDO getCurrentUser();
     String getUserName();
     String getUserEmail();
+    int getNumOfRow();
 }

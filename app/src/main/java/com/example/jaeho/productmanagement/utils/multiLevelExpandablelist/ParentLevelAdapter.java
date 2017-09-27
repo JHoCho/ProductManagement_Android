@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import static android.content.Context.SYSTEM_HEALTH_SERVICE;
 import static com.example.jaeho.productmanagement.Controller.Activities.SelectLocationActivity.selectedSt1;
+import static com.example.jaeho.productmanagement.Controller.Activities.SelectLocationActivity.selectedSt2;
 
 /**
  * Created by jaeho on 2017. 9. 18..
@@ -123,6 +124,22 @@ public class ParentLevelAdapter extends BaseExpandableListAdapter
                 break;
             case 2:
                 secondLvELV.setAdapter(new SecondLevelAdapter(context,myDao.getMiddleLevelPname(topLv.get(groupPosition).toString()),myDao.getLowLevelPname(topLv.get(groupPosition).toString(),midLv.get(childPosition).toString()),this.type));
+                secondLvELV.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                    @Override
+                    public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+                        selectedSt2[1]=expandableListView.getItemAtPosition(i).toString();
+                        selectedSt2[2]="";
+                        return false;
+                    }
+                });
+                secondLvELV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                    @Override
+                    public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                        selectedSt2[1]=expandableListView.getItemAtPosition(i).toString();
+                        selectedSt2[2]=expandableListView.getExpandableListAdapter().getChild(i,i1).toString();
+                        return false;
+                    }
+                });
             break;
 
         }

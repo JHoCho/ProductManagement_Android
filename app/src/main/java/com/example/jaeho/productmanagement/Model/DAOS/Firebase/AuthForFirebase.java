@@ -591,6 +591,8 @@ public class AuthForFirebase {
         sqLiteDB = new SQLiteDB(context);
         return sqLiteDB.getLowLevelPname(productName,detailedProductName);
     }
-
+    public int getNumOfRow(){
+        return sqLiteDB.getNumOfRow();
+    }
 
 }

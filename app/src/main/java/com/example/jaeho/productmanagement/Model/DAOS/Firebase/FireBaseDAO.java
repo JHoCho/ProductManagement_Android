@@ -101,4 +101,5 @@ public abstract class FireBaseDAO implements InformationDAO {
     public ArrayList<String> getTopLevelPname(){return auth.getTopLevelPname();}
     public ArrayList<String> getMiddleLevelPname(String productName){return auth.getMiddleLevelPname(productName);}
     public ArrayList<String> getLowLevelPname(String productName,String detailedProductName){return auth.getLowLevelPname(productName, detailedProductName);}
+    public int getNumOfRow(){return auth.getNumOfRow();}
 }

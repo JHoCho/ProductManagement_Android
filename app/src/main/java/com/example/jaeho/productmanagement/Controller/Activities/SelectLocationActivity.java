@@ -13,6 +13,7 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
@@ -34,6 +35,7 @@ public class SelectLocationActivity extends AppCompatActivity {
     ExpandableListView linearListView1,linearListView2;
     InformationDAO myDao;
     boolean isSelected = false;
+    boolean type1 = false;
     public static String[] selectedSt1,selectedSt2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public class SelectLocationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select_location);
         myDao = new NowUsingDAO(this);
         selectedSt1 = new String[]{"","",""};
-        selectedSt2 = new String[]{"",""};
+        selectedSt2 = new String[]{"","",""};
         btnStartCheck = (Button)findViewById(R.id.btnStartCheck);
         linearListView1 = (ExpandableListView)findViewById(R.id.linearListView1);
         linearListView2 = (ExpandableListView)findViewById(R.id.linearListView2);
@@ -51,6 +53,8 @@ public class SelectLocationActivity extends AppCompatActivity {
             @Override
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
                 selectedSt1[0]=expandableListView.getItemAtPosition(i).toString();
+                selectedSt1[1]="";
+                selectedSt1[2]="";
                 return false;
             }
         });
@@ -58,11 +62,7 @@ public class SelectLocationActivity extends AppCompatActivity {
         btnStartCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isSelected==true) {
-                    Intent intent = new Intent(SelectLocationActivity.this, CountItemActivity.class);
-                    //이부분에서 얻어온부분을 인텐트로 새 엑티비티로 넘겨주어야함.
-                    startActivity(intent);
-                }else {
+                if(type1==false){
                     AlertDialog.Builder dlg = new AlertDialog.Builder(SelectLocationActivity.this)
                             .setNegativeButton("취소",null)
                             .setTitle("진행하시겠습니까?");
@@ -84,6 +84,42 @@ public class SelectLocationActivity extends AppCompatActivity {
                             linearListView1.setVisibility(View.GONE);
                             linearListView2.setAdapter(new ParentLevelAdapter(SelectLocationActivity.this,myDao.getTopLevelPname(),2));
                             linearListView2.setVisibility(View.VISIBLE);
+                            btnStartCheck.setText("개수 세기 시작");
+                            linearListView2.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                                @Override
+                                public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+                                    selectedSt2[0]=expandableListView.getItemAtPosition(i).toString();
+                                    selectedSt2[1]="";
+                                    selectedSt2[2]="";
+                                    return false;
+                                }
+                            });
+                            type1=true;
+                        }
+                    });
+                    dlg.show();
+                }else {
+                    AlertDialog.Builder dlg = new AlertDialog.Builder(SelectLocationActivity.this)
+                            .setNegativeButton("취소",null)
+                            .setTitle("진행하시겠습니까?");
+                    TextView tv = new TextView(SelectLocationActivity.this);
+                    if(selectedSt2[0]==""){
+                        tv.setText("전체");
+                    }else if(selectedSt2[1]==""){
+                        tv.setText(selectedSt2[0]+"만 선택");
+                    }else if(selectedSt2[2]==""){
+                        tv.setText(selectedSt2[0]+" "+selectedSt2[1]+"선택");
+                    }else {
+                        tv.setText(selectedSt2[0]+" "+selectedSt2[1]+" "+selectedSt2[2]+"선택");
+                    }
+                    dlg.setView(tv);
+                    dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(SelectLocationActivity.this, CountItemActivity.class);
+                            //이부분에서 얻어온부분을 인텐트로 새 엑티비티로 넘겨주어야함.
+                            intent.putExtra("numOfProduct",myDao.getNumOfRow());//쿼리로 질의해서 얻은 개수를 넘겨 다음페이지에서 세도록 만듬
+                            startActivity(intent);
                         }
                     });
                     dlg.show();
