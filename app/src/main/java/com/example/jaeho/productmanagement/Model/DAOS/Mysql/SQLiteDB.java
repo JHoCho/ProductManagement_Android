@@ -62,7 +62,6 @@ public class SQLiteDB {
         db.execSQL("CREATE TABLE IF NOT EXISTS "
                 + TABLE_NAME
                 + " (idx integer not null primary key autoincrement,adminId TEXT,building TEXT,companyName TEXT,date TEXT,detailedProductName TEXT,floor TEXT,location TEXT,price TEXT,productName TEXT,roomName TEXT,serialNumber TEXT);");
-
     }
 
     public String getDataCompanyName() {
@@ -73,6 +72,7 @@ public class SQLiteDB {
             return cursor.getString(0);
         } catch (CursorIndexOutOfBoundsException e) {
             e.printStackTrace();
+
             return null;
         }
     }
@@ -108,7 +108,7 @@ public class SQLiteDB {
         }
     }
     public ArrayList<String> getTopLevelPname(){
-        try {//빌딩명 같은 룸네임 모두 가져오기.
+        try {//회사명 같은 곳에서 물건명 전부 가져오기 매개변수 세개 받아서 ""일경우 *로 대체해주면 될듯.
             String query = "SELECT "+"productName"+" FROM " + TABLE_NAME + " WHERE companyName='"+ CurentUser.getInstance().getCompanyName()+"';";
             return getResertAboutQuery(query);
         } catch (CursorIndexOutOfBoundsException e) {
@@ -118,7 +118,7 @@ public class SQLiteDB {
         }
     }
     public ArrayList<String> getMiddleLevelPname(String productName){
-        try {//빌딩명 같은 층 모두 가져오기.
+        try {// 현재는 대분류 받아서 그거랑 같은 미들템들만 뽑아줌 앞에 대 중 소 추가해서 ""이면 *로 대체하고 나머지는 그대로 들어가게 코딩하면될듯
             String query = "SELECT "+"detailedProductName"+" FROM " + TABLE_NAME + " WHERE productName='"+productName+"';";
             return getResertAboutQuery(query);
         } catch (CursorIndexOutOfBoundsException e) {
@@ -128,7 +128,7 @@ public class SQLiteDB {
         }
     }
     public ArrayList<String> getLowLevelPname(String productName,String detailedProductName){
-        try {//빌딩명 이랑 층 같은 방 모두 가져오기.
+        try {// 현재는 대분류 랑 중분류 받아서 맨 하위 템들만 뽑아줌 앞에 대 중 소 추가해서 ""이면 *로 대체하고 나머지는 그대로 들어가게 코딩하면될듯
             String query = "SELECT "+"serialNumber"+" FROM " + TABLE_NAME + " WHERE productName='"+productName+"' and detailedProductName='"+detailedProductName+"';";
             return getResertAboutQuery(query);
         } catch (CursorIndexOutOfBoundsException e) {

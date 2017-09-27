@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
@@ -12,6 +13,9 @@ import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
 import com.example.jaeho.productmanagement.R;
 
 import java.util.ArrayList;
+
+import static android.content.Context.SYSTEM_HEALTH_SERVICE;
+import static com.example.jaeho.productmanagement.Controller.Activities.SelectLocationActivity.selectedSt1;
 
 /**
  * Created by jaeho on 2017. 9. 18..
@@ -100,7 +104,23 @@ public class ParentLevelAdapter extends BaseExpandableListAdapter
         switch (type){
             case 1:
                 secondLvELV.setAdapter(new SecondLevelAdapter(context,myDao.getMiddleLevelLocation(topLv.get(groupPosition).toString()),myDao.getLowLevelLocation(topLv.get(groupPosition).toString(),midLv.get(childPosition).toString()),this.type));
-            break;
+                secondLvELV.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                    @Override
+                    public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+                        selectedSt1[1]=expandableListView.getItemAtPosition(i).toString();
+                        selectedSt1[2]="";
+                        return false;
+                    }
+                });
+                secondLvELV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                    @Override
+                    public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                        selectedSt1[1]=expandableListView.getItemAtPosition(i).toString();
+                        selectedSt1[2]=expandableListView.getExpandableListAdapter().getChild(i,i1).toString();
+                        return false;
+                    }
+                });
+                break;
             case 2:
                 secondLvELV.setAdapter(new SecondLevelAdapter(context,myDao.getMiddleLevelPname(topLv.get(groupPosition).toString()),myDao.getLowLevelPname(topLv.get(groupPosition).toString(),midLv.get(childPosition).toString()),this.type));
             break;

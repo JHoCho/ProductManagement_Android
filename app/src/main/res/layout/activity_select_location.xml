@@ -26,7 +26,7 @@
     </LinearLayout>
     <Button
         android:id="@+id/btnStartCheck"
-        android:text="갯수세기시작하기"
+        android:text="위치선택 완료"
         android:layout_weight="0.8"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
