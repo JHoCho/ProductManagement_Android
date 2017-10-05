@@ -594,5 +594,8 @@ public class AuthForFirebase {
     public int getNumOfRow(){
         return sqLiteDB.getNumOfRow();
     }
-
+    public ArrayList<String> getRawsForChecking(){
+        return sqLiteDB.getRawsForChecking();
+    }
+    public QRDO getOneQrdo(String[] st1,String[] st2){return sqLiteDB.getOneQrdo(st1,st2);}
 }

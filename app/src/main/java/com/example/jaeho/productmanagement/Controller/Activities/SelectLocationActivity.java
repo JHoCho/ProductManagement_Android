@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.example.jaeho.productmanagement.utils.Constants.hidProgressDialog;
 import static com.example.jaeho.productmanagement.utils.Constants.tostost;
@@ -36,12 +37,14 @@ public class SelectLocationActivity extends AppCompatActivity {
     InformationDAO myDao;
     boolean isSelected = false;
     boolean type1 = false;
+    HashMap<String,Boolean> hashMap;
     public static String[] selectedSt1,selectedSt2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_location);
         myDao = new NowUsingDAO(this);
+        hashMap = new HashMap<>();
         selectedSt1 = new String[]{"","",""};
         selectedSt2 = new String[]{"","",""};
         btnStartCheck = (Button)findViewById(R.id.btnStartCheck);
@@ -118,7 +121,12 @@ public class SelectLocationActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Intent intent = new Intent(SelectLocationActivity.this, CountItemActivity.class);
                             //이부분에서 얻어온부분을 인텐트로 새 엑티비티로 넘겨주어야함.
-                            intent.putExtra("numOfProduct",myDao.getNumOfRow());//쿼리로 질의해서 얻은 개수를 넘겨 다음페이지에서 세도록 만듬
+                            intent.putExtra("numOfProduct",Integer.toString(myDao.getNumOfRow()));//쿼리로 질의해서 얻은 개수를 넘겨 다음페이지에서 세도록 만듬 갯수는 넘겼으나 아직 해당 리스트는 안넘김
+                            ArrayList<String> rawsForChecking = myDao.getRawsForChecking();
+                            for(int j =0;j<rawsForChecking.size();j++){
+                                hashMap.put(rawsForChecking.get(j),false);
+                            }
+                            intent.putExtra("hashMap",hashMap);
                             startActivity(intent);
                         }
                     });

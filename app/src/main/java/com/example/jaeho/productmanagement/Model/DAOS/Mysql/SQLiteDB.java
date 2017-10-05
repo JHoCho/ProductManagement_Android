@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import com.example.jaeho.productmanagement.Model.DO.QRDO;
 import com.example.jaeho.productmanagement.utils.CurentUser;
@@ -38,7 +39,7 @@ public class SQLiteDB {
             db.execSQL("CREATE TABLE IF NOT EXISTS "
                     + TABLE_NAME
                     + " (idx integer not null primary key autoincrement,adminId TEXT,building TEXT,companyName TEXT,date TEXT,detailedProductName TEXT,floor TEXT,location TEXT,price TEXT,productName TEXT,roomName TEXT,serialNumber TEXT);");
-
+                            //0                                             1           2           3                  4        5                       6           7               8           9               10              11
             //https://stackoverflow.com/questions/3037767/create-sqlite-database-in-android db예시
 
         } catch (Exception e) {
@@ -193,6 +194,19 @@ public class SQLiteDB {
             return  "' and building='"+building+"' and floor='"+floor+"' and roomName='"+roomName+"';";
         }
     }
+
+
+    ////////////////////////////체크 한 리스트의 수를 리턴해주는 메서드////////////////////////////
+
+    public int getNumOfRow(){
+        Cursor cursor = db.rawQuery(defineQuery2(selectedSt2), null);
+        cursor.moveToFirst();
+        if(cursor!=null){
+            return Integer.parseInt(cursor.getString(0));
+        }
+        return 0;
+    }
+
     private String defineQuery2(String[] st){
         String productName;
         String detailedProductName ;
@@ -213,13 +227,57 @@ public class SQLiteDB {
             return  "SELECT "+"count(*)"+" FROM " + TABLE_NAME + " WHERE productName='"+productName+"' and detailedProductName='"+detailedProductName+"' and serialNumber='"+serialNumber+defineQuery(selectedSt1);
         }
     }
-    public int getNumOfRow(){
-        Cursor cursor = db.rawQuery(defineQuery2(selectedSt2), null);
-        cursor.moveToFirst();
-        if(cursor!=null){
-            return Integer.parseInt(cursor.getString(0));
+    ////////////////////////////체크 한 리스트를 리턴해주는 메서드////////////////////////////
+    public ArrayList<String> getRawsForChecking(){
+        try {
+            System.out.println("SQLiteDB.java 문제없음");
+            return getResertAboutQuery(defineQuery3(selectedSt2));
+        } catch (CursorIndexOutOfBoundsException e) {
+            System.out.println("SQLiteDB.java 문제");
+            e.printStackTrace();
+            return null;
         }
-        return 0;
     }
+
+    private String defineQuery3(String[] st){//시리얼만 리턴함.
+        String productName;
+        String detailedProductName ;
+        String serialNumber;
+        if(st[0].equals("")){
+            return  "';";
+        }else if(st[1].equals("")){
+            productName = st[0];
+            return "SELECT "+"serialNumber"+" FROM " + TABLE_NAME + " WHERE productName='"+productName+defineQuery(selectedSt1);
+        }else if(st[2].equals("")){
+            productName = st[0];
+            detailedProductName = st[1];
+            return  "SELECT "+"serialNumber"+" FROM " + TABLE_NAME + " WHERE productName='"+productName+"' and detailedProductName='"+detailedProductName+defineQuery(selectedSt1);
+        }else {
+            productName = st[0];
+            detailedProductName = st[1];
+            serialNumber = st[2];
+            return  "SELECT "+"serialNumber"+" FROM " + TABLE_NAME + " WHERE productName='"+productName+"' and detailedProductName='"+detailedProductName+"' and serialNumber='"+serialNumber+defineQuery(selectedSt1);
+        }
+    }
+    public QRDO getOneQrdo(String[] st1,String[] st2){
+        String query = "SELECT "+"*"+" FROM " + TABLE_NAME + " WHERE productName='"+st2[0]+"' and detailedProductName='"+st2[1]+"' and serialNumber='"+st2[2]+"' and building='"+st1[0]+"' and floor='"+st1[1]+"' and roomName='"+st1[2]+"';";
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+        QRDO qrdo = new QRDO();
+        qrdo.setProductName(cursor.getString(9));
+        qrdo.setDetailedProductName(cursor.getString(5));
+        qrdo.setSerialNumber(cursor.getString(11));
+        qrdo.setCompanyName(cursor.getString(3));
+        qrdo.setBuilding(cursor.getString(2));
+        qrdo.setFloor(cursor.getString(6));
+        qrdo.setRoomName(cursor.getString(10));
+        qrdo.setDate(cursor.getString(4));
+        qrdo.setAdminID(cursor.getString(1));
+        qrdo.setPrice(cursor.getString(8));
+        qrdo.setLocation(cursor.getString(7));
+        return qrdo;
+    }
+
+
 
 }

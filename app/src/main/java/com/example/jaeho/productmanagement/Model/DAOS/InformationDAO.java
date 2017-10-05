@@ -42,4 +42,6 @@ public interface InformationDAO {//앱스트렉으로 바꾼다음 인스턴스�
     String getUserName();
     String getUserEmail();
     int getNumOfRow();
+    ArrayList<String> getRawsForChecking();
+    QRDO getOneQrdo(String[] st1,String[] st2);
 }
