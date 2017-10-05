@@ -1,8 +1,5 @@
 package com.example.jaeho.productmanagement.Model.DAOS;
 
-import android.content.Context;
-
-import com.example.jaeho.productmanagement.Model.DAOS.Mysql.SQLiteDB;
 import com.example.jaeho.productmanagement.utils.QNAActivitys.CustomQNAAdapter;
 import com.example.jaeho.productmanagement.Model.DO.QNADO;
 import com.example.jaeho.productmanagement.Model.DO.QRDO;

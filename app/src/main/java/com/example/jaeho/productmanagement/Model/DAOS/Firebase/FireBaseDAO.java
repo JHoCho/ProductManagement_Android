@@ -3,7 +3,6 @@ package com.example.jaeho.productmanagement.Model.DAOS.Firebase;
 import android.content.Context;
 
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
-import com.example.jaeho.productmanagement.Model.DAOS.Mysql.SQLiteDB;
 import com.example.jaeho.productmanagement.utils.QNAActivitys.CustomQNAAdapter;
 import com.example.jaeho.productmanagement.Model.DO.QNADO;
 import com.example.jaeho.productmanagement.Model.DO.InformationQRDO;
@@ -92,6 +91,4 @@ public abstract class FireBaseDAO implements InformationDAO {
     public void addQR(QRDO qrdo){}
 
     public UserDO getCurrentUser(){return  CurentUser.getInstance();}
-
-
 }
