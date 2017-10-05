@@ -549,7 +549,6 @@ public class AuthForFirebase {
             toastoast("30자 이내로 써주세요(한/영)");
             valid = false;
         }
-
         return valid;
     }
 
@@ -573,4 +572,30 @@ public class AuthForFirebase {
         mAuth.signOut();
     }
 
+
+    public ArrayList getTopLevelLocation(){
+        sqLiteDB = new SQLiteDB(context);
+        return sqLiteDB.getTopLevelLocation();
+    }
+    public ArrayList getMiddleLevelLocation(String building){sqLiteDB = new SQLiteDB(context);
+        return sqLiteDB.getMiddleLevelLocation(building);}
+    public ArrayList getLowLevelLocation(String building,String floor){sqLiteDB = new SQLiteDB(context);
+        return sqLiteDB.getLowLevelLocation(building,floor);}
+    public ArrayList<String> getTopLevelPname(){
+        sqLiteDB = new SQLiteDB(context);
+        return sqLiteDB.getTopLevelPname();}
+    public ArrayList<String> getMiddleLevelPname(String productName){
+        sqLiteDB = new SQLiteDB(context);
+        return sqLiteDB.getMiddleLevelPname(productName);}
+    public ArrayList<String> getLowLevelPname(String productName,String detailedProductName){
+        sqLiteDB = new SQLiteDB(context);
+        return sqLiteDB.getLowLevelPname(productName,detailedProductName);
+    }
+    public int getNumOfRow(){
+        return sqLiteDB.getNumOfRow();
+    }
+    public ArrayList<String> getRawsForChecking(){
+        return sqLiteDB.getRawsForChecking();
+    }
+    public QRDO getOneQrdo(String[] st1,String[] st2){return sqLiteDB.getOneQrdo(st1,st2);}
 }

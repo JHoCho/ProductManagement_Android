@@ -11,11 +11,22 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <ExpandableListView
+            android:id="@+id/linearListView1"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ExpandableListView>
+        <ExpandableListView
+            android:id="@+id/linearListView2"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ExpandableListView>
     </LinearLayout>
     <Button
         android:id="@+id/btnStartCheck"
-        android:text="갯수세기시작하기"
+        android:text="위치선택 완료"
         android:layout_weight="0.8"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

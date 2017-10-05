@@ -1,5 +1,8 @@
 package com.example.jaeho.productmanagement.Model.DAOS;
 
+import android.content.Context;
+
+import com.example.jaeho.productmanagement.Model.DAOS.Mysql.SQLiteDB;
 import com.example.jaeho.productmanagement.utils.QNAActivitys.CustomQNAAdapter;
 import com.example.jaeho.productmanagement.Model.DO.QNADO;
 import com.example.jaeho.productmanagement.Model.DO.QRDO;
@@ -29,7 +32,16 @@ public interface InformationDAO {//앱스트렉으로 바꾼다음 인스턴스�
     void readQna(QNADO qnado);
     void deleteQna(QNADO qnado);
     void addQR(QRDO qrdo);
+    ArrayList getTopLevelLocation();
+    ArrayList getMiddleLevelLocation(String building);
+    ArrayList getLowLevelLocation(String building,String floor);
+    ArrayList<String> getTopLevelPname();
+    ArrayList<String> getMiddleLevelPname(String productName);
+    ArrayList<String> getLowLevelPname(String productName,String detailedProductName);
     UserDO getCurrentUser();
     String getUserName();
     String getUserEmail();
+    int getNumOfRow();
+    ArrayList<String> getRawsForChecking();
+    QRDO getOneQrdo(String[] st1,String[] st2);
 }
