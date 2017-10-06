@@ -44,9 +44,19 @@ public class SelectLocationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_location);
         myDao = new NowUsingDAO(this);
+        if(myDao.getCurrentUser().getCompanyName().equals(null)){
+            Toast.makeText(getApplicationContext(), "세션이 종료되었습니다. 재접속 부탁 드립니다.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(SelectLocationActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
         hashMap = new HashMap<>();
-        selectedSt1 = new String[]{"","",""};
-        selectedSt2 = new String[]{"","",""};
+        if (selectedSt1 == null) {
+            selectedSt1 = new String[]{"", "", ""};
+        }
+        if (selectedSt2 == null) {
+            selectedSt2 = new String[]{"", "", ""};
+        }
         btnStartCheck = (Button)findViewById(R.id.btnStartCheck);
         linearListView1 = (ExpandableListView)findViewById(R.id.linearListView1);
         linearListView2 = (ExpandableListView)findViewById(R.id.linearListView2);
