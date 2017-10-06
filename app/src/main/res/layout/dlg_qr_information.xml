@@ -15,7 +15,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-        <EditText
+        <TextView
             android:textColor="@android:color/black"
             android:id="@+id/dlg_qr_product_name_edt"
             android:layout_width="match_parent"
@@ -51,7 +51,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-        <EditText
+        <TextView
             android:textColor="@android:color/black"
             android:id="@+id/dlg_qr_signalNo_edt"
             android:layout_width="match_parent"
@@ -106,7 +106,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-        <EditText
+        <TextView
             android:textColor="@android:color/black"
             android:id="@+id/dlg_qr_price_edt"
             android:layout_width="match_parent"
@@ -124,7 +124,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-        <EditText
+        <TextView
             android:textColor="@android:color/black"
             android:id="@+id/dlg_qr_product_model_name_edt"
             android:layout_width="match_parent"
@@ -142,7 +142,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-        <EditText
+        <TextView
             android:textColor="@android:color/black"
             android:id="@+id/dlg_qr_product_admin_edt"
             android:layout_width="match_parent"

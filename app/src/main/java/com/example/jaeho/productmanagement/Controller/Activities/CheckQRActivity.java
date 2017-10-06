@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
+import com.example.jaeho.productmanagement.Model.DO.QRDO;
 import com.example.jaeho.productmanagement.R;
 import com.example.jaeho.productmanagement.utils.Constants;
 
@@ -31,6 +32,8 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
+import static com.example.jaeho.productmanagement.Controller.Activities.SelectLocationActivity.selectedSt1;
+import static com.example.jaeho.productmanagement.Controller.Activities.SelectLocationActivity.selectedSt2;
 import static com.example.jaeho.productmanagement.utils.Constants.MESSAGE_DONE;
 
 
@@ -159,13 +162,13 @@ public class CheckQRActivity extends PermissionActivity {
                             .setNegativeButton("취소", null);// 이부분에서 나우나 프리브를 초기화해줘야 다시 찍을수 있을거임.
                     LayoutInflater layoutInflater = (LayoutInflater)getApplicationContext().getSystemService(getApplicationContext().LAYOUT_INFLATER_SERVICE);
                     View view = layoutInflater.inflate(R.layout.dlg_qr_information, null);
-                    EditText dlg_qr_product_name_edt = (EditText) view.findViewById(R.id.dlg_qr_product_name_edt);
-                    EditText dlg_qr_location_edt = (EditText) view.findViewById(R.id.dlg_qr_location_edt);
-                    EditText dlg_qr_signalNo_edt = (EditText) view.findViewById(R.id.dlg_qr_signalNo_edt);
-                    EditText dlg_qr_date_out_edt = (EditText) view.findViewById(R.id.dlg_qr_date_out_edt);
-                    EditText dlg_qr_price_edt = (EditText) view.findViewById(R.id.dlg_qr_price_edt);
-                    EditText dlg_qr_product_model_name_edt = (EditText) view.findViewById(R.id.dlg_qr_product_model_name_edt);
-                    EditText dlg_qr_product_admin_edt = (EditText) view.findViewById(R.id.dlg_qr_product_admin_edt);
+                    TextView dlg_qr_product_name_edt = (TextView) view.findViewById(R.id.dlg_qr_product_name_edt);
+                    final EditText dlg_qr_location_edt = (EditText) view.findViewById(R.id.dlg_qr_location_edt);
+                    TextView dlg_qr_signalNo_edt = (TextView) view.findViewById(R.id.dlg_qr_signalNo_edt);
+                    final EditText dlg_qr_date_out_edt = (EditText) view.findViewById(R.id.dlg_qr_date_out_edt);
+                    TextView dlg_qr_price_edt = (TextView) view.findViewById(R.id.dlg_qr_price_edt);
+                    TextView dlg_qr_product_model_name_edt = (TextView) view.findViewById(R.id.dlg_qr_product_model_name_edt);
+                    TextView dlg_qr_product_admin_edt = (TextView) view.findViewById(R.id.dlg_qr_product_admin_edt);
                     TextView dlg_qr_date_tv = (TextView) view.findViewById(R.id.dlg_qr_date_tv);
 
                     dlg_qr_product_name_edt.setText(qst.getSplitedQRDO().getProductName());
@@ -181,7 +184,11 @@ public class CheckQRActivity extends PermissionActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                         //위의정보들을 하나의 객체로 만들어 수정요청해야함 아직 중간관리자 급아이디 구현이 되어있지 않아 미 구현.
-                            
+                            QRDO qrdo = new QRDO();
+                            qrdo.setSerialNumber(myDao.getOneQrdo(selectedSt1, selectedSt2).getSerialNumber());
+                            qrdo.setLocation(dlg_qr_location_edt.getText().toString());
+                            qrdo.setOutDate(dlg_qr_date_out_edt.getText().toString());
+                            myDao.askChange(qrdo);
                         }
                     });
                     dlg2.show();
