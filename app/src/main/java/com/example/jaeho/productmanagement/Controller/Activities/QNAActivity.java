@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
@@ -31,8 +32,12 @@ public class QNAActivity extends AppCompatActivity {
         toQNAActivitybtn = (Button)findViewById(R.id.toQNAActivitybtn);
         QNARadioGroup = (RadioGroup)findViewById(R.id.QNARadioGroup);
         myDao = new NowUsingDAO(this);
-
-
+        if(myDao.getCurrentUser().getCompanyName().equals(null)){
+            Toast.makeText(getApplicationContext(), "세션이 종료되었습니다. 재접속 부탁 드립니다.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
         toQNAActivitybtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

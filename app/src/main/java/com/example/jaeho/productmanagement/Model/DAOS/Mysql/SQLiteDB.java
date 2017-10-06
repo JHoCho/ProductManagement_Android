@@ -27,7 +27,7 @@ public class SQLiteDB {
     Context context;
     private static String TAG = "SQLiteDB.java";
     public static String TABLE_NAME = "QR";
-
+    public SQLiteDB(){}
     public SQLiteDB(Context context) {
         this.context = context;
         qrReaderDbHelper = new QRReaderDbHelper(context);
@@ -46,7 +46,7 @@ public class SQLiteDB {
             System.out.println(TAG);
             e.printStackTrace();
         }
-        
+
     }
 
     public void initData(ArrayList<QRDO> arrayList) {

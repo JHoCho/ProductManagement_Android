@@ -39,7 +39,8 @@ public class ActivateFromNotification extends AppCompatActivity {
         //
         // Handle possible data accompanying notification message.
         // [START handle_data_extras]
-        if (getIntent().getExtras() != null) {
+        if (getIntent().getExtras() != null)
+        {
             for (String key : getIntent().getExtras().keySet()) {
                 Object value = getIntent().getExtras().get(key);
                 Log.d(TAG, "Key: " + key + " Value: " + value);

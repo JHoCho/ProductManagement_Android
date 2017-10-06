@@ -1,5 +1,6 @@
 package com.example.jaeho.productmanagement.Controller.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,12 +16,19 @@ import com.example.jaeho.productmanagement.R;
 public class QNAAddActivity extends AppCompatActivity {
     EditText qnaSubjectEdt, qnaContentsEdt;
     Button qnaAddbtn;
-    InformationDAO myDao = new NowUsingDAO(this);
+    InformationDAO myDao;
     QNADO qnado;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qnaadd);
+        myDao = new NowUsingDAO(this);
+        if(myDao.getCurrentUser().getCompanyName().equals(null)){
+            Toast.makeText(getApplicationContext(), "세션이 종료되었습니다. 재접속 부탁 드립니다.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(QNAAddActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
         qnaSubjectEdt = (EditText)findViewById(R.id.qnaSubjectEdt);
         qnaContentsEdt = (EditText)findViewById(R.id.qnaContentsEdt);
         qnaAddbtn = (Button)findViewById(R.id.qnaAddbtn);

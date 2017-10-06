@@ -27,6 +27,7 @@ import com.example.jaeho.productmanagement.utils.CurentUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.ChildEventListener;
@@ -65,23 +66,17 @@ public class AuthForFirebase {
         mAuthListener = new com.google.firebase.auth.FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull com.google.firebase.auth.FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
+
                 if (user != null) {
                     //User가 이미 로그인 ( 사인인) 한 상태
                 } else {
+                    user = firebaseAuth.getCurrentUser();
                     //User 로그아웃 (사인아웃)상태
                 }
             }
         };
         onStart();
     }
-
-    public void initUser() {
-        database = new DatabaseFromFirebase(context);
-
-
-    }
-
     public void onStart() {
         mAuth.addAuthStateListener(mAuthListener);
     }
@@ -254,11 +249,13 @@ public class AuthForFirebase {
         View view;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(R.layout.dlg_set_user_profile, null);
-        final EditText nameEdt, positionEdt, idNoEdt;
+        final EditText nameEdt, idNoEdt;
+        final TextView positionEdt;
         final Spinner companySpinner;
         nameEdt = (EditText) view.findViewById(R.id.dlg_name_edt);
         companySpinner = (Spinner) view.findViewById(R.id.dlg_company_name_Spinner);
-        positionEdt = (EditText) view.findViewById(R.id.dlg_position_edt);
+        positionEdt = (TextView) view.findViewById(R.id.dlg_position_edt);
+        positionEdt.setText("사원");
         idNoEdt = (EditText) view.findViewById(R.id.dlg_idNo_edt);
         companies = new ArrayList<String>();//초기화 먼저.
         adapter = new ArrayAdapter<String>(view.getContext(), simple_spinner_item, companies);//초기화 먼저.
@@ -418,71 +415,18 @@ public class AuthForFirebase {
                 //여기서 데이터가 들어왔을 때 들어온 값의 회사 부분이 다르다면 초기화하고 init
                 //같다면 정리하지 않음 이하 바뀌는 부분이 있을경우
                 //서비스에서 받아서 브로드캐스트 리시버로 데이터를 작성해줘야 한다.
-
-                try{
-
+                try {
                     if (!sqLiteDB.getDataCompanyName().equals(CurentUser.getInstance().getCompanyName())) {
-                        //local db의 회사명과 서버와의 회사명이다르면.
-                        //다른사람이 접근 한 것이므로 테이블을 지우고 새로 이닛을 시작한다.
-                        //테이블을 지우는 부분을 정의해야함.
-                        toastoast("초기화를 시작합니다.");
-                        sqLiteDB.clearData();
-                        ArrayList<QRDO> arr = new ArrayList<QRDO>();
-                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-                            HashMap<String, Object> json = (HashMap<String, Object>) child.getValue();
-                            QRDO qrdo = new QRDO();
-                            qrdo.setAdminID(json.get("adminID").toString());
-                            qrdo.setBuilding(json.get("building").toString());
-                            qrdo.setCompanyName(json.get("companyName").toString());
-                            qrdo.setDate(json.get("date").toString());
-                            qrdo.setDetailedProductName(json.get("detailedProductName").toString());
-                            qrdo.setFloor(json.get("floor").toString());
-                            qrdo.setLocation(json.get("location").toString());
-                            qrdo.setPrice(json.get("price").toString());
-                            qrdo.setProductName(json.get("productName").toString());
-                            qrdo.setRoomName(json.get("roomName").toString());
-                            qrdo.setSerialNumber(json.get("serialNumber").toString());
-                            arr.add(qrdo);
-                        }
-                        sqLiteDB.initData(arr);
-                        hidProgressDialog();
-                    }else{
+                        initSQLData(dataSnapshot);
+                    } else {
                         //회사명이 같으면
-                        System.out.println("DB의 회사이름"+sqLiteDB.getDataCompanyName());
+                        System.out.println("DB의 회사이름" + sqLiteDB.getDataCompanyName());
                         hidProgressDialog();
                     }
-                }catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     //DB내의 회사명이 null이면 첫접속이므로 초기화를 시작해줌.
-
                     e.printStackTrace();
-                    HashMap<String, Object> test = (HashMap<String, Object>) dataSnapshot.getValue();
-                    System.out.println("dataSnapshot" + test);
-                    // System.out.println("test.get(\"companyName\").toString()"+test.get("companyName").toString());
-                    System.out.println(CurentUser.getInstance().getCompanyName());
-
-                    //회사명이 다르다는 것이므로 테이블을 지우고 새로 이닛을 시작한다.
-                    //테이블을 지우는 부분을 정의해야함.
-                    toastoast("초기화를 시작합니다.");
-                    sqLiteDB.clearData();
-                    ArrayList<QRDO> arr = new ArrayList<QRDO>();
-                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        HashMap<String, Object> json = (HashMap<String, Object>) child.getValue();
-                        QRDO qrdo = new QRDO();
-                        qrdo.setAdminID(json.get("adminID").toString());
-                        qrdo.setBuilding(json.get("building").toString());
-                        qrdo.setCompanyName(json.get("companyName").toString());
-                        qrdo.setDate(json.get("date").toString());
-                        qrdo.setDetailedProductName(json.get("detailedProductName").toString());
-                        qrdo.setFloor(json.get("floor").toString());
-                        qrdo.setLocation(json.get("location").toString());
-                        qrdo.setPrice(json.get("price").toString());
-                        qrdo.setProductName(json.get("productName").toString());
-                        qrdo.setRoomName(json.get("roomName").toString());
-                        qrdo.setSerialNumber(json.get("serialNumber").toString());
-                        arr.add(qrdo);
-                    }
-                    sqLiteDB.initData(arr);
-                    hidProgressDialog();
+                    initSQLData(dataSnapshot);
                 }
 
             }
@@ -573,29 +517,72 @@ public class AuthForFirebase {
     }
 
 
-    public ArrayList getTopLevelLocation(){
+    public ArrayList getTopLevelLocation() {
         sqLiteDB = new SQLiteDB(context);
         return sqLiteDB.getTopLevelLocation();
     }
-    public ArrayList getMiddleLevelLocation(String building){sqLiteDB = new SQLiteDB(context);
-        return sqLiteDB.getMiddleLevelLocation(building);}
-    public ArrayList getLowLevelLocation(String building,String floor){sqLiteDB = new SQLiteDB(context);
-        return sqLiteDB.getLowLevelLocation(building,floor);}
-    public ArrayList<String> getTopLevelPname(){
+
+    public ArrayList getMiddleLevelLocation(String building) {
         sqLiteDB = new SQLiteDB(context);
-        return sqLiteDB.getTopLevelPname();}
-    public ArrayList<String> getMiddleLevelPname(String productName){
-        sqLiteDB = new SQLiteDB(context);
-        return sqLiteDB.getMiddleLevelPname(productName);}
-    public ArrayList<String> getLowLevelPname(String productName,String detailedProductName){
-        sqLiteDB = new SQLiteDB(context);
-        return sqLiteDB.getLowLevelPname(productName,detailedProductName);
+        return sqLiteDB.getMiddleLevelLocation(building);
     }
-    public int getNumOfRow(){
+
+    public ArrayList getLowLevelLocation(String building, String floor) {
+        sqLiteDB = new SQLiteDB(context);
+        return sqLiteDB.getLowLevelLocation(building, floor);
+    }
+
+    public ArrayList<String> getTopLevelPname() {
+        sqLiteDB = new SQLiteDB(context);
+        return sqLiteDB.getTopLevelPname();
+    }
+
+    public ArrayList<String> getMiddleLevelPname(String productName) {
+        sqLiteDB = new SQLiteDB(context);
+        return sqLiteDB.getMiddleLevelPname(productName);
+    }
+
+    public ArrayList<String> getLowLevelPname(String productName, String detailedProductName) {
+        sqLiteDB = new SQLiteDB(context);
+        return sqLiteDB.getLowLevelPname(productName, detailedProductName);
+    }
+
+    public int getNumOfRow() {
         return sqLiteDB.getNumOfRow();
     }
-    public ArrayList<String> getRawsForChecking(){
+
+    public ArrayList<String> getRawsForChecking() {
         return sqLiteDB.getRawsForChecking();
     }
-    public QRDO getOneQrdo(String[] st1,String[] st2){return sqLiteDB.getOneQrdo(st1,st2);}
+
+    public QRDO getOneQrdo(String[] st1, String[] st2) {
+        return sqLiteDB.getOneQrdo(st1, st2);
+    }
+
+    public void initSQLData(DataSnapshot dataSnapshot) {
+        //local db의 회사명과 서버와의 회사명이다르면.
+        //다른사람이 접근 한 것이므로 테이블을 지우고 새로 이닛을 시작한다.
+        //테이블을 지우는 부분을 정의해야함.
+        toastoast("초기화를 시작합니다.");
+        sqLiteDB.clearData();
+        ArrayList<QRDO> arr = new ArrayList<QRDO>();
+        for (DataSnapshot child : dataSnapshot.getChildren()) {
+            HashMap<String, Object> json = (HashMap<String, Object>) child.getValue();
+            QRDO qrdo = new QRDO();
+            qrdo.setAdminID(json.get("adminID").toString());
+            qrdo.setBuilding(json.get("building").toString());
+            qrdo.setCompanyName(json.get("companyName").toString());
+            qrdo.setDate(json.get("date").toString());
+            qrdo.setDetailedProductName(json.get("detailedProductName").toString());
+            qrdo.setFloor(json.get("floor").toString());
+            qrdo.setLocation(json.get("location").toString());
+            qrdo.setPrice(json.get("price").toString());
+            qrdo.setProductName(json.get("productName").toString());
+            qrdo.setRoomName(json.get("roomName").toString());
+            qrdo.setSerialNumber(json.get("serialNumber").toString());
+            arr.add(qrdo);
+        }
+        sqLiteDB.initData(arr);
+        hidProgressDialog();
+    }
 }
