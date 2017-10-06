@@ -104,4 +104,7 @@ public abstract class FireBaseDAO implements InformationDAO {
     public int getNumOfRow(){return auth.getNumOfRow();}
     public ArrayList<String> getRawsForChecking(){return auth.getRawsForChecking();}
     public QRDO getOneQrdo(String[] st1,String[] st2){return auth.getOneQrdo(st1,st2);}
+    public void askChange(QRDO qrdo){
+        ref = new DatabaseFromFirebase(context,"Ask");
+        ref.askChange(qrdo);}
 }

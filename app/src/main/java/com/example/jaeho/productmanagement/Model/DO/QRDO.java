@@ -16,8 +16,17 @@ public class QRDO {
     private String adminID;
     private String price;
     private String location;
+    private String outDate;
     public QRDO(){
 
+    }
+
+    public String getOutDate() {
+        return outDate;
+    }
+
+    public void setOutDate(String outDate) {
+        this.outDate = outDate;
     }
 
     public void setLocation(String location) {
