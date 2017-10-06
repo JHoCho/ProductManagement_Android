@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
@@ -21,6 +22,12 @@ public class QNAReadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qnaread);
         final InformationDAO myDao = new NowUsingDAO(this);
+        if(myDao.getCurrentUser().getCompanyName().equals(null)){
+            Toast.makeText(getApplicationContext(), "세션이 종료되었습니다. 재접속 부탁 드립니다.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(QNAReadActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
         qnaContentsTv = (TextView)findViewById(R.id.qnaContentsTv);
         qnaSubjectTv = (TextView)findViewById(R.id.qnaSubjectTv);
         qnaDeleteBtn = (Button)findViewById(R.id.qnaDeleteBtn);
