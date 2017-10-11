@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
 import com.example.jaeho.productmanagement.Controller.Activities.HomeActivity;
 import com.example.jaeho.productmanagement.Model.DO.QRDO;
@@ -24,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static android.content.Context.SYSTEM_HEALTH_SERVICE;
+import static com.example.jaeho.productmanagement.Controller.Activities.CalendarActivity.calendarTv;
 import static com.example.jaeho.productmanagement.utils.Constants.hidProgressDialog;
 import static com.example.jaeho.productmanagement.utils.Constants.showProgressDialog;
 import static com.example.jaeho.productmanagement.utils.Constants.tostost;
@@ -38,6 +41,7 @@ public class DatabaseFromFirebase {
     ArrayList<QNADO> qnaList;
     Context context;
     CustomQNAAdapter mAdapter;
+
 
     //이때 데이터 스냅샷은 바뀐값을 가지고 있고 이를 띄우거나 가지고 놀 수 있다
     DatabaseFromFirebase(Context context, String type) {
@@ -280,4 +284,30 @@ public class DatabaseFromFirebase {
             }
         });
     }
+
+    public void getSchedule(String year, String month, String day){
+        if(month.length()<2){
+            month="0"+month;
+        }
+        if (day.length()<2){
+            day ="0"+day;
+        }
+        String content = year+"-"+month+"-"+day;
+        mRootRef.child("Calendar").child(CurentUser.getInstance().getCompanyName()).child(content).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue()!=null){
+                calendarTv.setText(dataSnapshot.getValue().toString());}else
+                    {
+                    calendarTv.setText("스케쥴이 없습니다");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }

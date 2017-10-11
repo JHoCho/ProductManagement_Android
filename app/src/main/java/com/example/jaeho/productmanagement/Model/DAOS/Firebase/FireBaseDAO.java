@@ -107,4 +107,9 @@ public abstract class FireBaseDAO implements InformationDAO {
     public void askChange(QRDO qrdo){
         ref = new DatabaseFromFirebase(context,"Ask");
         ref.askChange(qrdo);}
+    public void getSchedule(String year,String month,String day){ref = new DatabaseFromFirebase(context,"Calendar");
+        ref.getSchedule(year,month,day);}
+    public void addListenerForSQLite(){
+        auth.addListenerForSQLite();
+    }
 }

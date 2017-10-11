@@ -10,11 +10,14 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
+import com.example.jaeho.productmanagement.Model.DO.QRDO;
 import com.example.jaeho.productmanagement.R;
 import com.example.jaeho.productmanagement.utils.Constants;
 import com.example.jaeho.productmanagement.utils.QRStringTokenizer;
@@ -24,7 +27,10 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+
 import static com.example.jaeho.productmanagement.utils.Constants.MESSAGE_DONE;
 
 public class CountItemActivity extends AppCompatActivity {
@@ -39,13 +45,16 @@ public class CountItemActivity extends AppCompatActivity {
     String numsForCount;
     QRStringTokenizer qst;
     HashMap<String, Boolean> hashMap;
+    ArrayList<String> rawsForChecking;
+    Button finishBtn;
+    int tmp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_count_item);
         myDao = new NowUsingDAO(this);
-        if(myDao.getCurrentUser().getCompanyName().equals(null)){
+        if (myDao.getCurrentUser().getCompanyName().equals(null)) {
             Toast.makeText(getApplicationContext(), "세션이 종료되었습니다. 재접속 부탁 드립니다.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(CountItemActivity.this, MainActivity.class);
             startActivity(intent);
@@ -53,15 +62,22 @@ public class CountItemActivity extends AppCompatActivity {
         }
         cameraView = (SurfaceView) findViewById(R.id.countCameraView);
         countedItemsTv = (TextView) findViewById(R.id.countedItemsTv);
+        finishBtn = (Button) findViewById(R.id.finishBtn);
         qst = new QRStringTokenizer();
         countedItemsTv.setText("0");
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-
+        finishBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                afterFinished();
+            }
+        });
         if (bundle != null) {
             numsForCount = (String) bundle.get("numOfProduct");
             hashMap = (HashMap<String, Boolean>) bundle.get("hashMap");
-            System.out.println("CountItemActivity.java hashMap"+hashMap.toString());
+            rawsForChecking = (ArrayList<String>) bundle.get("rawsForChecking");
+            System.out.println("CountItemActivity.java hashMap" + hashMap.toString());
             countedItemsTv.setText("0" + "/" + numsForCount);
         }
 ///////////////////////////////////////쓰레드로 보낸 QR 받아 처리하는 부분/////////////////////////////////////////////////
@@ -165,13 +181,53 @@ public class CountItemActivity extends AppCompatActivity {
         } else {
             Toast.makeText(getApplicationContext(), "본인회사가 아님" + qst.getSplitedQRDO().getCompanyName().toString() + "회사꺼임", Toast.LENGTH_SHORT).show();
         }
+        if (isFinished()) {
+            afterFinished();
+        } else {
+            afterFinished();
+        }
+    }
+
+    public void afterFinished() {
+        if (isFinished()) {
+            Toast.makeText(this, "검사가 완료되었습니다.", Toast.LENGTH_SHORT).show();
+        } else {
+            for (int i = 0; i < rawsForChecking.size(); i++) {
+                if(hashMap.get(rawsForChecking.get(i))==false){
+                QRDO qrdo = new QRDO();
+                qrdo.setLocation("lost");
+                Calendar calendar = Calendar.getInstance();
+                    String month= Integer.toString(calendar.get(Calendar.MONTH) + 1);
+                    String day =Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
+                    if(Integer.parseInt(month)<10){
+                        month = "0"+month;
+                    }
+                    if(Integer.parseInt(day)<10){
+                        day = "0"+day;
+                    }
+                String retDay = Integer.toString(calendar.get(Calendar.YEAR)) + "-" + month + "-" + day;
+                qrdo.setOutDate(retDay);
+                qrdo.setSerialNumber(rawsForChecking.get(i));
+                myDao.askChange(qrdo);
+                }
+            }
+        }
+
+    }
+
+    public boolean isFinished() {
+        if (Integer.toString(tmp).equals(countedItemsTv.getText().toString().split("/"))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void getAndPlusOne(String key) {
         String s[] = countedItemsTv.getText().toString().split("/");
-        Integer tmp = Integer.parseInt(s[0]);
+        tmp = Integer.parseInt(s[0]);
         tmp = tmp + 1;
-        countedItemsTv.setText(tmp.toString() + "/" + numsForCount);
+        countedItemsTv.setText(Integer.toString(tmp) + "/" + numsForCount);
         hashMap.put(key, true);
     }
 

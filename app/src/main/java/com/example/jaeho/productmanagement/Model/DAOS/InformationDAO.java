@@ -45,4 +45,6 @@ public interface InformationDAO {//앱스트렉으로 바꾼다음 인스턴스�
     ArrayList<String> getRawsForChecking();
     QRDO getOneQrdo(String[] st1,String[] st2);
     void askChange(QRDO qrdo);
+    void getSchedule(String year,String month,String day);
+    void addListenerForSQLite();
 }

@@ -1,11 +1,15 @@
 package com.example.jaeho.productmanagement.Controller.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CalendarView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
@@ -15,6 +19,7 @@ import com.example.jaeho.productmanagement.R;
 public class CalendarActivity extends AppCompatActivity {
     CalendarView calendarView;
     InformationDAO myDao;
+    public static TextView calendarTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +36,29 @@ public class CalendarActivity extends AppCompatActivity {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int dayOfMonth) {
+
                 month = month + 1;
                 AlertDialog.Builder dlg = new AlertDialog.Builder(CalendarActivity.this)
-                        .setNegativeButton("취소", null)
+                        .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                calendarTv=null;
+                            }
+                        })
                         .setTitle(Integer.toString(year) + "년" + Integer.toString(month) + "월" + Integer.toString(dayOfMonth) + "일 의 할일");
-                dlg.setPositiveButton("확인 ", null);//null부분에 클릭되었을시 부분 추가가능
-                //dlg.setView();  하여 연월일로 받은정보를이용 그날 할일 체크후 바로 가능하도록 할 예정. 뷰에
+                dlg.setPositiveButton("확인 ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        calendarTv=null;
+                    }
+                });//null부분에 클릭되었을시 부분 추가가능
+                if (calendarTv == null) {
+                    calendarTv = new TextView(CalendarActivity.this);
+                }
+                calendarTv.setText("");
+                myDao.getSchedule(Integer.toString(year), Integer.toString(month), Integer.toString(dayOfMonth));
+                //여기서 요청
+                dlg.setView(calendarTv);
                 dlg.show();
             }
         });
