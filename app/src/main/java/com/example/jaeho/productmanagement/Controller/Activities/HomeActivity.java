@@ -25,6 +25,7 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+        myDao.addListenerForSQLite();
         btnProduct= (Button)findViewById(R.id.btnProduct);
         btnCheck= (Button)findViewById(R.id.btnCheck);
         btnQnA= (Button)findViewById(R.id.btnQnA);

@@ -56,6 +56,7 @@ public class AuthForFirebase {
     private ArrayAdapter<String> adapter;
     private String strCompany;
     SQLiteDB sqLiteDB;
+    boolean isFirstAccess = true;
 
     public AuthForFirebase() {
     }
@@ -77,6 +78,7 @@ public class AuthForFirebase {
         };
         onStart();
     }
+
     public void onStart() {
         mAuth.addAuthStateListener(mAuthListener);
     }
@@ -405,16 +407,66 @@ public class AuthForFirebase {
         });
     }
 
+    public void addListenerForSQLite() {
+        database = new DatabaseFromFirebase(context);
+        if (CurentUser.getInstance().getCompanyName() != null)
+                database.mRootRef.child("QR").child(CurentUser.getInstance().getCompanyName()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (isFirstAccess) {
+                            isFirstAccess =false;
+                        }else {
+                            initQRdataWithOutCheck(database);
+                            Toast.makeText(context, "QR정보가 변경되었습니다", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+    }
+
+    private void initQRdataWithOutCheck(final DatabaseFromFirebase database) {
+        sqLiteDB = new SQLiteDB(context);
+        showProgressDialog(context);
+        database.mRootRef.child("QR").child(CurentUser.getInstance().getCompanyName().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                try {
+                    if (!sqLiteDB.getDataCompanyName().equals(CurentUser.getInstance().getCompanyName())) {
+                        initSQLData(dataSnapshot);
+                    } else {
+                        //회사명이 같으면
+                        initSQLData(dataSnapshot);
+                        hidProgressDialog();
+                    }
+                } catch (NullPointerException e) {
+                    //DB내의 회사명이 null이면 첫접속이므로 초기화를 시작해줌.
+                    e.printStackTrace();
+                    initSQLData(dataSnapshot);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
     private void initQRdata(final DatabaseFromFirebase database) {
         sqLiteDB = new SQLiteDB(context);
         showProgressDialog(context);
         database.mRootRef.child("QR").child(CurentUser.getInstance().getCompanyName().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //할일
-                //여기서 데이터가 들어왔을 때 들어온 값의 회사 부분이 다르다면 초기화하고 init
-                //같다면 정리하지 않음 이하 바뀌는 부분이 있을경우
-                //서비스에서 받아서 브로드캐스트 리시버로 데이터를 작성해줘야 한다.
+
                 try {
                     if (!sqLiteDB.getDataCompanyName().equals(CurentUser.getInstance().getCompanyName())) {
                         initSQLData(dataSnapshot);
