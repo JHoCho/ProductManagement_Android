@@ -137,6 +137,7 @@ public class SelectLocationActivity extends AppCompatActivity {
                                 hashMap.put(rawsForChecking.get(j),false);
                             }
                             intent.putExtra("hashMap",hashMap);
+                            intent.putExtra("rawsForChecking",rawsForChecking);
                             startActivity(intent);
                         }
                     });
