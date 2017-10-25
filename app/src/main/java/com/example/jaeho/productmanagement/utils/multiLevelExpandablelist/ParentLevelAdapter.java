@@ -11,10 +11,9 @@ import android.widget.TextView;
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
 import com.example.jaeho.productmanagement.R;
-
+import com.example.jaeho.productmanagement.utils.multiLevelExpandablelist.SecondLevelAdapter;
 import java.util.ArrayList;
 
-import static android.content.Context.SYSTEM_HEALTH_SERVICE;
 import static com.example.jaeho.productmanagement.Controller.Activities.SelectLocationActivity.selectedSt1;
 import static com.example.jaeho.productmanagement.Controller.Activities.SelectLocationActivity.selectedSt2;
 

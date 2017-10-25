@@ -118,6 +118,7 @@ public class CheckQRActivity extends PermissionActivity {
                     }
                 } else {
 
+
                 }
             }
 

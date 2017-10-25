@@ -16,6 +16,8 @@ import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
 import com.example.jaeho.productmanagement.R;
 
+import static com.example.jaeho.productmanagement.utils.Constants.hidProgressDialog;
+
 public class CalendarActivity extends AppCompatActivity {
     CalendarView calendarView;
     InformationDAO myDao;
@@ -24,6 +26,7 @@ public class CalendarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        hidProgressDialog();
         myDao = new NowUsingDAO(this);
         if (myDao.getCurrentUser().getCompanyName().equals(null)) {
             Toast.makeText(getApplicationContext(), "세션이 종료되었습니다. 재접속 부탁 드립니다.", Toast.LENGTH_SHORT).show();

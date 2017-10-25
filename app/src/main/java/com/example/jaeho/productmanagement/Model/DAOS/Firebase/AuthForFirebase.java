@@ -45,7 +45,7 @@ import static com.example.jaeho.productmanagement.utils.Constants.hidProgressDia
 import static com.example.jaeho.productmanagement.utils.Constants.showProgressDialog;
 
 
-public class AuthForFirebase {
+public class AuthForFirebase{
     private com.google.firebase.auth.FirebaseAuth mAuth;
     private com.google.firebase.auth.FirebaseAuth.AuthStateListener mAuthListener;
     public Context context;
@@ -148,13 +148,17 @@ public class AuthForFirebase {
                         if (!task.isSuccessful() || !user.isEmailVerified() || !isNameSet()) {//겟이메일한것을 뜯어 아이디로 써서 접속하여 내부의 컨펌이 있는지 확인하고 컨펌되었으면 접속가능
                             //실패시 로그 띄우는 양Log.w(TAG, "signInWithEmail:failed", task.getException());
                             //실패시 isSignIn을 변경하지않음.
-                            if (!user.isEmailVerified()) {
-                                toastoast("이메일 인증이 완료되지 않았습니다. 확인해주세요");
-                            } else if (!isNameSet()) {
-                                setProfileName(pw);
+                            try {
+                                if (!user.isEmailVerified()) {
+                                    toastoast("이메일 인증이 완료되지 않았습니다. 확인해주세요");
+                                } else if (!isNameSet()) {
+                                    setProfileName(pw);
+                                }
+                                hidProgressDialog();
+                                Toast.makeText(context, "인증에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                            } catch (Exception e) {
+                                Toast.makeText(context, "인증에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                             }
-                            hidProgressDialog();
-                            Toast.makeText(context, "인증에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                         } else {
 
                             varifypermit();
@@ -410,21 +414,22 @@ public class AuthForFirebase {
     public void addListenerForSQLite() {
         database = new DatabaseFromFirebase(context);
         if (CurentUser.getInstance().getCompanyName() != null)
-                database.mRootRef.child("QR").child(CurentUser.getInstance().getCompanyName()).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (isFirstAccess) {
-                            isFirstAccess =false;
-                        }else {
-                            initQRdataWithOutCheck(database);
-                            Toast.makeText(context, "QR정보가 변경되었습니다", Toast.LENGTH_SHORT).show();
-                        }
+            database.mRootRef.child("QR").child(CurentUser.getInstance().getCompanyName()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (isFirstAccess) {
+                        isFirstAccess = false;
+                    } else {
+                        initQRdataWithOutCheck(database);
+                        Toast.makeText(context, "QR정보가 변경되었습니다", Toast.LENGTH_SHORT).show();
                     }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                }
 
-                    }
-                });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
 
     }
 
@@ -463,6 +468,7 @@ public class AuthForFirebase {
     private void initQRdata(final DatabaseFromFirebase database) {
         sqLiteDB = new SQLiteDB(context);
         showProgressDialog(context);
+
         database.mRootRef.child("QR").child(CurentUser.getInstance().getCompanyName().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -561,7 +567,8 @@ public class AuthForFirebase {
     }
 
     public String getUserEmail() {
-        return user.getEmail();
+
+        return CurentUser.getInstance().getEmail();
     }
 
     private void signOut() {

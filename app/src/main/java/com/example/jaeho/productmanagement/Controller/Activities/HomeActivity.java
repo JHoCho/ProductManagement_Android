@@ -5,14 +5,17 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
 import com.example.jaeho.productmanagement.R;
 
+import static com.example.jaeho.productmanagement.utils.Constants.showProgressDialog;
+
 public class HomeActivity extends AppCompatActivity {
-    Button btnProduct,btnCheck,btnQnA,btnCalendar,btnAbout;
+    LinearLayout btnProduct,btnCheck,btnQnA,btnCalendar,btnAbout;
     InformationDAO myDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +29,11 @@ public class HomeActivity extends AppCompatActivity {
             finish();
         }
         myDao.addListenerForSQLite();
-        btnProduct= (Button)findViewById(R.id.btnProduct);
-        btnCheck= (Button)findViewById(R.id.btnCheck);
-        btnQnA= (Button)findViewById(R.id.btnQnA);
-        btnCalendar= (Button)findViewById(R.id.btnCalendar);
-        btnAbout= (Button)findViewById(R.id.btnAbout);
+        btnProduct= (LinearLayout) findViewById(R.id.btnProduct);
+        btnCheck= (LinearLayout)findViewById(R.id.btnCheck);
+        btnQnA= (LinearLayout)findViewById(R.id.btnQnA);
+        btnCalendar= (LinearLayout)findViewById(R.id.btnCalendar);
+        btnAbout= (LinearLayout)findViewById(R.id.btnAbout);
 
         btnProduct.setOnClickListener(new View.OnClickListener() {//checkItem클래스로 인텐트 시키는 부분
             @Override
@@ -56,6 +59,7 @@ public class HomeActivity extends AppCompatActivity {
         btnCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                showProgressDialog(HomeActivity.this);
                 Intent intent = new Intent(HomeActivity.this,CalendarActivity.class);
                 startActivity(intent);
             }

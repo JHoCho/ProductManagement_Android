@@ -4,15 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
 
-import com.example.jaeho.productmanagement.Controller.Activities.HomeActivity;
+import com.example.jaeho.productmanagement.Controller.Activities.QNAReadActivity;
+import com.example.jaeho.productmanagement.Model.DO.QNADO;
 import com.example.jaeho.productmanagement.Model.DO.QRDO;
 import com.example.jaeho.productmanagement.Model.DO.UserDO;
-import com.example.jaeho.productmanagement.Controller.Activities.QNAReadActivity;
 import com.example.jaeho.productmanagement.utils.CurentUser;
 import com.example.jaeho.productmanagement.utils.QNAActivitys.CustomQNAAdapter;
-import com.example.jaeho.productmanagement.Model.DO.QNADO;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
@@ -25,7 +23,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static android.content.Context.SYSTEM_HEALTH_SERVICE;
 import static com.example.jaeho.productmanagement.Controller.Activities.CalendarActivity.calendarTv;
 import static com.example.jaeho.productmanagement.utils.Constants.hidProgressDialog;
 import static com.example.jaeho.productmanagement.utils.Constants.showProgressDialog;
@@ -285,20 +282,20 @@ public class DatabaseFromFirebase {
         });
     }
 
-    public void getSchedule(String year, String month, String day){
-        if(month.length()<2){
-            month="0"+month;
+    public void getSchedule(String year, String month, String day) {
+        if (month.length() < 2) {
+            month = "0" + month;
         }
-        if (day.length()<2){
-            day ="0"+day;
+        if (day.length() < 2) {
+            day = "0" + day;
         }
-        String content = year+"-"+month+"-"+day;
+        String content = year + "-" + month + "-" + day;
         mRootRef.child("Calendar").child(CurentUser.getInstance().getCompanyName()).child(content).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue()!=null){
-                calendarTv.setText(dataSnapshot.getValue().toString());}else
-                    {
+                if (dataSnapshot.getValue() != null) {
+                    calendarTv.setText(dataSnapshot.getValue().toString());
+                } else {
                     calendarTv.setText("스케쥴이 없습니다");
                 }
             }

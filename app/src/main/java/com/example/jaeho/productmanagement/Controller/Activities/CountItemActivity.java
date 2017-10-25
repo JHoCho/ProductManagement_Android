@@ -33,7 +33,7 @@ import java.util.HashMap;
 
 import static com.example.jaeho.productmanagement.utils.Constants.MESSAGE_DONE;
 
-public class CountItemActivity extends AppCompatActivity {
+public class CountItemActivity extends PermissionActivity {
 
     SurfaceView cameraView;//화면 업데이트를 백그라운드로 처리해주는 서페이스뷰를 사용 할 예정
     CameraSource cameraSource;

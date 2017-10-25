@@ -6,44 +6,137 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
+    <LinearLayout
         android:id="@+id/btnProduct"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="물품조회" />
+        android:orientation="vertical"
+        android:background="#FFEEE4"
+        >
+        <ImageView
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/main_product"/>
+        <TextView
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:text="물품조회" />
+    </LinearLayout>
 
-    <Button
+
+    <LinearLayout
         android:id="@+id/btnCheck"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="수량체크" />
+        android:orientation="vertical"
+        android:background="#ABD0CE">
+        <ImageView
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/main_check"/>
+        <TextView
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:text="수량체크" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-        <Button
+        <LinearLayout
             android:id="@+id/btnQnA"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="QnA" />
+            android:orientation="vertical"
+            android:background="#D09E88">
+            <ImageView
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/main_qna"/>
+            <TextView
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:text="QnA" />
 
-        <Button
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/btnCalendar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Calendar" />
+            android:orientation="vertical"
+            android:background="#D9D4CF">
+            <ImageView
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/main_calendar"/>
+            <TextView
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:text="Calendar" />
 
-        <Button
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/btnAbout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="About" />
+            android:orientation="vertical"
+            android:background="#F0E5DE">
+            <ImageView
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/main_about"/>
+            <TextView
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:text="About" />
+
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>
