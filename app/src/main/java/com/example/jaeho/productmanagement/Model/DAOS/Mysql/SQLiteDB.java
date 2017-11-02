@@ -208,13 +208,20 @@ public class SQLiteDB {
         }
         return 0;
     }
-
+    public int getAllNumOfRow(){
+        Cursor cursor = db.rawQuery("SELECT "+"count(*)"+" FROM " + TABLE_NAME +";", null);
+        cursor.moveToFirst();
+        if(cursor!=null){
+            return Integer.parseInt(cursor.getString(0));
+        }
+        return 0;
+    }
     private String defineQuery2(String[] st){
         String productName;
         String detailedProductName ;
         String serialNumber;
         if(st[0].equals("")){
-            return  "';";
+            return "SELECT "+"count(*)"+" FROM " + TABLE_NAME +";";
         }else if(st[1].equals("")){
             productName = st[0];
             return "SELECT "+"count(*)"+" FROM " + TABLE_NAME + " WHERE productName='"+productName+defineQuery(selectedSt1);
@@ -246,7 +253,7 @@ public class SQLiteDB {
         String detailedProductName ;
         String serialNumber;
         if(st[0].equals("")){
-            return  "';";
+            return  "SELECT "+"serialNumber"+" FROM " + TABLE_NAME +";";
         }else if(st[1].equals("")){
             productName = st[0];
             return "SELECT "+"serialNumber"+" FROM " + TABLE_NAME + " WHERE productName='"+productName+defineQuery(selectedSt1);

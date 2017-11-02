@@ -45,7 +45,7 @@ import static com.example.jaeho.productmanagement.utils.Constants.hidProgressDia
 import static com.example.jaeho.productmanagement.utils.Constants.showProgressDialog;
 
 
-public class AuthForFirebase{
+public class AuthForFirebase {
     private com.google.firebase.auth.FirebaseAuth mAuth;
     private com.google.firebase.auth.FirebaseAuth.AuthStateListener mAuthListener;
     public Context context;
@@ -57,6 +57,7 @@ public class AuthForFirebase{
     private String strCompany;
     SQLiteDB sqLiteDB;
     boolean isFirstAccess = true;
+    long cntNumOfQR = 0;
 
     public AuthForFirebase() {
     }
@@ -413,12 +414,19 @@ public class AuthForFirebase{
 
     public void addListenerForSQLite() {
         database = new DatabaseFromFirebase(context);
-        if (CurentUser.getInstance().getCompanyName() != null)
+        if (CurentUser.getInstance().getCompanyName() != null) {
+
             database.mRootRef.child("QR").child(CurentUser.getInstance().getCompanyName()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (isFirstAccess) {
                         isFirstAccess = false;
+                        cntNumOfQR = dataSnapshot.getChildrenCount();
+                        sqLiteDB = new SQLiteDB(context);
+                        if (cntNumOfQR != sqLiteDB.getAllNumOfRow()) {
+                            initQRdataWithOutCheck(database);
+                            Toast.makeText(context, "QR정보가 변경되었습니다", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         initQRdataWithOutCheck(database);
                         Toast.makeText(context, "QR정보가 변경되었습니다", Toast.LENGTH_SHORT).show();
@@ -430,7 +438,7 @@ public class AuthForFirebase{
 
                 }
             });
-
+        }
     }
 
     private void initQRdataWithOutCheck(final DatabaseFromFirebase database) {
@@ -448,22 +456,21 @@ public class AuthForFirebase{
 
             }
         });
-
-
     }
+
+
 
     private void initQRdata(final DatabaseFromFirebase database) {
         sqLiteDB = new SQLiteDB(context);
         showProgressDialog(context);
         try {
-
-
             database.mRootRef.child("QR").child(CurentUser.getInstance().getCompanyName().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                     try {
                         if (!sqLiteDB.getDataCompanyName().equals(CurentUser.getInstance().getCompanyName())) {
+                            //회사명이 다르면 -> 회사명이 다르거나 QR갯수가 다르면
                             initSQLData(dataSnapshot);
                         } else {
                             //회사명이 같으면
@@ -483,9 +490,9 @@ public class AuthForFirebase{
 
                 }
             });
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             initCurrentUSer();
-            System.out.println("AuthForFirebase.java error"+e.toString());
+            System.out.println("AuthForFirebase.java error" + e.toString());
         }
 
     }

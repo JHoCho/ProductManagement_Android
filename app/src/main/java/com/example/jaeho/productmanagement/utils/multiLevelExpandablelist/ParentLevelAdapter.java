@@ -114,7 +114,6 @@ public class ParentLevelAdapter extends BaseExpandableListAdapter
             mid.add(arr.get(groupPosition).get(childPosition));
             switch (type){
                 case 1:
-                    System.out.println("몇번들어오는거죠");
                     secondLvELV.setAdapter(new SecondLevelAdapter(context,mid,myDao.getLowLevelLocation(topLv.get(groupPosition).toString(),arr.get(groupPosition).get(childPosition)),this.type));
                     secondLvELV.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
                         @Override
@@ -134,7 +133,9 @@ public class ParentLevelAdapter extends BaseExpandableListAdapter
                     });
                     break;
                 case 2:
-                    secondLvELV.setAdapter(new SecondLevelAdapter(context,arr.get(groupPosition),myDao.getLowLevelPname(topLv.get(groupPosition).toString(),arr.get(groupPosition).get(childPosition).toString()),this.type));
+                    mid = new ArrayList<>();
+                    mid.add(arr.get(groupPosition).get(childPosition));//arr.get(groupPosition)
+                    secondLvELV.setAdapter(new SecondLevelAdapter(context,mid,myDao.getLowLevelPname(topLv.get(groupPosition).toString(),arr.get(groupPosition).get(childPosition).toString()),this.type));
                     secondLvELV.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
                         @Override
                         public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
