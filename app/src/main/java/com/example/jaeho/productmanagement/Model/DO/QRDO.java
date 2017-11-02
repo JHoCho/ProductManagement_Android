@@ -70,13 +70,14 @@ public class QRDO {
 
     public String getLocation() {
         if (location.equals(null)){
+            System.out.println(companyName+building+floor+roomName);
             return companyName+building+floor+roomName;
         }else {
             return location;
         }
     }
 
-    private void setLocation() {
+    public void setLocation() {
         if(companyName!=null&&building!=null&&floor!=null&&roomName!=null) {
             this.location = companyName+building+floor+roomName;
         }else {

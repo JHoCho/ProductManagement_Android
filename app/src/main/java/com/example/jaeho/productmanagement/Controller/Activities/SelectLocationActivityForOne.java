@@ -141,7 +141,7 @@ public class SelectLocationActivityForOne extends AppCompatActivity {
                                     dlg_qr_product_name_edt.setText(myDao.getOneQrdo(selectedSt1, selectedSt2).getProductName());
                                     dlg_qr_location_edt.setText(myDao.getOneQrdo(selectedSt1, selectedSt2).getLocation());
                                     dlg_qr_signalNo_edt.setText(myDao.getOneQrdo(selectedSt1, selectedSt2).getSerialNumber());
-                                    dlg_qr_date_out_edt.setText("반출일은 나중에 긁어오는 식으로 수정 요함.");//반출일은 나중에 수정요함.
+                                    dlg_qr_date_out_edt.setText("X");//반출일은 나중에 수정요함.
                                     dlg_qr_price_edt.setText(myDao.getOneQrdo(selectedSt1, selectedSt2).getPrice());
                                     dlg_qr_product_model_name_edt.setText(myDao.getOneQrdo(selectedSt1, selectedSt2).getDetailedProductName());
                                     dlg_qr_product_admin_edt.setText(myDao.getOneQrdo(selectedSt1, selectedSt2).getAdminID());

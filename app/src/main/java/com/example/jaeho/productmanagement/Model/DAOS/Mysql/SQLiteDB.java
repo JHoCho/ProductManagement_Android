@@ -10,6 +10,7 @@ import com.example.jaeho.productmanagement.Model.DO.QRDO;
 import com.example.jaeho.productmanagement.utils.CurentUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -169,6 +170,7 @@ public class SQLiteDB {
                     System.out.println("SQLiteDB.java"+"값이 중복되어 무시됨");
                 }
             }
+            Collections.sort(arl);
             return arl;
         }
         System.out.println("SQLiteDB.java null");
@@ -261,6 +263,7 @@ public class SQLiteDB {
     }
     public QRDO getOneQrdo(String[] st1,String[] st2){
         String query = "SELECT "+"*"+" FROM " + TABLE_NAME + " WHERE productName='"+st2[0]+"' and detailedProductName='"+st2[1]+"' and serialNumber='"+st2[2]+"' and building='"+st1[0]+"' and floor='"+st1[1]+"' and roomName='"+st1[2]+"';";
+        System.out.println(query);
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
         QRDO qrdo = new QRDO();

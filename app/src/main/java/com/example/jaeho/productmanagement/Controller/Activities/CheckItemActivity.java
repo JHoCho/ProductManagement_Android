@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
@@ -12,7 +13,7 @@ import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
 import com.example.jaeho.productmanagement.R;
 
 public class CheckItemActivity extends AppCompatActivity {
-    Button btnGoCheckQR,btnSelectedCheck;
+    LinearLayout btnGoCheckQR,btnSelectedCheck;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +25,8 @@ public class CheckItemActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-        btnGoCheckQR = (Button)findViewById(R.id.btnGoCheckQR);
-        btnSelectedCheck = (Button)findViewById(R.id.btnSelectedCheck);
+        btnGoCheckQR = (LinearLayout)findViewById(R.id.btnGoCheckQR);
+        btnSelectedCheck = (LinearLayout)findViewById(R.id.btnSelectedCheck);
         btnGoCheckQR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

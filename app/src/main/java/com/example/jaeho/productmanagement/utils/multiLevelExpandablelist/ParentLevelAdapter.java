@@ -24,6 +24,7 @@ import static com.example.jaeho.productmanagement.Controller.Activities.SelectLo
 public class ParentLevelAdapter extends BaseExpandableListAdapter
 {   private Context context;
     private ArrayList topLv,midLv;
+    private ArrayList<ArrayList<String>> arr =new ArrayList<>();
     InformationDAO myDao;
     int type =2;
     public ParentLevelAdapter(Context context, ArrayList<String> topLv,int type){
@@ -36,6 +37,15 @@ public class ParentLevelAdapter extends BaseExpandableListAdapter
         {
         myDao= new NowUsingDAO(context);
         }
+        System.out.println(topLv);
+        for(int i=0;i<topLv.size();i++){
+            if(type==1){
+                arr.add(myDao.getMiddleLevelLocation(topLv.get(i).toString()));
+            }
+            else
+                arr.add(myDao.getMiddleLevelPname(topLv.get(i).toString()));
+        }
+        System.out.println(arr);
     }
     @Override
     public int getGroupCount() {
@@ -44,7 +54,7 @@ public class ParentLevelAdapter extends BaseExpandableListAdapter
 
     @Override
     public int getChildrenCount(int groupid) {
-        return midLv.size();
+        return arr.get(groupid).size();
     }
 
     @Override
@@ -54,7 +64,7 @@ public class ParentLevelAdapter extends BaseExpandableListAdapter
 
     @Override
     public String getChild(int group, int child) {
-        return midLv.get(child).toString();
+        return arr.get(group).get(child);
     }
 
     @Override
@@ -81,7 +91,6 @@ public class ParentLevelAdapter extends BaseExpandableListAdapter
                     convertView = inflater.inflate(R.layout.row_first,null);
                     TextView text = (TextView)convertView.findViewById(R.id.eventsListEventRowText);
                     text.setText(topLv.get(i).toString());
-                    this.midLv= myDao.getMiddleLevelLocation(topLv.get(i).toString());
                 }
                 break;
             case 2:
@@ -90,7 +99,6 @@ public class ParentLevelAdapter extends BaseExpandableListAdapter
                     convertView = inflater.inflate(R.layout.row_first,null);
                     TextView text = (TextView)convertView.findViewById(R.id.eventsListEventRowText);
                     text.setText(topLv.get(i).toString());
-                    this.midLv= myDao.getMiddleLevelPname(topLv.get(i).toString());
                 }
                 break;
         }
@@ -99,51 +107,57 @@ public class ParentLevelAdapter extends BaseExpandableListAdapter
     }
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        if(convertView==null){
+            System.out.println(groupPosition);
+            CustomExpendableListView secondLvELV = new CustomExpendableListView(context);
+            ArrayList<String> mid = new ArrayList<>();
+            mid.add(arr.get(groupPosition).get(childPosition));
+            switch (type){
+                case 1:
+                    System.out.println("몇번들어오는거죠");
+                    secondLvELV.setAdapter(new SecondLevelAdapter(context,mid,myDao.getLowLevelLocation(topLv.get(groupPosition).toString(),arr.get(groupPosition).get(childPosition)),this.type));
+                    secondLvELV.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                        @Override
+                        public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+                            selectedSt1[1]=expandableListView.getItemAtPosition(i).toString();
+                            selectedSt1[2]="";
+                            return false;
+                        }
+                    });
+                    secondLvELV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                        @Override
+                        public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                            selectedSt1[1]=expandableListView.getItemAtPosition(i).toString();
+                            selectedSt1[2]=expandableListView.getExpandableListAdapter().getChild(i,i1).toString();
+                            return false;
+                        }
+                    });
+                    break;
+                case 2:
+                    secondLvELV.setAdapter(new SecondLevelAdapter(context,arr.get(groupPosition),myDao.getLowLevelPname(topLv.get(groupPosition).toString(),arr.get(groupPosition).get(childPosition).toString()),this.type));
+                    secondLvELV.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                        @Override
+                        public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+                            selectedSt2[1]=expandableListView.getItemAtPosition(i).toString();
+                            selectedSt2[2]="";
+                            return false;
+                        }
+                    });
+                    secondLvELV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                        @Override
+                        public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                            selectedSt2[1]=expandableListView.getItemAtPosition(i).toString();
+                            selectedSt2[2]=expandableListView.getExpandableListAdapter().getChild(i,i1).toString();
+                            return false;
+                        }
+                    });
+                    break;
 
-        CustomExpendableListView secondLvELV = new CustomExpendableListView(context);
-        switch (type){
-            case 1:
-                secondLvELV.setAdapter(new SecondLevelAdapter(context,myDao.getMiddleLevelLocation(topLv.get(groupPosition).toString()),myDao.getLowLevelLocation(topLv.get(groupPosition).toString(),midLv.get(childPosition).toString()),this.type));
-                secondLvELV.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-                    @Override
-                    public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-                        selectedSt1[1]=expandableListView.getItemAtPosition(i).toString();
-                        selectedSt1[2]="";
-                        return false;
-                    }
-                });
-                secondLvELV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-                    @Override
-                    public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-                        selectedSt1[1]=expandableListView.getItemAtPosition(i).toString();
-                        selectedSt1[2]=expandableListView.getExpandableListAdapter().getChild(i,i1).toString();
-                        return false;
-                    }
-                });
-                break;
-            case 2:
-                secondLvELV.setAdapter(new SecondLevelAdapter(context,myDao.getMiddleLevelPname(topLv.get(groupPosition).toString()),myDao.getLowLevelPname(topLv.get(groupPosition).toString(),midLv.get(childPosition).toString()),this.type));
-                secondLvELV.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-                    @Override
-                    public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-                        selectedSt2[1]=expandableListView.getItemAtPosition(i).toString();
-                        selectedSt2[2]="";
-                        return false;
-                    }
-                });
-                secondLvELV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-                    @Override
-                    public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-                        selectedSt2[1]=expandableListView.getItemAtPosition(i).toString();
-                        selectedSt2[2]=expandableListView.getExpandableListAdapter().getChild(i,i1).toString();
-                        return false;
-                    }
-                });
-            break;
-
+            }
+            secondLvELV.setGroupIndicator(null);
+            convertView = secondLvELV;
         }
-        secondLvELV.setGroupIndicator(null);
-        return secondLvELV;
+        return convertView;
     }
 
     @Override

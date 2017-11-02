@@ -6,17 +6,55 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
+    <LinearLayout
         android:id="@+id/btnGoCheckQR"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="QR_code 조회" />
+        android:orientation="vertical"
+        android:background="#e4e7ec">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/check_item_qr"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="15dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textSize="25dp"
+            android:text="QR_code 조회"
+            android:textColor="#000000"/>
+    </LinearLayout>
 
-    <Button
+
+    <LinearLayout
+        android:background="#aacfd0"
         android:id="@+id/btnSelectedCheck"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="선택조회" />
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/check_item_selected"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="15dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textSize="25dp"
+            android:text="선택조회"
+            android:textColor="#000000"/>
+    </LinearLayout>
+
 </LinearLayout>

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
@@ -61,6 +62,13 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 showProgressDialog(HomeActivity.this);
                 Intent intent = new Intent(HomeActivity.this,CalendarActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this,AboutActivity.class);
                 startActivity(intent);
             }
         });

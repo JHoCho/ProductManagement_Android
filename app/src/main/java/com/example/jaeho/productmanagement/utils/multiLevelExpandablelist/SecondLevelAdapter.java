@@ -26,6 +26,7 @@ public class SecondLevelAdapter extends BaseExpandableListAdapter {
         if(type==1) {
             this.type = type;
         }
+        System.out.println("인생:"+midLv.toString());
     }
     @Override
     public int getGroupCount() {

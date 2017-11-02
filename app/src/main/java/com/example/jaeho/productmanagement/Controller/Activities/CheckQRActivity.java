@@ -173,13 +173,14 @@ public class CheckQRActivity extends PermissionActivity {
                     TextView dlg_qr_date_tv = (TextView) view.findViewById(R.id.dlg_qr_date_tv);
 
                     dlg_qr_product_name_edt.setText(qst.getSplitedQRDO().getProductName());
-                    dlg_qr_location_edt.setText(qst.getSplitedQRDO().getLocation());
                     dlg_qr_signalNo_edt.setText(qst.getSplitedQRDO().getSerialNumber());
-                    dlg_qr_date_out_edt.setText("반출일은 나중에 긁어오는 식으로 수정 요함.");//반출일은 나중에 수정요함.
+                    dlg_qr_date_out_edt.setText("X");//반출일은 나중에 수정요함.
                     dlg_qr_price_edt.setText(qst.getSplitedQRDO().getPrice());
                     dlg_qr_product_model_name_edt.setText(qst.getSplitedQRDO().getDetailedProductName());
                     dlg_qr_product_admin_edt.setText(qst.getSplitedQRDO().getAdminID());
                     dlg_qr_date_tv.setText(qst.getSplitedQRDO().getAdminID());
+                    qst.getSplitedQRDO().setLocation();
+                    dlg_qr_location_edt.setText(qst.getSplitedQRDO().getLocation());
                     dlg2.setView(view);
                     dlg2.setPositiveButton("수정 요청하기", new DialogInterface.OnClickListener() {
                         @Override

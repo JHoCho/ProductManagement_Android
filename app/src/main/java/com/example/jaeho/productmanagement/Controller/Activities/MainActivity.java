@@ -1,5 +1,6 @@
 package com.example.jaeho.productmanagement.Controller.Activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         edtID = (EditText) findViewById(R.id.edtID);
         edtPW = (EditText) findViewById(R.id.edtPW);
         edtID.setHint(R.string.id_hint);
+        edtID.setHintTextColor(Color.GRAY);
         mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

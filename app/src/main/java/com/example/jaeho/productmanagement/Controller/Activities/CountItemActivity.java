@@ -177,6 +177,8 @@ public class CountItemActivity extends PermissionActivity {
                     //체크가 되지 않았다면 갯수 +1해줌 hashmap도 true로 바꿔줌
                     getAndPlusOne(qst.getSplitedQRDO().getSerialNumber());
                 }
+            }else {
+                Toast.makeText(CountItemActivity.this, "해당위치에 있는 물건이 아닙니다", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(getApplicationContext(), "본인회사가 아님" + qst.getSplitedQRDO().getCompanyName().toString() + "회사꺼임", Toast.LENGTH_SHORT).show();
@@ -191,28 +193,29 @@ public class CountItemActivity extends PermissionActivity {
     public void afterFinished() {
         if (isFinished()) {
             Toast.makeText(this, "검사가 완료되었습니다.", Toast.LENGTH_SHORT).show();
+            finish();
         } else {
             for (int i = 0; i < rawsForChecking.size(); i++) {
-                if(hashMap.get(rawsForChecking.get(i))==false){
-                QRDO qrdo = new QRDO();
-                qrdo.setLocation("lost");
-                Calendar calendar = Calendar.getInstance();
-                    String month= Integer.toString(calendar.get(Calendar.MONTH) + 1);
-                    String day =Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
-                    if(Integer.parseInt(month)<10){
-                        month = "0"+month;
+                if (hashMap.get(rawsForChecking.get(i)) == false) {
+                    QRDO qrdo = new QRDO();
+                    qrdo.setLocation("lost");
+                    Calendar calendar = Calendar.getInstance();
+                    String month = Integer.toString(calendar.get(Calendar.MONTH) + 1);
+                    String day = Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
+                    if (Integer.parseInt(month) < 10) {
+                        month = "0" + month;
                     }
-                    if(Integer.parseInt(day)<10){
-                        day = "0"+day;
+                    if (Integer.parseInt(day) < 10) {
+                        day = "0" + day;
                     }
-                String retDay = Integer.toString(calendar.get(Calendar.YEAR)) + "-" + month + "-" + day;
-                qrdo.setOutDate(retDay);
-                qrdo.setSerialNumber(rawsForChecking.get(i));
-                myDao.askChange(qrdo);
+                    String retDay = Integer.toString(calendar.get(Calendar.YEAR)) + "-" + month + "-" + day;
+                    qrdo.setOutDate(retDay);
+                    qrdo.setSerialNumber(rawsForChecking.get(i));
+                    myDao.askChange(qrdo);
                 }
             }
         }
-
+        finish();
     }
 
     public boolean isFinished() {

@@ -44,7 +44,13 @@ public class SelectLocationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_location);
         myDao = new NowUsingDAO(this);
+        try{
         if(myDao.getCurrentUser().getCompanyName().equals(null)){
+            Toast.makeText(getApplicationContext(), "세션이 종료되었습니다. 재접속 부탁 드립니다.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(SelectLocationActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }}catch (Exception e){
             Toast.makeText(getApplicationContext(), "세션이 종료되었습니다. 재접속 부탁 드립니다.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(SelectLocationActivity.this, MainActivity.class);
             startActivity(intent);

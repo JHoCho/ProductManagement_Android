@@ -440,20 +440,7 @@ public class AuthForFirebase{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                try {
-                    if (!sqLiteDB.getDataCompanyName().equals(CurentUser.getInstance().getCompanyName())) {
-                        initSQLData(dataSnapshot);
-                    } else {
-                        //회사명이 같으면
-                        initSQLData(dataSnapshot);
-                        hidProgressDialog();
-                    }
-                } catch (NullPointerException e) {
-                    //DB내의 회사명이 null이면 첫접속이므로 초기화를 시작해줌.
-                    e.printStackTrace();
-                    initSQLData(dataSnapshot);
-                }
-
+                initSQLData(dataSnapshot);
             }
 
             @Override
@@ -468,33 +455,38 @@ public class AuthForFirebase{
     private void initQRdata(final DatabaseFromFirebase database) {
         sqLiteDB = new SQLiteDB(context);
         showProgressDialog(context);
+        try {
 
-        database.mRootRef.child("QR").child(CurentUser.getInstance().getCompanyName().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                try {
-                    if (!sqLiteDB.getDataCompanyName().equals(CurentUser.getInstance().getCompanyName())) {
+            database.mRootRef.child("QR").child(CurentUser.getInstance().getCompanyName().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    try {
+                        if (!sqLiteDB.getDataCompanyName().equals(CurentUser.getInstance().getCompanyName())) {
+                            initSQLData(dataSnapshot);
+                        } else {
+                            //회사명이 같으면
+                            System.out.println("DB의 회사이름" + sqLiteDB.getDataCompanyName());
+                            hidProgressDialog();
+                        }
+                    } catch (NullPointerException e) {
+                        //DB내의 회사명이 null이면 첫접속이므로 초기화를 시작해줌.
+                        e.printStackTrace();
                         initSQLData(dataSnapshot);
-                    } else {
-                        //회사명이 같으면
-                        System.out.println("DB의 회사이름" + sqLiteDB.getDataCompanyName());
-                        hidProgressDialog();
                     }
-                } catch (NullPointerException e) {
-                    //DB내의 회사명이 null이면 첫접속이므로 초기화를 시작해줌.
-                    e.printStackTrace();
-                    initSQLData(dataSnapshot);
+
                 }
 
-            }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+                }
+            });
+        }catch (NullPointerException e){
+            initCurrentUSer();
+            System.out.println("AuthForFirebase.java error"+e.toString());
+        }
 
     }
 
@@ -634,11 +626,11 @@ public class AuthForFirebase{
             qrdo.setDate(json.get("date").toString());
             qrdo.setDetailedProductName(json.get("detailedProductName").toString());
             qrdo.setFloor(json.get("floor").toString());
-            qrdo.setLocation(json.get("location").toString());
             qrdo.setPrice(json.get("price").toString());
             qrdo.setProductName(json.get("productName").toString());
             qrdo.setRoomName(json.get("roomName").toString());
             qrdo.setSerialNumber(json.get("serialNumber").toString());
+            qrdo.setLocation();
             arr.add(qrdo);
         }
         sqLiteDB.initData(arr);
