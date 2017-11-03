@@ -152,4 +152,11 @@ public class SelectLocationActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onDestroy() {
+        selectedSt1 = null;
+        selectedSt2 = null;
+        super.onDestroy();
+    }
 }
