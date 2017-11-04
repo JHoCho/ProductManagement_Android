@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
 import static android.R.layout.simple_spinner_item;
+import static com.example.jaeho.productmanagement.R.id.linearListView1;
 import static com.example.jaeho.productmanagement.utils.Constants.hidProgressDialog;
 import static com.example.jaeho.productmanagement.utils.Constants.showProgressDialog;
 
@@ -58,6 +60,7 @@ public class AuthForFirebase {
     SQLiteDB sqLiteDB;
     boolean isFirstAccess = true;
     long cntNumOfQR = 0;
+    ValueEventListener valLs;
 
     public AuthForFirebase() {
     }
@@ -68,7 +71,6 @@ public class AuthForFirebase {
         mAuthListener = new com.google.firebase.auth.FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull com.google.firebase.auth.FirebaseAuth firebaseAuth) {
-
                 if (user != null) {
                     //User가 이미 로그인 ( 사인인) 한 상태
                 } else {
@@ -411,12 +413,18 @@ public class AuthForFirebase {
             }
         });
     }
-
+    public void deleteListenerForSQLite(){
+    if (database!=null){
+        database = new DatabaseFromFirebase(context);
+    }
+        if (valLs != null) {
+            database.mRootRef.child("QR").child(CurentUser.getInstance().getCompanyName()).removeEventListener(valLs);
+        }
+    }
     public void addListenerForSQLite() {
         database = new DatabaseFromFirebase(context);
         if (CurentUser.getInstance().getCompanyName() != null) {
-
-            database.mRootRef.child("QR").child(CurentUser.getInstance().getCompanyName()).addValueEventListener(new ValueEventListener() {
+            valLs=new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (isFirstAccess) {
@@ -437,17 +445,18 @@ public class AuthForFirebase {
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
-            });
+            };
+            database.mRootRef.child("QR").child(CurentUser.getInstance().getCompanyName()).addValueEventListener(valLs);//여기
+
         }
     }
 
     private void initQRdataWithOutCheck(final DatabaseFromFirebase database) {
         sqLiteDB = new SQLiteDB(context);
-        showProgressDialog(context);
+        //showProgressDialog(context);
         database.mRootRef.child("QR").child(CurentUser.getInstance().getCompanyName().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 initSQLData(dataSnapshot);
             }
 

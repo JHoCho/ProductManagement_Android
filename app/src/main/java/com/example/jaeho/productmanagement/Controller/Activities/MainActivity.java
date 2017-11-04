@@ -1,5 +1,6 @@
 package com.example.jaeho.productmanagement.Controller.Activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
 import com.example.jaeho.productmanagement.R;
+import com.example.jaeho.productmanagement.utils.CurentUser;
 
 public class MainActivity extends AppCompatActivity {
     Button btnLogin, btnSignin;

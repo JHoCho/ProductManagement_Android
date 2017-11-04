@@ -35,4 +35,5 @@ public interface InformationDAO {
     void askChange(QRDO qrdo);
     void getSchedule(String year,String month,String day);
     void addListenerForSQLite();
+    void deleteListenerForSQLite();
 }

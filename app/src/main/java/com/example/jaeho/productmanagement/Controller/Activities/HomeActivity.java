@@ -12,6 +12,7 @@ import android.widget.VideoView;
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
 import com.example.jaeho.productmanagement.R;
+import com.example.jaeho.productmanagement.utils.CurentUser;
 
 import static com.example.jaeho.productmanagement.utils.Constants.showProgressDialog;
 
@@ -23,13 +24,14 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         myDao = new NowUsingDAO(this);
-        if(myDao.getCurrentUser().getCompanyName().equals(null)){
-            Toast.makeText(getApplicationContext(), "세션이 종료되었습니다. 재접속 부탁 드립니다.", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+        try{
+            CurentUser.getInstance().getCompanyName();
+            myDao.addListenerForSQLite();
+        }catch (NullPointerException e){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
         }
-        myDao.addListenerForSQLite();
         btnProduct= (LinearLayout) findViewById(R.id.btnProduct);
         btnCheck= (LinearLayout)findViewById(R.id.btnCheck);
         btnQnA= (LinearLayout)findViewById(R.id.btnQnA);
@@ -72,5 +74,11 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myDao.deleteListenerForSQLite();
     }
 }

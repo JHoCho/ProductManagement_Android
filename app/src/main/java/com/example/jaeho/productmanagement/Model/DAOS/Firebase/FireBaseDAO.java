@@ -72,6 +72,10 @@ public abstract class FireBaseDAO implements InformationDAO {
         return auth.getTopLevelPname();
     }
 
+    public void deleteListenerForSQLite() {
+        auth.deleteListenerForSQLite();
+    }
+
     public ArrayList<String> getMiddleLevelPname(String productName) {
         return auth.getMiddleLevelPname(productName);
     }

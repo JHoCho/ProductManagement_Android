@@ -17,7 +17,7 @@
         android:roundIcon="@drawable/home_check"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".Controller.Activities.MainActivity">
+        <activity android:name=".Controller.Activities.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,7 +26,7 @@
         </activity>
         <activity android:name=".Controller.Activities.CheckItemActivity" />
         <activity android:name=".Controller.Activities.CheckQRActivity" />
-        <activity android:name=".Controller.Activities.HomeActivity" />
+        <activity android:name=".Controller.Activities.MainActivity" />
         <activity android:name=".Controller.Activities.QNAActivity" />
         <activity android:name=".Controller.Activities.QNAAddActivity" />
         <activity android:name=".Controller.Activities.CountItemActivity" />

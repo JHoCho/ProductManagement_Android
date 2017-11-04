@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
 import com.example.jaeho.productmanagement.R;
+import com.example.jaeho.productmanagement.utils.CurentUser;
 
 public class CheckItemActivity extends AppCompatActivity {
     LinearLayout btnGoCheckQR,btnSelectedCheck;
@@ -19,7 +20,9 @@ public class CheckItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_item);
         InformationDAO myDao = new NowUsingDAO(this);
-        if(myDao.getCurrentUser().getCompanyName().equals(null)){
+        try{
+            CurentUser.getInstance().getCompanyName();
+        }catch (NullPointerException e){
             Toast.makeText(getApplicationContext(), "세션이 종료되었습니다. 재접속 부탁 드립니다.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(CheckItemActivity.this, MainActivity.class);
             startActivity(intent);

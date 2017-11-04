@@ -54,12 +54,6 @@ public class CountItemActivity extends PermissionActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_count_item);
         myDao = new NowUsingDAO(this);
-        if (myDao.getCurrentUser().getCompanyName().equals(null)) {
-            Toast.makeText(getApplicationContext(), "세션이 종료되었습니다. 재접속 부탁 드립니다.", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(CountItemActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
         cameraView = (SurfaceView) findViewById(R.id.countCameraView);
         countedItemsTv = (TextView) findViewById(R.id.countedItemsTv);
         finishBtn = (Button) findViewById(R.id.finishBtn);

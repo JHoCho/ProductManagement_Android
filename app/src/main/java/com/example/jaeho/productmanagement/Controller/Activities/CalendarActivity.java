@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
 import com.example.jaeho.productmanagement.R;
+import com.example.jaeho.productmanagement.utils.CurentUser;
 
 import static com.example.jaeho.productmanagement.utils.Constants.hidProgressDialog;
 
@@ -28,7 +29,9 @@ public class CalendarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         hidProgressDialog();
         myDao = new NowUsingDAO(this);
-        if (myDao.getCurrentUser().getCompanyName().equals(null)) {
+        try{
+            CurentUser.getInstance().getCompanyName();
+        }catch (NullPointerException e){
             Toast.makeText(getApplicationContext(), "세션이 종료되었습니다. 재접속 부탁 드립니다.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(CalendarActivity.this, MainActivity.class);
             startActivity(intent);

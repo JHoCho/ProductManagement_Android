@@ -27,7 +27,7 @@ public class CurentUser extends UserDO {
         if(instance == null){
             synchronized ( CurentUser.class){
                 if(instance == null){
-                    instance = new CurentUser();
+                    //instance = new CurentUser();
                     //맨처음 로그인시 싱글톤 초기화가 되어 이부분은 불려서는 안될곳입니다.
                     System.out.println("CurnetUSer의 들어와선 안될곳");
                 }

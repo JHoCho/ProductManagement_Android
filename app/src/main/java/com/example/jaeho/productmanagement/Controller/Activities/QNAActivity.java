@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.jaeho.productmanagement.Model.DAOS.InformationDAO;
 import com.example.jaeho.productmanagement.Model.DAOS.NowUsingDAO;
+import com.example.jaeho.productmanagement.utils.CurentUser;
 import com.example.jaeho.productmanagement.utils.QNAActivitys.CustomQNAAdapter;
 import com.example.jaeho.productmanagement.Model.DO.QNADO;
 import com.example.jaeho.productmanagement.R;
@@ -32,9 +33,11 @@ public class QNAActivity extends AppCompatActivity {
         toQNAActivitybtn = (Button)findViewById(R.id.toQNAActivitybtn);
         QNARadioGroup = (RadioGroup)findViewById(R.id.QNARadioGroup);
         myDao = new NowUsingDAO(this);
-        if(myDao.getCurrentUser().getCompanyName().equals(null)){
+        try{
+            CurentUser.getInstance().getCompanyName();
+        }catch (NullPointerException e){
             Toast.makeText(getApplicationContext(), "세션이 종료되었습니다. 재접속 부탁 드립니다.", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(QNAActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
