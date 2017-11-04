@@ -78,15 +78,29 @@ public class DatabaseFromFirebase {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 //이부분 매핑을 제대로 해줘야 할듯.
-                HashMap<String, String> json = (HashMap) dataSnapshot.getValue();
-                QNADO qnado = new QNADO();
-                qnado.setEmail(json.get("email"));
-                qnado.setContents(json.get("contents"));
-                qnado.setSubject(json.get("subject"));
-                qnado.setName(json.get("name"));
-                qnado.setDate(json.get("date"));
-                qnado.setKey(dataSnapshot.getKey());
-                mAdapter.add(qnado);
+                try {
+                    HashMap<String, String> json = (HashMap) dataSnapshot.getValue();
+                    QNADO qnado = new QNADO();
+                    qnado.setEmail(json.get("email"));
+                    qnado.setContents(json.get("contents"));
+                    qnado.setSubject(json.get("subject"));
+                    qnado.setName(json.get("name"));
+                    qnado.setDate(json.get("date"));
+                    qnado.setAnswer(json.get("Answer"));
+                    qnado.setKey(dataSnapshot.getKey());
+                    mAdapter.add(qnado);
+                } catch (Exception e) {
+                    HashMap<String, String> json = (HashMap) dataSnapshot.getValue();
+                    QNADO qnado = new QNADO();
+                    qnado.setEmail(json.get("email"));
+                    qnado.setContents(json.get("contents"));
+                    qnado.setSubject(json.get("subject"));
+                    qnado.setName(json.get("name"));
+                    qnado.setDate(json.get("date"));
+                    qnado.setAnswer("아직 답이 달리지 않았습니다.");
+                    qnado.setKey(dataSnapshot.getKey());
+                    mAdapter.add(qnado);
+                }
             }
 
             @Override
@@ -96,15 +110,29 @@ public class DatabaseFromFirebase {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                HashMap<String, String> json = (HashMap) dataSnapshot.getValue();
-                QNADO qnado = new QNADO();
-                qnado.setEmail(json.get("email"));
-                qnado.setContents(json.get("contents"));
-                qnado.setSubject(json.get("subject"));
-                qnado.setName(json.get("name"));
-                qnado.setDate(json.get("date"));
-                qnado.setKey(dataSnapshot.getKey());
-                mAdapter.remove(qnado);
+                try {
+                    HashMap<String, String> json = (HashMap) dataSnapshot.getValue();
+                    QNADO qnado = new QNADO();
+                    qnado.setEmail(json.get("email"));
+                    qnado.setContents(json.get("contents"));
+                    qnado.setSubject(json.get("subject"));
+                    qnado.setName(json.get("name"));
+                    qnado.setDate(json.get("date"));
+                    qnado.setAnswer(json.get("Answer"));
+                    qnado.setKey(dataSnapshot.getKey());
+                    mAdapter.remove(qnado);
+                } catch (Exception e) {
+                    HashMap<String, String> json = (HashMap) dataSnapshot.getValue();
+                    QNADO qnado = new QNADO();
+                    qnado.setEmail(json.get("email"));
+                    qnado.setContents(json.get("contents"));
+                    qnado.setSubject(json.get("subject"));
+                    qnado.setName(json.get("name"));
+                    qnado.setDate(json.get("date"));
+                    qnado.setAnswer("아직 답이 달리지 않았습니다.");
+                    qnado.setKey(dataSnapshot.getKey());
+                    mAdapter.remove(qnado);
+                }
             }
 
             @Override
@@ -124,15 +152,29 @@ public class DatabaseFromFirebase {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 //이부분 매핑을 제대로 해줘야 할듯.
-                HashMap<String, String> json = (HashMap) dataSnapshot.getValue();
-                QNADO qnado = new QNADO();
-                qnado.setEmail(json.get("email"));
-                qnado.setContents(json.get("contents"));
-                qnado.setSubject(json.get("subject"));
-                qnado.setName(json.get("name"));
-                qnado.setDate(json.get("date"));
-                qnado.setKey(dataSnapshot.getKey());
-                mAdapter.add(qnado);
+                try {
+                    HashMap<String, String> json = (HashMap) dataSnapshot.getValue();
+                    QNADO qnado = new QNADO();
+                    qnado.setEmail(json.get("email"));
+                    qnado.setContents(json.get("contents"));
+                    qnado.setSubject(json.get("subject"));
+                    qnado.setName(json.get("name"));
+                    qnado.setDate(json.get("date"));
+                    qnado.setAnswer(json.get("answer"));
+                    qnado.setKey(dataSnapshot.getKey());
+                    mAdapter.add(qnado);
+                } catch (Exception e) {
+                    HashMap<String, String> json = (HashMap) dataSnapshot.getValue();
+                    QNADO qnado = new QNADO();
+                    qnado.setEmail(json.get("email"));
+                    qnado.setContents(json.get("contents"));
+                    qnado.setSubject(json.get("subject"));
+                    qnado.setName(json.get("name"));
+                    qnado.setDate(json.get("date"));
+                    qnado.setAnswer("아직 답이 달리지 않았습니다.");
+                    qnado.setKey(dataSnapshot.getKey());
+                    mAdapter.add(qnado);
+                }
             }
 
             @Override
@@ -241,16 +283,31 @@ public class DatabaseFromFirebase {
         mRootRef.child("QNA").child(qnado.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                HashMap<String, String> json = (HashMap) dataSnapshot.getValue();
-                Intent intent = new Intent(context, QNAReadActivity.class);
-                intent.putExtra("contents", json.get("contents").toString());
-                intent.putExtra("subject", json.get("subject").toString());
-                intent.putExtra("email", json.get("email").toString());
-                intent.putExtra("name", json.get("name").toString());
-                intent.putExtra("date", json.get("date").toString());
-                intent.putExtra("key", dataSnapshot.getKey());
-                intent.putExtra("isMine", isMine(email, json.get("email").toString()));
-                context.startActivity(intent);
+                try {
+                    HashMap<String, String> json = (HashMap) dataSnapshot.getValue();
+                    Intent intent = new Intent(context, QNAReadActivity.class);
+                    intent.putExtra("contents", json.get("contents").toString());
+                    intent.putExtra("subject", json.get("subject").toString());
+                    intent.putExtra("email", json.get("email").toString());
+                    intent.putExtra("name", json.get("name").toString());
+                    intent.putExtra("date", json.get("date").toString());
+                    intent.putExtra("key", dataSnapshot.getKey());
+                    intent.putExtra("answer", json.get("answer").toString());
+                    intent.putExtra("isMine", isMine(email, json.get("email").toString()));
+                    context.startActivity(intent);
+                } catch (Exception e) {
+                    HashMap<String, String> json = (HashMap) dataSnapshot.getValue();
+                    Intent intent = new Intent(context, QNAReadActivity.class);
+                    intent.putExtra("contents", json.get("contents").toString());
+                    intent.putExtra("subject", json.get("subject").toString());
+                    intent.putExtra("email", json.get("email").toString());
+                    intent.putExtra("name", json.get("name").toString());
+                    intent.putExtra("date", json.get("date").toString());
+                    intent.putExtra("key", dataSnapshot.getKey());
+                    intent.putExtra("answer", "아직 답이 없음.");
+                    intent.putExtra("isMine", isMine(email, json.get("email").toString()));
+                    context.startActivity(intent);
+                }
             }
 
             @Override

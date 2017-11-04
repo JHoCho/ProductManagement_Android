@@ -1,6 +1,7 @@
 package com.example.jaeho.productmanagement.Controller.Activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +16,7 @@ import com.example.jaeho.productmanagement.R;
 import com.example.jaeho.productmanagement.utils.CurentUser;
 
 public class QNAReadActivity extends AppCompatActivity {
-    TextView qnaContentsTv,qnaSubjectTv;
+    TextView qnaContentsTv,qnaSubjectTv,qnaAnsTv;
     Button qnaDeleteBtn;
     QNADO nowData;
     @Override
@@ -34,10 +35,12 @@ public class QNAReadActivity extends AppCompatActivity {
         qnaContentsTv = (TextView)findViewById(R.id.qnaContentsTv);
         qnaSubjectTv = (TextView)findViewById(R.id.qnaSubjectTv);
         qnaDeleteBtn = (Button)findViewById(R.id.qnaDeleteBtn);
-
+        qnaAnsTv = (TextView)findViewById(R.id.qnaAnsTv);
         init();
         qnaContentsTv.setText(nowData.getContents());
         qnaSubjectTv.setText(nowData.getSubject());
+        qnaAnsTv.setText(nowData.getAnswer());
+
         qnaDeleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,10 +57,12 @@ public class QNAReadActivity extends AppCompatActivity {
         nowData.setEmail(intent.getExtras().getString("email"));
         nowData.setKey(intent.getExtras().getString("key"));
         nowData.setSubject(intent.getExtras().getString("subject"));
+        nowData.setAnswer(intent.getExtras().getString("answer"));
         setDelbtnVisibility(intent.getExtras().getBoolean("isMine"));
     }
     private void setDelbtnVisibility(boolean a){
         if(a){
+            qnaAnsTv.setVisibility(View.VISIBLE);
             qnaDeleteBtn.setVisibility(View.VISIBLE);
         }
     }

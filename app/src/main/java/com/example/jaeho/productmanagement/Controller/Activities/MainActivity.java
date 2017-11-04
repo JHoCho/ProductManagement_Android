@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         edtPW = (EditText) findViewById(R.id.edtPW);
         edtID.setHint(R.string.id_hint);
         edtID.setHintTextColor(Color.GRAY);
+        edtPW.setHint(R.string.pw_hint);
+        edtPW.setHintTextColor(Color.GRAY);
         mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

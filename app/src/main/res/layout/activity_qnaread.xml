@@ -1,26 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Controller.Activities.QNAReadActivity">
-    <TextView
-        android:id="@+id/qnaSubjectTv"
-        android:layout_weight="4"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    <TextView
-        android:id="@+id/qnaContentsTv"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="4">
+        <TextView
+            android:text="제목"
+            android:textColor="@android:color/holo_orange_light"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/qnaSubjectTv"
+            android:gravity="top|left"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="내용"
+                android:textColor="@android:color/holo_orange_light"
+                android:layout_weight="5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/qnaContentsTv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:layout_weight="1" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="답변"
+                android:textColor="@android:color/holo_orange_light"
+                android:layout_weight="5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <TextView
+                android:id="@+id/qnaAnsTv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/qnaDeleteBtn"
-        android:visibility="gone"
-        android:text="삭제하기"
-        android:layout_weight="4"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:text="삭제하기"
+        android:visibility="gone" />
 </LinearLayout>

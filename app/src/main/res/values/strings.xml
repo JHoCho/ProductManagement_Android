@@ -3,6 +3,7 @@
     <string name="about_app">CheckMate 는 가천대학교 컴퓨터 공학과 졸업 프로젝트 앱으로 비품을 체계적으로 관리하기 위해 만들어 졌습니다
     문의사항은 앱 내부의 질문 게시판에 올려주시면 됩니다.</string>
     <string name="id_hint">Email@auth.plz</string>
+    <string name="pw_hint">passwd</string>
     <string name="quickstart_message">Click the SUBSCRIBE TO NEWS button below to subscribe to the
         news topic. Messages sent to the news topic will be received. The LOG TOKEN button logs the
         InstanceID token to logcat.</string>

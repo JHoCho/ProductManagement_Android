@@ -12,6 +12,15 @@ public class QNADO {
     private String date;
     private String email;
     private String key;
+    private String answer;
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
 
     public String getKey() {
         return key;
