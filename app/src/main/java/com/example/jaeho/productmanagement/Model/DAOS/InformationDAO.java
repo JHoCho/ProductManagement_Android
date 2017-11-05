@@ -32,7 +32,7 @@ public interface InformationDAO {
     int getNumOfRow();
     ArrayList<String> getRawsForChecking();
     QRDO getOneQrdo(String[] st1,String[] st2);
-    void askChange(QRDO qrdo);
+    void askChange(ArrayList<QRDO> qrdo);
     void getSchedule(String year,String month,String day);
     void addListenerForSQLite();
     void deleteListenerForSQLite();

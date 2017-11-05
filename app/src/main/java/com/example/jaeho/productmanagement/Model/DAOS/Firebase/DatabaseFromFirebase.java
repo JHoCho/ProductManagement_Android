@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.example.jaeho.productmanagement.Controller.Activities.QNAReadActivity;
 import com.example.jaeho.productmanagement.Model.DO.QNADO;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 
 import static com.example.jaeho.productmanagement.Controller.Activities.CalendarActivity.calendarTv;
 import static com.example.jaeho.productmanagement.utils.Constants.hidProgressDialog;
+import static com.example.jaeho.productmanagement.utils.Constants.prdlg;
 import static com.example.jaeho.productmanagement.utils.Constants.showProgressDialog;
 import static com.example.jaeho.productmanagement.utils.Constants.tostost;
 
@@ -327,16 +329,31 @@ public class DatabaseFromFirebase {
         });
     }
 
-    public void askChange(QRDO qrdo) {
-        showProgressDialog(context);
-        mRootRef.child("Ask").child(CurentUser.getInstance().getCompanyName()).child(qrdo.getSerialNumber().toString()).child("location").setValue(qrdo.getLocation());
-        mRootRef.child("Ask").child(CurentUser.getInstance().getCompanyName()).child(qrdo.getSerialNumber()).child("outDate").setValue(qrdo.getOutDate()).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                tostost("요청에 성공했습니다", context);
-                hidProgressDialog();
-            }
-        });
+    public void askChange(final ArrayList<QRDO> qrdos) {
+        for (final QRDO qrdo : qrdos) {
+            showProgressDialog(context);
+            mRootRef.child("deletedQR").child(CurentUser.getInstance().getCompanyName()).orderByChild("serialNumber").equalTo(qrdo.getSerialNumber().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    System.out.println("린생" + dataSnapshot.toString());
+                    if (dataSnapshot.getValue() == null) {
+                        mRootRef.child("Ask").child(CurentUser.getInstance().getCompanyName()).child(qrdo.getSerialNumber()).child("location").setValue(qrdo.getLocation());
+                        mRootRef.child("Ask").child(CurentUser.getInstance().getCompanyName()).child(qrdo.getSerialNumber()).child("outDate").setValue(qrdo.getOutDate()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                hidProgressDialog();
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+        tostost("요청에 성공했습니다", context);
     }
 
     public void getSchedule(String year, String month, String day) {

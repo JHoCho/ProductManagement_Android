@@ -130,7 +130,7 @@ public abstract class FireBaseDAO implements InformationDAO {
         return ref.getAdapter(getUserEmail());
     }
 
-    public void askChange(QRDO qrdo) {
+    public void askChange(ArrayList<QRDO> qrdo) {
         ref = new DatabaseFromFirebase(context, "Ask");
         ref.askChange(qrdo);
     }

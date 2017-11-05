@@ -154,11 +154,13 @@ public class SelectLocationActivityForOne extends AppCompatActivity {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             //위의정보들을 하나의 객체로 만들어 수정요청해야함 아직 중간관리자 급아이디 구현이 되어있지 않아 미 구현.
+                                            ArrayList<QRDO> qrdos = new ArrayList<QRDO>();
                                             QRDO qrdo = new QRDO();
                                             qrdo.setSerialNumber(myDao.getOneQrdo(selectedSt1, selectedSt2).getSerialNumber());
                                             qrdo.setLocation(dlg_qr_location_edt.getText().toString());
                                             qrdo.setOutDate(dlg_qr_date_out_edt.getText().toString());
-                                            myDao.askChange(qrdo);
+                                            qrdos.add(qrdo);
+                                            myDao.askChange(qrdos);
                                             finish();
                                         }
                                     });

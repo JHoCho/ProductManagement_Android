@@ -189,8 +189,10 @@ public class CountItemActivity extends PermissionActivity {
             Toast.makeText(this, "검사가 완료되었습니다.", Toast.LENGTH_SHORT).show();
             finish();
         } else {
+            ArrayList<QRDO> qrdos = new ArrayList<>();
             for (int i = 0; i < rawsForChecking.size(); i++) {
                 if (hashMap.get(rawsForChecking.get(i)) == false) {
+
                     QRDO qrdo = new QRDO();
                     qrdo.setLocation("lost");
                     Calendar calendar = Calendar.getInstance();
@@ -205,9 +207,10 @@ public class CountItemActivity extends PermissionActivity {
                     String retDay = Integer.toString(calendar.get(Calendar.YEAR)) + "-" + month + "-" + day;
                     qrdo.setOutDate(retDay);
                     qrdo.setSerialNumber(rawsForChecking.get(i));
-                    myDao.askChange(qrdo);
+                    qrdos.add(qrdo);
                 }
             }
+            myDao.askChange(qrdos);
         }
         finish();
     }
