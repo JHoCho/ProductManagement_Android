@@ -17,8 +17,12 @@ public class QRStringTokenizer {
         splitQR(s);
     }
     public void splitQR(String s){
+        System.out.println("전체 스트링"+s);
+        String[] result = s.split(":");
         try {
-            String[] result = s.split(",");
+            for (String child : result){
+                System.out.println("QR답:"+child);
+            }
             qrdo.setProductName(result[0]);
             qrdo.setDetailedProductName(result[1]);
             qrdo.setSerialNumber(result[2]);
@@ -29,9 +33,10 @@ public class QRStringTokenizer {
             qrdo.setDate(result[7]);
             qrdo.setAdminID(result[8]);
             qrdo.setPrice(result[9]);
-            qrdo.setLocation(qrdo.getBuilding() + qrdo.getFloor() + qrdo.getRoomName());
-        }catch (ArrayIndexOutOfBoundsException e){
+            qrdo.setLocation();
+        }catch (Exception e){
             System.out.println("QRStringTokenizer"+"에서 Exception발생 CheckMate에서 정의한 QR이 아닙니다.");
+            System.out.println("QR답:"+result.toString());
             e.printStackTrace();
         }
     }

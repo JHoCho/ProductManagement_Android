@@ -166,7 +166,7 @@ public class CheckQRActivity extends PermissionActivity {
                     View view = layoutInflater.inflate(R.layout.dlg_qr_information, null);
                     TextView dlg_qr_product_name_edt = (TextView) view.findViewById(R.id.dlg_qr_product_name_edt);
                     final EditText dlg_qr_location_edt = (EditText) view.findViewById(R.id.dlg_qr_location_edt);
-                    TextView dlg_qr_signalNo_edt = (TextView) view.findViewById(R.id.dlg_qr_signalNo_edt);
+                    final TextView dlg_qr_signalNo_edt = (TextView) view.findViewById(R.id.dlg_qr_signalNo_edt);
                     final EditText dlg_qr_date_out_edt = (EditText) view.findViewById(R.id.dlg_qr_date_out_edt);
                     TextView dlg_qr_price_edt = (TextView) view.findViewById(R.id.dlg_qr_price_edt);
                     TextView dlg_qr_product_model_name_edt = (TextView) view.findViewById(R.id.dlg_qr_product_model_name_edt);
@@ -189,7 +189,8 @@ public class CheckQRActivity extends PermissionActivity {
                         //위의정보들을 하나의 객체로 만들어 수정요청해야함 아직 중간관리자 급아이디 구현이 되어있지 않아 미 구현.
                             ArrayList<QRDO> qrdos = new ArrayList<QRDO>();
                             QRDO qrdo = new QRDO();
-                            qrdo.setSerialNumber(myDao.getOneQrdo(selectedSt1, selectedSt2).getSerialNumber());
+
+                            qrdo.setSerialNumber(dlg_qr_signalNo_edt.getText().toString());
                             qrdo.setLocation(dlg_qr_location_edt.getText().toString());
                             qrdo.setOutDate(dlg_qr_date_out_edt.getText().toString());
                             qrdos.add(qrdo);

@@ -118,7 +118,8 @@ public class CountItemActivity extends PermissionActivity {
 
 //////////////////////////////////////카메라 부분////////////////////////////////////////////////
         cameraSource = new CameraSource.Builder(this, barcodeDetector)
-                .setRequestedPreviewSize(640, 480)
+                .setRequestedPreviewSize(1024, 768)//640-480->1024-768
+                .setAutoFocusEnabled(true)
                 .build();
 
         cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -156,31 +157,21 @@ public class CountItemActivity extends PermissionActivity {
 
     private void stringValueChanged() {
         qst.splitQR(nowv);
-        if (myDao.getCurrentUser().getCompanyName().equals(null)) {
-            Toast.makeText(getApplicationContext(), "세션이 종료되었습니다. 재접속 부탁 드립니다.", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(CountItemActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        } else if (myDao.getCurrentUser().getCompanyName().equals(qst.getSplitedQRDO().getCompanyName())) {
+        if (myDao.getCurrentUser().getCompanyName().equals(qst.getSplitedQRDO().getCompanyName())) {
             //이부분에서 QR회사와 내 회사 비교하여 읽을지 말지 결정.if()
             if (containsKey(qst.getSplitedQRDO().getSerialNumber())) {
                 //키가 멥에 있는지 확인
-                if (isChecked(qst.getSplitedQRDO().getSerialNumber())) {
+                if (hashMap.containsKey(qst.getSplitedQRDO().getSerialNumber())) {
                     //키가 멥에 있어도 체크가 되었는지 확인 체크가 되었으면 무시하고
-                } else {
-                    //체크가 되지 않았다면 갯수 +1해줌 hashmap도 true로 바꿔줌
-                    getAndPlusOne(qst.getSplitedQRDO().getSerialNumber());
+                    if (!hashMap.get(qst.getSplitedQRDO().getSerialNumber())){
+                        getAndPlusOne(qst.getSplitedQRDO().getSerialNumber());
+                    }
                 }
             }else {
                 Toast.makeText(CountItemActivity.this, "해당위치에 있는 물건이 아닙니다", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(getApplicationContext(), "본인회사가 아님" + qst.getSplitedQRDO().getCompanyName().toString() + "회사꺼임", Toast.LENGTH_SHORT).show();
-        }
-        if (isFinished()) {
-            afterFinished();
-        } else {
-            afterFinished();
         }
     }
 
@@ -229,15 +220,12 @@ public class CountItemActivity extends PermissionActivity {
         tmp = tmp + 1;
         countedItemsTv.setText(Integer.toString(tmp) + "/" + numsForCount);
         hashMap.put(key, true);
-    }
-
-    public boolean isChecked(String key) {
-        if (hashMap.get(key) == null | false) {
-            return false;
-        } else {
-            return true;
+        if (tmp == Integer.parseInt(numsForCount)){
+            afterFinished();
         }
     }
+
+
 
     public boolean containsKey(String key) {
         if (hashMap.get(key) == null) {
